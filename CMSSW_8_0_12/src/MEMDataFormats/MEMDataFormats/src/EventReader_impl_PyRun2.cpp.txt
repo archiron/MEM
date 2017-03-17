@@ -212,7 +212,7 @@ bool EventReader<PyRun2EventData_t>::readEvent(PyRun2EventData_t &eventData,
   HadSys_4P.SetPxPyPzE( (_recotauh_sel_px)[0], (_recotauh_sel_py)[0], (_recotauh_sel_pz)[0], (_recotauh_sel_e)[0] );
   decayMode = (_recotauh_sel_decayMode)[0];
   
-  recoMET_4P.SetPtEtaPhiM( _PFMET, 0,  _PFMET_phi , 0 ); 
+  recoMET_4P.SetPtEtaPhiM( _PFMET, 0,  _PFMET_phi , 0 ); // -> same line in MEMProducer.cc #L644
   
   // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
   double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
@@ -341,8 +341,8 @@ bool EventReader<PyRun2EventData_t>::fillEvent( IntegrationMsg_t *integration, i
 	integration[k].evJet2_4P_[2] = 0; integration[k].evJet2_4P_[3] = 0;	
       }*/
       //
-      integration[k].evRecoMET4P_[0] = RecoMET_4P.Px(); integration[k].evRecoMET4P_[1] = RecoMET_4P.Py();
-      integration[k].evRecoMET4P_[2] = RecoMET_4P.Pz(); integration[k].evRecoMET4P_[3] = RecoMET_4P.E();
+      integration[k].evRecoMET4P_[0] = RecoMET_4P.Px(); integration[k].evRecoMET4P_[1] = RecoMET_4P.Py(); # -> same line in MEMProducer.cc #L779
+      integration[k].evRecoMET4P_[2] = RecoMET_4P.Pz(); integration[k].evRecoMET4P_[3] = RecoMET_4P.E(); # -> same line in MEMProducer.cc #L780
       //
       integration[k].evV_[0] = RecoMETCov[0]; integration[k].evV_[1] = RecoMETCov[1]; 
       integration[k].evV_[2] = RecoMETCov[2]; integration[k].evV_[3] = RecoMETCov[3];     

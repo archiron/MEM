@@ -639,10 +639,10 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                     std::cout << "Met cov matrix : " << nplet.recoMETCov[0] << std::endl;*/
                     nplet.covarMET_display(); // to be removed
                     
-/*                    std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
-                    std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;*/
+                    std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
+                    std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;/**/
                     nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
-                    std::cout << "recoMET_4P (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
+                    std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
                         // Appel MEM 
                         // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
@@ -692,6 +692,10 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     std::cout << "np recoMET_4P.Eta()  : " << np.recoMET_4P.Eta() << std::endl;
     std::cout << "np recoMET_4P.Phi()  : " << np.recoMET_4P.Phi() << std::endl;
     std::cout << "np recoMET_4P.M()    : " << np.recoMET_4P.M() << std::endl;
+    std::cout << "np recoMET_4P.Pt()   : " << np.eventList[0].evRecoMET4P_[0] << std::endl;
+    std::cout << "np recoMET_4P.Eta()  : " << np.eventList[0].evRecoMET4P_[1] << std::endl;
+    std::cout << "np recoMET_4P.Phi()  : " << np.eventList[0].evRecoMET4P_[2] << std::endl;
+    std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;
      
 /*    np.integration.MPIInfo_ = 0;
     np.integration.integration_type_ = np.integration_type;
@@ -772,9 +776,21 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     np.integration.evV_[0] = np.recoMETCov[0]; np.integration.evV_[1] = np.recoMETCov[1]; 
     np.integration.evV_[2] = np.recoMETCov[2]; np.integration.evV_[3] = np.recoMETCov[3];     */
     
-    np.eventList[0].evRecoMET4P_[0] = np.recoMET_4P.Px(); np.eventList[0].evRecoMET4P_[1] = np.recoMET_4P.Py();
+    // TEMPORATY OUTPUT
+    std::cout << "np recoMET_4P.Pt()   : " << np.recoMET_4P.Pt() << std::endl;
+    std::cout << "np recoMET_4P.Eta()  : " << np.recoMET_4P.Eta() << std::endl;
+    std::cout << "np recoMET_4P.Phi()  : " << np.recoMET_4P.Phi() << std::endl;
+    std::cout << "np recoMET_4P.M()    : " << np.recoMET_4P.M() << std::endl;
+    // TEMPORATY OUTPUT
+    np.eventList[0].evRecoMET4P_[0] = np.recoMET_4P.Px(); np.eventList[0].evRecoMET4P_[1] = np.recoMET_4P.Py(); // WARNING here Px, Py, Pz, E and fill_recoMET_4P use SetPtEtaPhiM !!
     np.eventList[0].evRecoMET4P_[2] = np.recoMET_4P.Pz(); np.eventList[0].evRecoMET4P_[3] = np.recoMET_4P.E();
-      //
+    // TEMPORATY OUTPUT
+    std::cout << "np recoMET_4P.Pt()   : " << np.eventList[0].evRecoMET4P_[0] << std::endl;
+    std::cout << "np recoMET_4P.Eta()  : " << np.eventList[0].evRecoMET4P_[1] << std::endl;
+    std::cout << "np recoMET_4P.Phi()  : " << np.eventList[0].evRecoMET4P_[2] << std::endl;
+    std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;
+    // TEMPORATY OUTPUT
+    //
     np.eventList[0].evV_[0] = np.recoMETCov[0]; np.eventList[0].evV_[1] = np.recoMETCov[1]; 
     np.eventList[0].evV_[2] = np.recoMETCov[2]; np.eventList[0].evV_[3] = np.recoMETCov[3];     /**/
     
