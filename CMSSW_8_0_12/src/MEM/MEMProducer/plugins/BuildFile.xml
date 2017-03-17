@@ -1,0 +1,15 @@
+<use name="FWCore/Framework"/>
+<use name="FWCore/PluginManager"/>
+<use name="FWCore/ParameterSet"/>
+<use name="DataFormats/TrackReco"/>
+<use name="DataFormats/Math"/>
+<use name="DataFormats/HepMCCandidate"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="MEM/MEMAlgo"/>
+<use name="MEMDataFormats/MEMDataFormats"/>
+
+<library name="1" file="*.cc">
+  <flags EDM_PLUGIN="1"/>
+  <Flags CXXFLAGS=" -g -I /opt/exp_soft/vo.gridcl.fr/software/OpenMPI/slc6_amd64_gcc491/openmpi/1.6.5/include -I /opt/exp_soft/vo.gridcl.fr/software/OpenCL/Intel-SDK/include -pthread " />
+  <Flags LDFLAGS=" -g -v -I /opt/exp_soft/vo.gridcl.fr/software/OpenMPI/slc6_amd64_gcc491/openmpi/1.6.5/include -L/opt/exp_soft/vo.gridcl.fr/software/OpenMPI/slc6_amd64_gcc491/openmpi/1.6.5/lib -pthread " /> 
+</library>

@@ -1,0 +1,2 @@
+ALL_PACKAGES += MEM/MEMProducer
+subdirs_src_MEM_MEMProducer := src_MEM_MEMProducer_plugins src_MEM_MEMProducer_python src_MEM_MEMProducer_test src_MEM_MEMProducer_doc

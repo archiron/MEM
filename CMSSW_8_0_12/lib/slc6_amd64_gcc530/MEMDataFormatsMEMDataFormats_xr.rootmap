@@ -1,0 +1,26 @@
+{ decls }
+namespace reco {  }
+namespace std {  }
+namespace edm {  }
+namespace edm { template <typename T> class Wrapper; }
+namespace reco { class MEMResult; }
+namespace edm { template <typename C> class RefProd; }
+namespace edm { namespace refhelper { template <typename C, typename T> class FindUsingAdvance; } }
+
+[ libMEMDataFormatsMEMDataFormats.so ]
+# List of selected classes
+class RunConfig
+class edm::Ref<std::vector<reco::MEMResult>,reco::MEMResult,edm::refhelper::FindUsingAdvance<std::vector<reco::MEMResult>,reco::MEMResult> >
+class edm::Ref<vector<reco::MEMResult>,reco::MEMResult,edm::refhelper::FindUsingAdvance<vector<reco::MEMResult>,reco::MEMResult> >
+class edm::RefProd<std::vector<reco::MEMResult> >
+class edm::RefProd<vector<reco::MEMResult> >
+class edm::RefVector<std::vector<reco::MEMResult>,reco::MEMResult,edm::refhelper::FindUsingAdvance<std::vector<reco::MEMResult>,reco::MEMResult> >
+class edm::RefVector<vector<reco::MEMResult>,reco::MEMResult,edm::refhelper::FindUsingAdvance<vector<reco::MEMResult>,reco::MEMResult> >
+class edm::Wrapper<std::vector<reco::MEMResult> >
+class edm::Wrapper<vector<reco::MEMResult> >
+class reco::IntegralResult
+class reco::MEMResult
+class vector<reco::MEMResult>
+header MEMDataFormats/MEMDataFormats/interface/RunConfig.h
+header MEMDataFormats/MEMDataFormats/interface/IntegralResult.h
+header MEMDataFormats/MEMDataFormats/interface/MEMResult.h

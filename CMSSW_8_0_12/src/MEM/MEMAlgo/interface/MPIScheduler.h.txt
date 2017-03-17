@@ -1,0 +1,72 @@
+/* 
+ * File:   MPIScheduler.h
+ * Author: grasseau
+ *
+ * Created on 28 août 2014, 14:23
+ * Modified on 04 october 2016 by A. Chiron
+ */
+
+#ifndef MPISCHEDULER_H
+#define	MPISCHEDULER_H
+
+//# include "mpi.h"
+
+//# pragma link C++ class std::pair<std::string, std::string>;
+
+//#include "TROOT.h"
+//#include "TFile.h"
+//#include "Math/Factory.h"
+//#include "Math/Functor.h"
+//#include "Math/GSLMCIntegrator.h"
+//#include "Math/AllIntegrationTypes.h"
+#include "MEMDataFormats/MEMDataFormats/interface/RunConfig.h"
+//# include "MEM/Utilities/config.h"
+//# include "MEM/MGMEM/MGIntegration.h"
+//# include "MEM/IOLib/EventReader.h"
+//# include "MEM/IOLib/IntegralsOutputs.h"
+//# include "MEM/Utilities/timing.h"
+//# include "MEM/OCLHostSide/oclAPITools.h"
+//# include "MEM/OCLHostSide/ocl-init.h"
+//# include "MEM/NodeScheduler/NodeScheduler.h"
+//# include "MEM/NodeScheduler/DeviceScheduler.h"
+//# include "MEM/NodeScheduler/ThreadScheduler.h"
+
+# define debugLEVEL 2
+
+class MPIScheduler {
+  int nbrOfProcess_;
+  int processID_;
+  char logNameFile_[256];
+  FILE* logFILE_;
+  
+  // Content of the message
+  // Default > 0 : sender process id  
+  //              message to process
+  
+  static int voidResult_;
+  static int stopWork_;
+  static int noDataIn_;
+  // Message Tags
+  static int resultTag_;
+  static int workTag_;  
+  // Debug
+  static int infoLevel_;       // Value to set, if 0 no log message
+  static struct timespec MPIdelay_;
+  static struct timespec effDelay_;
+  static int spinWait_; 
+  
+  // GG XXX to set in arggument of initMPIScheduler
+  bool setOCLDispatcher; 
+//  NodeScheduler *scheduler; 
+  
+public:
+  virtual ~MPIScheduler();
+  explicit MPIScheduler();
+  void oneMPIProcess( );
+  
+ private:
+  
+};
+
+#endif	/* MPISCHEDULER_H */
+

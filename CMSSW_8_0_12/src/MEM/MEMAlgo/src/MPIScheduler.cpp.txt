@@ -1,0 +1,37 @@
+# include "MEM/MEMAlgo/interface/MPIScheduler.h"
+
+# include <iostream> 
+# include <fstream>
+
+int MPIScheduler::voidResult_ = -2;
+int MPIScheduler::stopWork_   = -1;
+int MPIScheduler::noDataIn_   = -3;
+// Message Tags
+int MPIScheduler::resultTag_ = 1;
+int MPIScheduler::workTag_   = 2;  
+// Debug
+int MPIScheduler::infoLevel_ = 1;       // Value to set, if 0 no log message
+struct timespec MPIScheduler::MPIdelay_ = {0, 5000L};
+struct timespec MPIScheduler::effDelay_;
+int MPIScheduler::spinWait_ = 40; 
+
+int mpi_rank;
+
+using namespace std;
+
+MPIScheduler::~MPIScheduler() {
+  std::cout 
+    << "Destructor MPIScheduler" << std::endl;
+
+}
+
+MPIScheduler::MPIScheduler() {
+
+}
+
+void MPIScheduler::oneMPIProcess( ) { 
+
+std::cout << "je suis dans MPIScheduler::OneProcess" << std::endl;
+    
+}
+
