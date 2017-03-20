@@ -51,11 +51,14 @@ extern "C" void gslIntegrate(
   }
   
   if ( boundariesOk ) {
+    std::cout << "gslIntegrate, boundaries OK" << std::endl;
     gsl_monte_vegas_integrate ( fct_descr, integration->lowerValues_, integration->upperValues_, 
             nbrOfDim, nbrOfPoints, rng, state,
             res, err); 
     *chisq = state->chisq;
+    std::cout << "apres gsl_monte_vegas_integrate, res = " << *res << std::endl; // TEMPORAIRE
   } else {
+    std::cout << "gslIntegrate, boundaries KO" << std::endl;
     *res   = 0.0;
     *err   = 0.0;
     *chisq = 1.0;
@@ -2819,9 +2822,16 @@ double MGIntegration::getJacobian_W( double Enu, double Elep) const {
 void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force_missing_jet_integration_forevent) {
 
 
+  std::cout << "MGIntegration::setEventParameters" << std::endl;
+  std::cout << "data.evLep1_4P_ : " << data.evLep1_4P_[0] << ", " << data.evLep1_4P_[1] << ", " << data.evLep1_4P_[2] << ", " << data.evLep1_4P_[3] << ", " << std::endl;
+  std::cout << "data.evLep1_4P_ : " << data.lepton1_Type_ << std::endl;
+  std::cout << "data.evLep2_4P_ : " << data.evLep2_4P_[0] << ", " << data.evLep2_4P_[1] << ", " << data.evLep2_4P_[2] << ", " << data.evLep2_4P_[3] << ", " << std::endl;
+  std::cout << "data.evLep2_4P_ : " << data.lepton2_Type_ << std::endl;
   setLep_4Ps( data.evLep1_4P_ , data.lepton1_Type_,
 	      data.evLep2_4P_ , data.lepton2_Type_);
 
+  std::cout << "data.evHadSys_Tau_4P_ : " << data.evHadSys_Tau_4P_[0] << ", " << data.evHadSys_Tau_4P_[1] << ", " << data.evHadSys_Tau_4P_[2] << ", " << data.evHadSys_Tau_4P_[3] << ", " << std::endl;
+  std::cout << "data.HadtauDecayMode_ : " << data.HadtauDecayMode_ << std::endl;
   setHadronicTau4P( data.evHadSys_Tau_4P_ , data.HadtauDecayMode_);
  
   event_type_ = data.event_type_;
@@ -2983,6 +2993,9 @@ void MGIntegration::copyBoundaries( IntegrationMsg_t *data ) {
   
   data->event_type_ = event_type_;
   data->integration_type_ = integration_type_;
+  std::cout << "MGIntegration::copyBoundaries" << std::endl;
+  std::cout << "event_type_       : " << event_type_ << std::endl;
+  std::cout << "integration_type_ : " << integration_type_ << std::endl;
 
   if(integration_type_ == integration_type_wo_miss){
     data->nbrOfDim_ttH_ = nbrOfDim_ttH_;
@@ -3018,8 +3031,11 @@ void MGIntegration::copyBoundaries( IntegrationMsg_t *data ) {
 
   data->nbrOfDim_ttbar_DL_ = nbrOfDim_ttbar_DL_;
   data->nbrOfPoints_ttbar_DL_ = nbrOfPoints_ttbar_DL_;
+  std::cout << "\tnbrOfDim_ttbar_DL_ : " << nbrOfDim_ttbar_DL_ << std::endl;
+  std::cout << "\tnbrOfPoints_ttbar_DL_ : " << nbrOfPoints_ttbar_DL_ << std::endl;
 
   data->nbrOfPermut_ = nbrOfPermut_;
+  std::cout << "\tnbrOfPermut_ : " << nbrOfPermut_ << std::endl;
 
   // Boundaries
   for( int i=0; i< DimensionMax; i++) {
@@ -3115,10 +3131,10 @@ double MGIntegration::evalttH(const double* x ) {
 	       << " " << " cosThetaNu = "    << cosThetaNu
 	       << " " << " phiNu = "    << phiNu
 	       << " " << endl;
-    std::cout << " IntegrandLevel <= verbose_" << std::endl;
+//    std::cout << " IntegrandLevel <= verbose_" << std::endl;
   }
   else {
-      std::cout << " IntegrandLevel > verbose_" << std::endl;
+//      std::cout << " IntegrandLevel > verbose_" << std::endl;
   }
 
 
@@ -3753,7 +3769,7 @@ double MGIntegration::evalttH(const double* x ) {
     double Eval =  T_Jet1 * T_Jet2 * T_BJet_hadtop * T_BJet_leptop * T_MET * T_lepTau * T_hadTau * T_lepTop* T_hadTop * Jac * wME;
     if (error) {
         Eval = 0;
-        std::cout << "error from Eval !" << std::endl;
+/*        std::cout << "error from Eval !" << std::endl;
         std::cout << "Integrand value :" << std::endl;
         std::cout<< " T_Jet1 = " << T_Jet1 << std::endl;
         std::cout<< " T_Jet2 = " << T_Jet2 << std::endl;
@@ -3766,7 +3782,7 @@ double MGIntegration::evalttH(const double* x ) {
         std::cout<< " T_hadTop = " << T_hadTop << std::endl;
         std::cout<< " Jac = " << Jac << std::endl;
         std::cout<< " wME = " << wME  << std::endl;
-        std::cout<< " Eval = " << Eval << std::endl;
+        std::cout<< " Eval = " << Eval << std::endl;*/
     }
 
   if (verbose_ >= IntegrandLevel){
@@ -3841,7 +3857,7 @@ double MGIntegration::evalttH(const double* x ) {
   }
 */
 
-  std::cout << "Eval : " << Eval << std::endl;
+//  std::cout << "Eval : " << Eval << std::endl;
   return Eval;
 }
 

@@ -297,38 +297,38 @@ bool EventReader<PyRun2EventData_t>::fillEvent( IntegrationMsg_t *integration, i
       // and leave loop
       integration[k].MPIInfo_ = 0;
       //
-      integration[k].integration_type_ = integration_type; //
+      integration[k].integration_type_ = integration_type; // # -> same line in MEMProducer.cc #L718
       //
-      integration[k].evLep1_4P_[0] = Lep1_4P.Px(); integration[k].evLep1_4P_[1] = Lep1_4P.Py(); //
-      integration[k].evLep1_4P_[2] = Lep1_4P.Pz(); integration[k].evLep1_4P_[3] = Lep1_4P.E(); //
-      integration[k].lepton1_Type_ = lepton1_Type; //
+      integration[k].evLep1_4P_[0] = Lep1_4P.Px(); integration[k].evLep1_4P_[1] = Lep1_4P.Py(); // # -> same line in MEMProducer.cc #L719
+      integration[k].evLep1_4P_[2] = Lep1_4P.Pz(); integration[k].evLep1_4P_[3] = Lep1_4P.E();  // # -> same line in MEMProducer.cc #L720
+      integration[k].lepton1_Type_ = lepton1_Type; // # -> same line in MEMProducer.cc #L721
       //
-      integration[k].evLep2_4P_[0] = Lep2_4P.Px(); integration[k].evLep2_4P_[1] = Lep2_4P.Py(); //
-      integration[k].evLep2_4P_[2] = Lep2_4P.Pz(); integration[k].evLep2_4P_[3] = Lep2_4P.E(); //
-      integration[k].lepton2_Type_ = lepton2_Type; //
+      integration[k].evLep2_4P_[0] = Lep2_4P.Px(); integration[k].evLep2_4P_[1] = Lep2_4P.Py(); // # -> same line in MEMProducer.cc #L722
+      integration[k].evLep2_4P_[2] = Lep2_4P.Pz(); integration[k].evLep2_4P_[3] = Lep2_4P.E(); // # -> same line in MEMProducer.cc #L723
+      integration[k].lepton2_Type_ = lepton2_Type; // # -> same line in MEMProducer.cc #L724
       //
-      integration[k].evHadSys_Tau_4P_[0] = HadSys_4P.Px(); integration[k].evHadSys_Tau_4P_[1] = HadSys_4P.Py(); //
-      integration[k].evHadSys_Tau_4P_[2] = HadSys_4P.Pz(); integration[k].evHadSys_Tau_4P_[3] = HadSys_4P.E(); //
-      integration[k].HadtauDecayMode_ =  tauDecayMode; //
+      integration[k].evHadSys_Tau_4P_[0] = HadSys_4P.Px(); integration[k].evHadSys_Tau_4P_[1] = HadSys_4P.Py(); // # -> same line in MEMProducer.cc #L725
+      integration[k].evHadSys_Tau_4P_[2] = HadSys_4P.Pz(); integration[k].evHadSys_Tau_4P_[3] = HadSys_4P.E(); // # -> same line in MEMProducer.cc #L726
+      integration[k].HadtauDecayMode_ =  tauDecayMode; // # -> same line in MEMProducer.cc #L727
       //
-      integration[k].evBJet1_4P_[0] = BJet1_4P.Px(); integration[k].evBJet1_4P_[1] = BJet1_4P.Py();
-      integration[k].evBJet1_4P_[2] = BJet1_4P.Pz(); integration[k].evBJet1_4P_[3] = BJet1_4P.E();
-      integration[k].evBJet2_4P_[0] = BJet2_4P.Px(); integration[k].evBJet2_4P_[1] = BJet2_4P.Py();
-      integration[k].evBJet2_4P_[2] = BJet2_4P.Pz(); integration[k].evBJet2_4P_[3] = BJet2_4P.E();
+      integration[k].evBJet1_4P_[0] = BJet1_4P.Px(); integration[k].evBJet1_4P_[1] = BJet1_4P.Py(); // # -> same line in MEMProducer.cc #L729
+      integration[k].evBJet1_4P_[2] = BJet1_4P.Pz(); integration[k].evBJet1_4P_[3] = BJet1_4P.E(); // # -> same line in MEMProducer.cc #L730
+      integration[k].evBJet2_4P_[0] = BJet2_4P.Px(); integration[k].evBJet2_4P_[1] = BJet2_4P.Py(); // # -> same line in MEMProducer.cc #L731
+      integration[k].evBJet2_4P_[2] = BJet2_4P.Pz(); integration[k].evBJet2_4P_[3] = BJet2_4P.E(); // # -> same line in MEMProducer.cc #L732
       //
-      integration[k].n_lightJets_ = min(10,int(Jets_4P.size()));
+      integration[k].n_lightJets_ = min(10,int(Jets_4P.size())); // # -> same line in MEMProducer.cc #L735
       for( int i=0; i<integration[k].n_lightJets_; i++){
-	integration[k].evJets_4P_[i][0] = Jets_4P[i].Px(); integration[k].evJets_4P_[i][1] = Jets_4P[i].Py();
-	integration[k].evJets_4P_[i][2] = Jets_4P[i].Pz(); integration[k].evJets_4P_[i][3] = Jets_4P[i].E();
+	integration[k].evJets_4P_[i][0] = Jets_4P[i].Px(); integration[k].evJets_4P_[i][1] = Jets_4P[i].Py(); // # -> same line in MEMProducer.cc #L740
+	integration[k].evJets_4P_[i][2] = Jets_4P[i].Pz(); integration[k].evJets_4P_[i][3] = Jets_4P[i].E(); // # -> same line in MEMProducer.cc #L741
       }
       if(Jets_4P.size()<10){	
 	for(unsigned int i=Jets_4P.size(); i<10; i++){
-	  integration[k].evJets_4P_[i][0] = 0; integration[k].evJets_4P_[i][1] = 0;
-	  integration[k].evJets_4P_[i][2] = 0; integration[k].evJets_4P_[i][3] = 0;
+	  integration[k].evJets_4P_[i][0] = 0; integration[k].evJets_4P_[i][1] = 0; // # -> same line in MEMProducer.cc #L747
+	  integration[k].evJets_4P_[i][2] = 0; integration[k].evJets_4P_[i][3] = 0; // # -> same line in MEMProducer.cc #L748
 	}
       }
       
-/*      if(integration_type == 0){
+      if(integration_type == 0){                                               // # -> same line in MEMProducer.cc #L752-L771
 	integration[k].evJet1_4P_[0] = Jet1_4P.Px(); integration[k].evJet1_4P_[1] = Jet1_4P.Py();
 	integration[k].evJet1_4P_[2] = Jet1_4P.Pz(); integration[k].evJet1_4P_[3] = Jet1_4P.E();
 	integration[k].evJet2_4P_[0] = Jet2_4P.Px(); integration[k].evJet2_4P_[1] = Jet2_4P.Py();
@@ -339,13 +339,13 @@ bool EventReader<PyRun2EventData_t>::fillEvent( IntegrationMsg_t *integration, i
 	integration[k].evJet1_4P_[2] = 0; integration[k].evJet1_4P_[3] = 0;
 	integration[k].evJet2_4P_[0] = 0; integration[k].evJet2_4P_[1] = 0;
 	integration[k].evJet2_4P_[2] = 0; integration[k].evJet2_4P_[3] = 0;	
-      }*/
+      }/**/
       //
-      integration[k].evRecoMET4P_[0] = RecoMET_4P.Px(); integration[k].evRecoMET4P_[1] = RecoMET_4P.Py(); # -> same line in MEMProducer.cc #L779
-      integration[k].evRecoMET4P_[2] = RecoMET_4P.Pz(); integration[k].evRecoMET4P_[3] = RecoMET_4P.E(); # -> same line in MEMProducer.cc #L780
+      integration[k].evRecoMET4P_[0] = RecoMET_4P.Px(); integration[k].evRecoMET4P_[1] = RecoMET_4P.Py(); // # -> same line in MEMProducer.cc #L785
+      integration[k].evRecoMET4P_[2] = RecoMET_4P.Pz(); integration[k].evRecoMET4P_[3] = RecoMET_4P.E();  // # -> same line in MEMProducer.cc #L786
       //
-      integration[k].evV_[0] = RecoMETCov[0]; integration[k].evV_[1] = RecoMETCov[1]; 
-      integration[k].evV_[2] = RecoMETCov[2]; integration[k].evV_[3] = RecoMETCov[3];     
+      integration[k].evV_[0] = RecoMETCov[0]; integration[k].evV_[1] = RecoMETCov[1];  // # -> same line in MEMProducer.cc #L794
+      integration[k].evV_[2] = RecoMETCov[2]; integration[k].evV_[3] = RecoMETCov[3];  // # -> same line in MEMProducer.cc #L795
     
       // MPI process source
       integration[k].MPIInfo_ = 0;

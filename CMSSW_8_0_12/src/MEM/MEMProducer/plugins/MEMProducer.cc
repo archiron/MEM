@@ -688,14 +688,14 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
 {
 
     std::cout << "Je suis dans MEMProducer::oneMPIProcess" << std::endl;
-    std::cout << "np recoMET_4P.Pt()   : " << np.recoMET_4P.Pt() << std::endl;
+/*    std::cout << "np recoMET_4P.Pt()   : " << np.recoMET_4P.Pt() << std::endl;
     std::cout << "np recoMET_4P.Eta()  : " << np.recoMET_4P.Eta() << std::endl;
     std::cout << "np recoMET_4P.Phi()  : " << np.recoMET_4P.Phi() << std::endl;
     std::cout << "np recoMET_4P.M()    : " << np.recoMET_4P.M() << std::endl;
     std::cout << "np recoMET_4P.Pt()   : " << np.eventList[0].evRecoMET4P_[0] << std::endl;
     std::cout << "np recoMET_4P.Eta()  : " << np.eventList[0].evRecoMET4P_[1] << std::endl;
     std::cout << "np recoMET_4P.Phi()  : " << np.eventList[0].evRecoMET4P_[2] << std::endl;
-    std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;
+    std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;*/
      
 /*    np.integration.MPIInfo_ = 0;
     np.integration.integration_type_ = np.integration_type;
@@ -721,7 +721,7 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     np.eventList[0].lepton1_Type_ = np.lep1_type;
     np.eventList[0].evLep2_4P_[0] = np.Lep2_4P.Px(); np.eventList[0].evLep2_4P_[1] = np.Lep2_4P.Py(); 
     np.eventList[0].evLep2_4P_[2] = np.Lep2_4P.Pz(); np.eventList[0].evLep2_4P_[3] = np.Lep2_4P.E();
-    np.eventList[0].lepton2_Type_ = np.lep1_type;
+    np.eventList[0].lepton2_Type_ = np.lep2_type;
     np.eventList[0].evHadSys_Tau_4P_[0] = np.HadSys_4P.Px(); np.eventList[0].evHadSys_Tau_4P_[1] = np.HadSys_4P.Py();
     np.eventList[0].evHadSys_Tau_4P_[2] = np.HadSys_4P.Pz(); np.eventList[0].evHadSys_Tau_4P_[3] = np.HadSys_4P.E();
     np.eventList[0].HadtauDecayMode_ =  np.decayMode;
@@ -777,35 +777,35 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     np.integration.evV_[2] = np.recoMETCov[2]; np.integration.evV_[3] = np.recoMETCov[3];     */
     
     // TEMPORATY OUTPUT
-    std::cout << "np recoMET_4P.Pt()   : " << np.recoMET_4P.Pt() << std::endl;
+/*    std::cout << "np recoMET_4P.Pt()   : " << np.recoMET_4P.Pt() << std::endl;
     std::cout << "np recoMET_4P.Eta()  : " << np.recoMET_4P.Eta() << std::endl;
     std::cout << "np recoMET_4P.Phi()  : " << np.recoMET_4P.Phi() << std::endl;
-    std::cout << "np recoMET_4P.M()    : " << np.recoMET_4P.M() << std::endl;
+    std::cout << "np recoMET_4P.M()    : " << np.recoMET_4P.M() << std::endl;*/
     // TEMPORATY OUTPUT
     np.eventList[0].evRecoMET4P_[0] = np.recoMET_4P.Px(); np.eventList[0].evRecoMET4P_[1] = np.recoMET_4P.Py(); // WARNING here Px, Py, Pz, E and fill_recoMET_4P use SetPtEtaPhiM !!
     np.eventList[0].evRecoMET4P_[2] = np.recoMET_4P.Pz(); np.eventList[0].evRecoMET4P_[3] = np.recoMET_4P.E();
     // TEMPORATY OUTPUT
-    std::cout << "np recoMET_4P.Pt()   : " << np.eventList[0].evRecoMET4P_[0] << std::endl;
+/*    std::cout << "np recoMET_4P.Pt()   : " << np.eventList[0].evRecoMET4P_[0] << std::endl;
     std::cout << "np recoMET_4P.Eta()  : " << np.eventList[0].evRecoMET4P_[1] << std::endl;
     std::cout << "np recoMET_4P.Phi()  : " << np.eventList[0].evRecoMET4P_[2] << std::endl;
-    std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;
+    std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;*/
     // TEMPORATY OUTPUT
     //
     np.eventList[0].evV_[0] = np.recoMETCov[0]; np.eventList[0].evV_[1] = np.recoMETCov[1]; 
     np.eventList[0].evV_[2] = np.recoMETCov[2]; np.eventList[0].evV_[3] = np.recoMETCov[3];     /**/
     
-    std::cout << "VVVVVVVVVVVVVVV - classical nplet - VVVVVVVVVVVVVVV" << std::endl;
+/*    std::cout << "VVVVVVVVVVVVVVV - classical nplet - VVVVVVVVVVVVVVV" << std::endl;
     std::cout << "Lep1_4P (" << np.Lep1_4P.Px()   << ", " << np.Lep1_4P.Py()   << ", " << np.Lep1_4P.Pz()   << ", " << np.Lep1_4P.E()   << ") " << std::endl;
-    std::cout << "Lep1_4P (" << np.Lep2_4P.Px()   << ", " << np.Lep2_4P.Py()   << ", " << np.Lep2_4P.Pz()   << ", " << np.Lep2_4P.E()   << ") " << std::endl;
-    std::cout << "Had1_4P (" << np.HadSys_4P.Px() << ", " << np.HadSys_4P.Py() << ", " << np.HadSys_4P.Pz() << ", " << np.HadSys_4P.E() << ") " << std::endl;
+    std::cout << "Lep2_4P (" << np.Lep2_4P.Px()   << ", " << np.Lep2_4P.Py()   << ", " << np.Lep2_4P.Pz()   << ", " << np.Lep2_4P.E()   << ") " << std::endl;
+    std::cout << "Had1_4P (" << np.HadSys_4P.Px() << ", " << np.HadSys_4P.Py() << ", " << np.HadSys_4P.Pz() << ", " << np.HadSys_4P.E() << ") " << std::endl;*/
 /*    std::cout << "VVVVVVVVVVVVVVV - integration - VVVVVVVVVVVVVVV" << std::endl;
     std::cout << "Lep1_4P (" << np.integration.evLep1_4P_[0]   << ", " << np.integration.evLep1_4P_[1]   << ", " << np.integration.evLep1_4P_[2]   << ", " << np.integration.evLep1_4P_[3]   << ") " << std::endl;
     std::cout << "Lep1_4P (" << np.integration.evLep2_4P_[0]   << ", " << np.integration.evLep2_4P_[1]   << ", " << np.integration.evLep2_4P_[2]   << ", " << np.integration.evLep2_4P_[3]   << ") " << std::endl;
     std::cout << "Had1_4P (" << np.integration.evHadSys_Tau_4P_[0] << ", " << np.integration.evHadSys_Tau_4P_[1] << ", " << np.integration.evHadSys_Tau_4P_[2] << ", " << np.integration.evHadSys_Tau_4P_[3] << ") " << std::endl;*/
-    std::cout << "VVVVVVVVVVVVVVV - eventList - VVVVVVVVVVVVVVV" << std::endl;/**/
+/*    std::cout << "VVVVVVVVVVVVVVV - eventList - VVVVVVVVVVVVVVV" << std::endl;
     std::cout << "Lep1_4P (" << np.eventList[0].evLep1_4P_[0]   << ", " << np.eventList[0].evLep1_4P_[1]   << ", " << np.eventList[0].evLep1_4P_[2]   << ", " << np.eventList[0].evLep1_4P_[3]   << ") " << std::endl;
-    std::cout << "Lep1_4P (" << np.eventList[0].evLep2_4P_[0]   << ", " << np.eventList[0].evLep2_4P_[1]   << ", " << np.eventList[0].evLep2_4P_[2]   << ", " << np.eventList[0].evLep2_4P_[3]   << ") " << std::endl;
-    std::cout << "Had1_4P (" << np.eventList[0].evHadSys_Tau_4P_[0] << ", " << np.eventList[0].evHadSys_Tau_4P_[1] << ", " << np.eventList[0].evHadSys_Tau_4P_[2] << ", " << np.eventList[0].evHadSys_Tau_4P_[3] << ") " << std::endl;/**/
+    std::cout << "Lep2_4P (" << np.eventList[0].evLep2_4P_[0]   << ", " << np.eventList[0].evLep2_4P_[1]   << ", " << np.eventList[0].evLep2_4P_[2]   << ", " << np.eventList[0].evLep2_4P_[3]   << ") " << std::endl;
+    std::cout << "Had1_4P (" << np.eventList[0].evHadSys_Tau_4P_[0] << ", " << np.eventList[0].evHadSys_Tau_4P_[1] << ", " << np.eventList[0].evHadSys_Tau_4P_[2] << ", " << np.eventList[0].evHadSys_Tau_4P_[3] << ") " << std::endl;*/
 
       // MPI process source
       //integration.MPIInfo_ = 0;

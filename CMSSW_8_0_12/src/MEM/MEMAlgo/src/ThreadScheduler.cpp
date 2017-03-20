@@ -190,6 +190,7 @@ void ThreadScheduler::initNodeScheduler( RunConfig cfg, int mpi_rank ) {
   // MadGraph
 //  initHTauTauMEProcesses( cfg ); 
   //init_ttH_HTauTauMEProcesses( cfg->configName_.c_str() ); 
+  std::cout << "ThreadScheduler::initNodeScheduler : appel init_ttH_HTauTauMEProcesses" << std::endl; // TEMPORAIRE
   init_ttH_HTauTauMEProcesses( cfg ); 
 
 }
@@ -222,10 +223,10 @@ void ThreadScheduler::runNodeScheduler (
   std::cout << "runNodeScheduler :" << integration->force_missing_jet_integration_ << std::endl;
 
   for ( k=0; k < nbrOfEvents; k++) {
-    std::cout << k << "/" << nbrOfEvents << std::endl;
-    integration->setEventParameters( evList[k], integration->force_missing_jet_integration_ );
-    integration->copyBoundaries( &evList[k]);
-    std::cout<<"nbrOfPermut_ runNodeScheduler "<<evList[k].nbrOfPermut_<<std::endl;
+    std::cout << k+1 << "/" << nbrOfEvents << std::endl;
+    integration->setEventParameters( evList[k], integration->force_missing_jet_integration_ ); // seems to be OK (get all datas)
+    integration->copyBoundaries( &evList[k]);                                                  // seems to be OK (get all datas)
+    std::cout << "nbrOfPermut_ runNodeScheduler " << evList[k].nbrOfPermut_ << std::endl;
 
 /*  
 # if 0  
@@ -263,6 +264,7 @@ void ThreadScheduler::runNodeScheduler (
     std::cout <<"nbrOfPermut_ 2 : " << integration->nbrOfPermut_<<std::endl;
 	for(int perm=0; perm<integration->nbrOfPermut_; perm++){
 	      
+        std::cout << "permut : " << perm + 1 << "/" << integration->nbrOfPermut_ << std::endl;
         integration->initVersors(perm);          
  	integration->signalME_ = true;
 	integration->m_TauTau_2_ = pow(integration->mTauTau_ttH_[perm],2);
