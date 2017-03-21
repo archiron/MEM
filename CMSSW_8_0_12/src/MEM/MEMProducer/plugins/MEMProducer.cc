@@ -555,7 +555,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, jets );
                         JetFilling<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, cleanedJets, nplet, "mm" );
                         runConfig.nbOfNplets_ += 1;
-                        std::cout << "classical : nbOfNplets in mm : " << runConfig.nbOfNplets_ << std::endl;
+                        //std::cout << "classical : nbOfNplets in mm : " << runConfig.nbOfNplets_ << std::endl;
                         std::cout << "integration_type : " << nplet.integration_type   << std::endl;
                         std::cout << "lep1 type        : " << nplet.lep1_type << std::endl;
                         std::cout << "lep2 type        : " << nplet.lep2_type << std::endl;

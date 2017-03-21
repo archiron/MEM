@@ -103,8 +103,8 @@ class MEMProducer : public edm::stream::EDProducer<> {
         vector<pat::Jet> npletFilter(const T& lep1, const U& lep2, const pat::Tau& tau, edm::Handle<pat::JetCollection> jets) {
             vector<pat::Jet> cleaned_jets;
   
-            std::cout << "\t inside template npletFilter" << std::endl;
-/*            std::cout << "type id T = " << typeid(T).name() << std::endl;
+/*            std::cout << "\t inside template npletFilter" << std::endl;
+            std::cout << "type id T = " << typeid(T).name() << std::endl;
             std::cout << "type id U = " << typeid(U).name() << std::endl;*/
 
             math::XYZTLorentzVector lep1_P4 = lep1.p4();

@@ -1874,15 +1874,15 @@ void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force
 
 
   std::cout << "MGIntegration::setEventParameters" << std::endl;
-  std::cout << "data.evLep1_4P_ : " << data.evLep1_4P_[0] << ", " << data.evLep1_4P_[1] << ", " << data.evLep1_4P_[2] << ", " << data.evLep1_4P_[3] << ", " << std::endl;
+/*  std::cout << "data.evLep1_4P_ : " << data.evLep1_4P_[0] << ", " << data.evLep1_4P_[1] << ", " << data.evLep1_4P_[2] << ", " << data.evLep1_4P_[3] << ", " << std::endl;
   std::cout << "data.evLep1_4P_ : " << data.lepton1_Type_ << std::endl;
   std::cout << "data.evLep2_4P_ : " << data.evLep2_4P_[0] << ", " << data.evLep2_4P_[1] << ", " << data.evLep2_4P_[2] << ", " << data.evLep2_4P_[3] << ", " << std::endl;
-  std::cout << "data.evLep2_4P_ : " << data.lepton2_Type_ << std::endl;
+  std::cout << "data.evLep2_4P_ : " << data.lepton2_Type_ << std::endl;*/
   setLep_4Ps( data.evLep1_4P_ , data.lepton1_Type_,
 	      data.evLep2_4P_ , data.lepton2_Type_);
 
-  std::cout << "data.evHadSys_Tau_4P_ : " << data.evHadSys_Tau_4P_[0] << ", " << data.evHadSys_Tau_4P_[1] << ", " << data.evHadSys_Tau_4P_[2] << ", " << data.evHadSys_Tau_4P_[3] << ", " << std::endl;
-  std::cout << "data.HadtauDecayMode_ : " << data.HadtauDecayMode_ << std::endl;
+/*  std::cout << "data.evHadSys_Tau_4P_ : " << data.evHadSys_Tau_4P_[0] << ", " << data.evHadSys_Tau_4P_[1] << ", " << data.evHadSys_Tau_4P_[2] << ", " << data.evHadSys_Tau_4P_[3] << ", " << std::endl;
+  std::cout << "data.HadtauDecayMode_ : " << data.HadtauDecayMode_ << std::endl;*/
   setHadronicTau4P( data.evHadSys_Tau_4P_ , data.HadtauDecayMode_);
  
   event_type_ = data.event_type_;

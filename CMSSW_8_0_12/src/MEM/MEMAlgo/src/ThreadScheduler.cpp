@@ -72,7 +72,8 @@ void ThreadScheduler::initNodeScheduler( RunConfig cfg, int mpi_rank ) {
   state = gsl_monte_vegas_alloc ( integration->nbrOfDim_ );  */
   fctDescr_ttH = { 
     &wrapper_evalttH, (size_t) integration->nbrOfDim_ttH_, integration };
-  state_ttH = gsl_monte_vegas_alloc ( integration->nbrOfDim_ttH_ );  
+  state_ttH = gsl_monte_vegas_alloc ( integration->nbrOfDim_ttH_ ); 
+  std::cout << "retour state_ttH : " << state_ttH << std::endl; // TEMPORAIRE
     
   // LHAPDF
   // Fortran init 
@@ -145,8 +146,8 @@ void ThreadScheduler::runNodeScheduler (
 //  int nbrSubmittedEvents = 0;
   
   int k; 
-  cerr << "  compute "  << nbrOfEvents << endl;  
-  std::cout << "runNodeScheduler :" << integration->force_missing_jet_integration_ << std::endl;
+  cerr << "  compute " << nbrOfEvents << " events" << endl;  
+  std::cout << "runNodeScheduler force_missing_jet_integration_ : " << integration->force_missing_jet_integration_ << std::endl;
 
   for ( k=0; k < nbrOfEvents; k++) {
     std::cout << k+1 << "/" << nbrOfEvents << std::endl;
@@ -212,12 +213,27 @@ void ThreadScheduler::runNodeScheduler (
         if ( integration->flagSameRNG_ )
             gsl_rng_memcpy ( rng, saveRNGSeed);
 
+        std::cout << "AVANT GSL" << std::endl;
+        std::cout << "integration->nbrOfDim_ttH_ : "    << integration->nbrOfDim_ttH_    << std::endl;
+        std::cout << "integration->nbrOfPoints_ttH_ : " << integration->nbrOfPoints_ttH_ << std::endl;
+        std::cout << "state_ttH : " << state_ttH << std::endl;
+        std::cout << "&evList["<< k << "].integralttH_["  << perm <<"] : " << evList[k].integralttH_[perm]  << std::endl;
+        std::cout << "&evList["<< k << "].stderrttH_["    << perm <<"] : " << evList[k].stderrttH_[perm]    << std::endl;
+        std::cout << "&evList["<< k << "].chiSquarettH_[" << perm <<"] : " << evList[k].chiSquarettH_[perm] << std::endl;
         gslIntegrate( &fctDescr_ttH, integration,  integration->nbrOfDim_ttH_, integration->nbrOfPoints_ttH_, rng, state_ttH, true,
 			      &evList[k].integralttH_[perm], 
 			      &evList[k].stderrttH_[perm],
 			      &evList[k].chiSquarettH_[perm]);     
 
-                /// GG XXX queueStatus[qcpu].tickEnd = getticks();
+        std::cout << "APRES GSL" << std::endl;
+        std::cout << "integration->nbrOfDim_ttH_ : "    << integration->nbrOfDim_ttH_    << std::endl;
+        std::cout << "integration->nbrOfPoints_ttH_ : " << integration->nbrOfPoints_ttH_ << std::endl;
+        std::cout << "state_ttH : " << state_ttH << std::endl;
+        std::cout << "&evList["<< k << "].integralttH_["  << perm <<"] : " << evList[k].integralttH_[perm]  << std::endl;
+        std::cout << "&evList["<< k << "].stderrttH_["    << perm <<"] : " << evList[k].stderrttH_[perm]    << std::endl;
+        std::cout << "&evList["<< k << "].chiSquarettH_[" << perm <<"] : " << evList[k].chiSquarettH_[perm] << std::endl;
+
+        /// GG XXX queueStatus[qcpu].tickEnd = getticks();
     
     } // end perm loop 
     
