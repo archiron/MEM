@@ -65,7 +65,7 @@ MEM_nplet::~MEM_nplet()
    // do anything here that needs to be done at destruction time
    // (e.g. close files, deallocate resources etc.)
 
-  std::cout << "Destructor nplet" << std::endl;
+  //std::cout << "Destructor nplet" << std::endl;
 
 }
 
@@ -115,9 +115,9 @@ void MEM_nplet::fill_Jet2_4P_0()
 
 void MEM_nplet::fill_recoMET_4P(float met, float phi)
 {
-    std::cout << "inside fill_recoMET_4P : " << met << " - " << phi << std::endl;//
+    //std::cout << "inside fill_recoMET_4P : " << met << " - " << phi << std::endl;//
     recoMET_4P.SetPtEtaPhiM( met, 0.,  phi , 0. );
-    std::cout << "inside fill_recoMET_4P : " << recoMET_4P.Pt() << ", " << recoMET_4P.Eta() << ", " << recoMET_4P.Phi() << ", " << recoMET_4P.M() << std::endl;
+    //std::cout << "inside fill_recoMET_4P : " << recoMET_4P.Pt() << ", " << recoMET_4P.Eta() << ", " << recoMET_4P.Phi() << ", " << recoMET_4P.M() << std::endl;
 }
 
 TLorentzVector MEM_nplet::fill_temp(const pat::Jet J1)

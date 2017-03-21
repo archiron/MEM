@@ -73,25 +73,7 @@ static CPPProcess_uubar_to_ttbar process_qqbar_ttbar;
 void init_ttH_HTauTauMEProcesses( RunConfig runConfig ) {
 
 //  std::cout << "configname : "  << runConfig.configName_ << std::endl;
-/*  PyObject *pModule = readPyConfig( configname );
-  if ( pModule == 0 ) {
-    cerr << "Module " << configname << " not found" << endl;
-    cerr << "  or bad python configuration." << endl;
-    return;
-  }
-  
-  PyObject *pVariable;
-//  PyObject *pItem;
-//  int i;
-  string paramFileName;
-  double _Q;
-  */
-/*  pVariable = PyObject_GetAttrString( pModule, "MGParamCardFile");
-  paramFileName = PyString_AsString( pVariable ); 
-  pVariable = PyObject_GetAttrString( pModule, "Q");
-  _Q        = PyFloat_AsDouble( pVariable );*/
-  //
-
+//
 //  std::cout << "MGParamCardFile : " << runConfig.MGParamCardFileName_ << std::endl;
 //  std::cout << "Q_ : " << runConfig.Q_ << std::endl;
 

@@ -10,80 +10,6 @@
 # include "MEM/MEMAlgo/interface/LHAPDF.h"
 # include "MEM/MEMAlgo/interface/Processes.h"
 
-
-
-/* GG XXX EvalOnGrid, future use
-void
-dumpDBufferAsEvalOnGrid ( ocl_vegas_state_t *vegasState) {
-  double X[MaxNumberOfDIMs], dX[MaxNumberOfDIMs];
-  double index[MaxNumberOfDIMs];
-  int d, k;
-  
-  int nbrOfDims = vegasState->dim;
-  
-  long int nbrPoints = pow( (double) nbrPointsPerAxe, (double) nbrOfDims ) + 0.5;
-  for (d=0; d < nbrOfDims; d++) {
-    dX[d] =  ( vegasState->xu[d] - vegasState->xl[d]  ) 
-           / nbrPointsPerAxe;
-  } 
-  
-  printf("  Eval On Grid (ev = %6ld) \n", vegasState->eventID);
-  printf("     Idx  mTau2    PTauLep   cosTLTH  PQuark1  PQuark2    wME \n" ); 
-  for (k=0; k < nbrPoints; k++) {
-    int remain = k;
-    for( d=0; d<nbrOfDims; d++ ) {
-      index[d] = remain % nbrPointsPerAxe;
-      remain   = remain / nbrPointsPerAxe;
-      X[d] =   vegasState->xl[d] + index[d]*dX[d];
-    }   
-    printf("    %4d %8e %8e %8e %8e %8e %8e \n", k, 
-            X[0], X[1], X[2], X[3], X[4],
-            vegasState->dBuffer[k] );
-  }
-}
-*/
-/* GG XXX Fonction mère : à changer avec les IntegrationMsg 
-void
-displayEvent ( QueueStatus_t *qs, ocl_vegas_state_t *vegasState, int nbrOfCPU, const ocl_vegas_state_t *vegasCpuState) {
-
-  if ( qs->startEventIndex < 0) {
-     printf("  Event  Integral  Error    ChiSq   \n");
-     printf("====================================\n");
-  } else {
-    printf(" res %6ld %3d %3d %8e %8e %8f %10ld %2d %2d\n", vegasState->eventID, qs->startEventIndex, qs->nbrOfEvents, 
-           vegasState->CumulatedIntegral, vegasState->CumulatedSigma,
-           vegasState->ChiSquare, qs->tickEnd - qs->tickStart,
-           qs->platform, qs->device);
-    // Not used
-    //
-    printf(" liForTest %ld %ld %ld %ld\n", 
-	   vegasState->liForTest[0],
-	   vegasState->liForTest[1],
-	   vegasState->liForTest[2],
-	   vegasState->liForTest[3]
-           );  
-    printf(" dForTest %e %e %e %e \n", 
-	   vegasState->dForTest[0],
-	   vegasState->dForTest[1],
-	   vegasState->dForTest[2],
-	   vegasState->dForTest[3]
-           );
-    */
-    
-    // Debug    
-    // printState(vegasState);
-    // printDistSampling(vegasState);
-/*
-    int cpu;
-    for (cpu = 0; cpu  < nbrOfCPU; cpu++) {
-      printf("     cpu = %3d %.6f %.6f \n", cpu, 
-         vegasCpuState[cpu].CumulatedIntegral, vegasCpuState[cpu].CumulatedSigma);
-    }
-  }
-}
-*/
-
-
 ThreadScheduler::ThreadScheduler():NodeScheduler() {
   
   totalNbrOfQueueAndProcess=0;
@@ -263,59 +189,40 @@ void ThreadScheduler::runNodeScheduler (
 */
     std::cout <<"nbrOfPermut_ 2 : " << integration->nbrOfPermut_<<std::endl;
 	for(int perm=0; perm<integration->nbrOfPermut_; perm++){
-	      
         std::cout << "permut : " << perm + 1 << "/" << integration->nbrOfPermut_ << std::endl;
         integration->initVersors(perm);          
- 	integration->signalME_ = true;
-	integration->m_TauTau_2_ = pow(integration->mTauTau_ttH_[perm],2);
-	integration->lowerValues_[PTauLep_id] = integration->PTauLep_ttH_Lower_[perm];
-	integration->upperValues_[PTauLep_id] = integration->PTauLep_ttH_Upper_[perm];
-	integration->lowerValues_[cosThetaTauLepTauHad_id] = integration->cosTheta_diTau_ttH_Lower_[perm];
-	integration->upperValues_[cosThetaTauLepTauHad_id] = integration->cosTheta_diTau_ttH_Upper_[perm];
-	integration->lowerValues_[EQuark1_id] = integration->EQuark1_Lower_[perm];
-	integration->upperValues_[EQuark1_id] = integration->EQuark1_Upper_[perm];
-	integration->lowerValues_[cosThetaNu_tlep_id] = integration->cosThetaNu_tlep_Boundaries_[0];
-	integration->upperValues_[cosThetaNu_tlep_id] = integration->cosThetaNu_tlep_Boundaries_[1];
-	integration->lowerValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[0];
-	integration->upperValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[1];
+        integration->signalME_ = true;
+        integration->m_TauTau_2_ = pow(integration->mTauTau_ttH_[perm],2);
+        integration->lowerValues_[PTauLep_id] = integration->PTauLep_ttH_Lower_[perm];
+        integration->upperValues_[PTauLep_id] = integration->PTauLep_ttH_Upper_[perm];
+        integration->lowerValues_[cosThetaTauLepTauHad_id] = integration->cosTheta_diTau_ttH_Lower_[perm];
+        integration->upperValues_[cosThetaTauLepTauHad_id] = integration->cosTheta_diTau_ttH_Upper_[perm];
+        integration->lowerValues_[EQuark1_id] = integration->EQuark1_Lower_[perm];
+        integration->upperValues_[EQuark1_id] = integration->EQuark1_Upper_[perm];
+        integration->lowerValues_[cosThetaNu_tlep_id] = integration->cosThetaNu_tlep_Boundaries_[0];
+        integration->upperValues_[cosThetaNu_tlep_id] = integration->cosThetaNu_tlep_Boundaries_[1];
+        integration->lowerValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[0];
+        integration->upperValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[1];
 		
-	integration->integr_EfficiencyttH_ = 0;
-	integration->tot_DrawsttH_ = 0;
+        integration->integr_EfficiencyttH_ = 0;
+        integration->tot_DrawsttH_ = 0;
 		
    // Compute Integral          
    // Copy the initial state to the current RNG State
-    if ( integration->flagSameRNG_ )
-      gsl_rng_memcpy ( rng, saveRNGSeed);
+        if ( integration->flagSameRNG_ )
+            gsl_rng_memcpy ( rng, saveRNGSeed);
 
-	gslIntegrate( &fctDescr_ttH, integration,  integration->nbrOfDim_ttH_, integration->nbrOfPoints_ttH_, rng, state_ttH, true,
+        gslIntegrate( &fctDescr_ttH, integration,  integration->nbrOfDim_ttH_, integration->nbrOfPoints_ttH_, rng, state_ttH, true,
 			      &evList[k].integralttH_[perm], 
 			      &evList[k].stderrttH_[perm],
 			      &evList[k].chiSquarettH_[perm]);     
-/*    gslIntegrate( &gslFctDescr, integration, rng, state, true,
-                &evList[k].integralVBF_,
-                &evList[k].stderrVBF_,   
-                &evList[k].chiSquareVBF_ ); */   
 
                 /// GG XXX queueStatus[qcpu].tickEnd = getticks();
-/*    cerr << "   VBF Integral = "   << evList[k].integralVBF_ 
-         << ", stderr = "     << evList[k].stderrVBF_
-         << ", Chi-square = " << evList[k].chiSquareVBF_
-         << endl;
-    if (integration->verbose_ >= ResultLevel) {
-      *integration->stream_ << "  VBF Integral = "   << evList[k].integralVBF_ 
-         << ", stderr = "     << evList[k].stderrVBF_
-         << ", Chi-square = " << evList[k].chiSquareVBF_
-         << endl;
-      *integration->stream_ << "  DY Integral = "   << evList[k].integralDY_ 
-         << ", stderr = "     << evList[k].stderrDY_
-         << ", Chi-square = " << evList[k].chiSquareDY_
-         << endl;
-    }*/
     
     } // end perm loop 
     
     endedTasks++;
-  }
+  } // end nbrOfEvents loop 
 
 }
 

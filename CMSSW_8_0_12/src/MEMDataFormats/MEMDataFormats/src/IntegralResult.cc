@@ -70,8 +70,7 @@ IntegralResult::~IntegralResult()
    // do anything here that needs to be done at destruction time
    // (e.g. close files, deallocate resources etc.)
 
-  std::cout 
-    << "IntegralResult Destructor " << std::endl;
+  std::cout << "IntegralResult Destructor " << std::endl;
 
 }
 

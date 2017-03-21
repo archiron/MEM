@@ -73,7 +73,7 @@ class MEM_nplet {
         //explicit MEM_nplet(const pat::Electron, const pat::Muon, const pat::Tau); //, const pat::Jet); //
         template <typename T, typename U>
         MEM_nplet(const T& lep1, const U& lep2, const pat::Tau& tau) {
-            std::cout << "fonction template MEM_nplet" << std::endl;
+            //std::cout << "fonction template MEM_nplet" << std::endl;
 
             Lep1_4P.SetPx( lep1.px() );
             Lep1_4P.SetPy( lep1.py() );

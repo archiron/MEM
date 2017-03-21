@@ -92,99 +92,37 @@ MGIntegration::MGIntegration() {
 MGIntegration::MGIntegration( RunConfig runConfig, int processID ) {
 
   setDefault();
-/*  PyObject *pModule = readPyConfig( configname );
-  if ( pModule == 0 ) return;
-  
-  PyObject *pVariable;
-  PyObject *pItem;
-//  int i;
-  string str;
-  
-  // MPI string suffixe
-  string mpiSuff = "";
-  ostringstream oss;
-  if ( processID >= 0) {
-    oss << processID;
-    mpiSuff += "." + oss.str();
-  }
-*/
   // Run ttZ integration
-/*  runttZ_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "runttZ_integration");
-  runttZ_integration_ = (pVariable==Py_True);*/
-  std::cout << "rCg runttZ_integration : " << runConfig.runttZ_integration_ << std::endl;
   runttZ_integration_ = runConfig.runttZ_integration_;
-  std::cout << "MGI runttZ_integration : " << runttZ_integration_ << std::endl;
 
   // Run ttZ_Zll integration
-/*  runttZ_Zll_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "runttZ_Zll_integration");
-  runttZ_Zll_integration_ = (pVariable==Py_True);*/
-  std::cout << "rCg runttZ_Zll_integration : " << runConfig.runttZ_Zll_integration_ << std::endl;
   runttZ_Zll_integration_ = runConfig.runttZ_Zll_integration_;
-  std::cout << "MGI runttZ_Zll_integration : " << runttZ_Zll_integration_ << std::endl;
 
   // Run ttW integration
-/*  runttW_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "runttW_integration");
-  runttW_integration_ = (pVariable==Py_True);*/
-  std::cout << "runttW_integration : " << runConfig.runttW_integration_ << std::endl;
   runttW_integration_ = runConfig.runttW_integration_;
 
   // Run ttjets integration
-/*  runttjets_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "runttjets_integration");
-  runttjets_integration_ = (pVariable==Py_True);*/
-  std::cout << "runttjets_integration : " << runConfig.runttjets_integration_ << std::endl;
   runttjets_integration_ = runConfig.runttjets_integration_;
   
   // Run ttbar_SL integration
-/*  runttbar_SL_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "runttbar_SL_integration");
-  runttbar_SL_integration_ = (pVariable==Py_True);*/
-  std::cout << "runttbar_SL_integration : " << runConfig.runttbar_SL_integration_ << std::endl;
   runttbar_SL_integration_ = runConfig.runttbar_SL_integration_;
   
   // Run ttbar_DL integration
-/*  runttbar_DL_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "runttbar_DL_integration");
-  runttbar_DL_integration_ = (pVariable==Py_True);*/
-  std::cout << "runttbar_DL_integration : " << runConfig.runttbar_DL_integration_ << std::endl;
   runttbar_DL_integration_ = runConfig.runttbar_DL_integration_;
   
   // Run ttbar_DL_fakelep integration
-/*  runttbar_DL_fakelep_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "runttbar_DL_fakelep_integration");
-  runttbar_DL_fakelep_integration_ = (pVariable==Py_True);*/
-  std::cout << "runttbar_DL_fakelep_integration : " << runConfig.runttbar_DL_fakelep_integration_ << std::endl;
   runttbar_DL_fakelep_integration_ = runConfig.runttbar_DL_fakelep_integration_;
   
   // Run missing jet integration
-/*  run_missing_jet_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "run_missing_jet_integration");
-  run_missing_jet_integration_ = (pVariable==Py_True);*/
-  std::cout << "run_missing_jet_integration : " << runConfig.run_missing_jet_integration_ << std::endl;
   run_missing_jet_integration_ = runConfig.run_missing_jet_integration_;
   
   // Force missing jet integration
-/*force_missing_jet_integration_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "force_missing_jet_integration");
-  force_missing_jet_integration_ = (pVariable==Py_True);*/
-  std::cout << "force_missing_jet_integration : " << runConfig.force_missing_jet_integration_ << std::endl;
   force_missing_jet_integration_ = runConfig.force_missing_jet_integration_;
   
   // Force missing jet integration if no MEM sel perm passing cuts without missing jet
-/*  force_missing_jet_integration_ifnoperm_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "force_missing_jet_integration_ifnoperm");
-  force_missing_jet_integration_ifnoperm_ = (pVariable==Py_True);*/
-  std::cout << "force_missing_jet_integration_ifnoperm : " << runConfig.force_missing_jet_integration_ifnoperm_ << std::endl;
   force_missing_jet_integration_ifnoperm_ = runConfig.force_missing_jet_integration_ifnoperm_;
   
   // Random generator
-/*  flagSameRNG_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "flagSameRNG");
-  flagSameRNG_ = (pVariable==Py_True);*/
-  std::cout << "flagSameRNG : " << runConfig.flagSameRNG_ << std::endl;
   flagSameRNG_ = runConfig.flagSameRNG_;
   
   // Computation / run
@@ -194,45 +132,6 @@ MGIntegration::MGIntegration( RunConfig runConfig, int processID ) {
   flagTF_fakelep_ = true; flagTF_fakeleptau_ = true;
   flagWME_ = true; flagJac_ = true;
   //
-/*  pVariable = PyObject_GetAttrString( pModule, "flagTFLepTau");
-  flagTFLepTau_ = (pVariable==Py_True); 
-  pVariable = PyObject_GetAttrString( pModule, "flagTFHadTau");
-  flagTFHadTau_ = (pVariable==Py_True); 
-  pVariable = PyObject_GetAttrString( pModule, "flagTFFake");
-  flagTFFake_   = (pVariable==Py_True); 
-  pVariable = PyObject_GetAttrString( pModule, "flagTFMET");
-  flagTFMET_    = (pVariable==Py_True);  
-  pVariable = PyObject_GetAttrString( pModule, "flagTFJet1");
-  flagTFJet1_   = (pVariable==Py_True);
-  pVariable = PyObject_GetAttrString( pModule, "flagTFJet2");
-  flagTFJet2_   = (pVariable==Py_True); 
-  pVariable = PyObject_GetAttrString( pModule, "flagTFBJet_leptop");
-  flagTFBJet_leptop_   = (pVariable==Py_True);
-  pVariable = PyObject_GetAttrString( pModule, "flagTFBJet_hadtop");
-  flagTFBJet_hadtop_   = (pVariable==Py_True);
-  pVariable = PyObject_GetAttrString( pModule, "flagTF_fakelep");
-  flagTF_fakelep_   = (pVariable==Py_True);
-  pVariable = PyObject_GetAttrString( pModule, "flagTF_fakeleptau");
-  flagTF_fakeleptau_   = (pVariable==Py_True);
-  pVariable = PyObject_GetAttrString( pModule, "flagTFTop");
-  flagTFTop_   = (pVariable==Py_True);
-  pVariable = PyObject_GetAttrString( pModule, "flagJac");
-  flagJac_      = (pVariable==Py_True);  
-  pVariable = PyObject_GetAttrString( pModule, "flagWME");
-  flagWME_      = (pVariable==Py_True);*/
-  std::cout << "flagTFLepTau : " << runConfig.flagTFLepTau_ << std::endl;//
-  std::cout << "flagTFHadTau : " << runConfig.flagTFHadTau_ << std::endl;//
-  std::cout << "flagTFFake : " << runConfig.flagTFFake_ << std::endl;//
-  std::cout << "flagTFMET : " << runConfig.flagTFMET_ << std::endl;//
-  std::cout << "flagTFJet1 : " << runConfig.flagTFJet1_ << std::endl;//
-  std::cout << "flagTFJet2 : " << runConfig.flagTFJet2_ << std::endl;//
-  std::cout << "flagTFBJet_leptop : " << runConfig.flagTFBJet_leptop_ << std::endl;//
-  std::cout << "flagTFBJet_hadtop : " << runConfig.flagTFBJet_hadtop_ << std::endl;//
-  std::cout << "flagTF_fakelep : " << runConfig.flagTF_fakelep_ << std::endl;//
-  std::cout << "flagTF_fakeleptau : " << runConfig.flagTF_fakeleptau_ << std::endl;//
-  std::cout << "flagTFTop : " << runConfig.flagTFTop_ << std::endl;//
-  std::cout << "flagJac : " << runConfig.flagJac_ << std::endl;//
-  std::cout << "flagWME : " << runConfig.flagWME_ << std::endl;//
   flagTFLepTau_ = runConfig.flagTFLepTau_; 
   flagTFHadTau_ = runConfig.flagTFHadTau_; 
   flagTFFake_ = runConfig.flagTFFake_;
@@ -248,591 +147,15 @@ MGIntegration::MGIntegration( RunConfig runConfig, int processID ) {
   flagJac_ = runConfig.flagWME_;
 
   // MET TF
-/*  include_hadrecoil_ = true;
-  pVariable = PyObject_GetAttrString( pModule, "include_hadrecoil");
-  include_hadrecoil_  = PyInt_AsLong( pVariable );*/ 
-  std::cout << "include_hadrecoil : " << runConfig.include_hadrecoil_ << std::endl;
   include_hadrecoil_ = runConfig.include_hadrecoil_;
 
   // ME version
-/*  pVariable = PyObject_GetAttrString( pModule, "MEversion");
-  MEversion_  = PyInt_AsLong( pVariable );*/ 
-  std::cout << "MEversion : " << runConfig.MEversion_ << std::endl;
   MEversion_ = runConfig.MEversion_;
 
   // Verbose mode  
-/*  pVariable = PyObject_GetAttrString( pModule, "verbose");
-  verbose_  = PyInt_AsLong( pVariable ); */
-  std::cout << "verbose : " << runConfig.verbose_ << std::endl;
   verbose_ = runConfig.verbose_;
 
   // Integral value file
-/*
-  valuesOutFileName_ = "";
-  valuesOutRoot_ = 0; 
-  valuesOut_ = 0;
-  pVariable = PyObject_GetAttrString( pModule, "FileOfFunctionValues");
-
-  if (pVariable != NULL ){
-
-    str = PyString_AsString( pVariable );
- 
-    //if (str.length() != 0) {
-    valuesOutFileName_ = str;
-    
-    // Root file
-    str = valuesOutFileName_ + mpiSuff + ".root";
-    valuesOutRoot_ = new FctValuesOutRoot( str.c_str() );
-    
-    // Text File     
-    valuesOut_ = new ofstream;
-    str = valuesOutFileName_ + mpiSuff + ".txt";
-    valuesOut_->open( str.c_str() ); 
-
-    (*valuesOut_) << " "
-       << "      Event     "
-       << "    m TauTau2   "
-       << "  cosTheta miss "
-       << "    phi miss    "     
-       << "     P TauLep   "       
-       << " cosTheta diTau "       
-       << "   P outQuark1  "    
-       << "cosTheta nu tlep"
-       << "   phi nu tlep  "      
-       << "       boost    "
-       << "     rho_Px     "
-       << "     rho_Py     "
-       << "     rho_Pz     "
-       << "     rho_E      "
-       << "    boost_Px    "
-       << "    boost_Py    "
-       << "    boost_Pz    "
-       << "    boost_E     "
-       << "     TF Jet1    " 
-       << "     TF Jet2    " 
-       << " TF BJet hadtop " 
-       << " TF BJet leptop " 
-       << "     TF MET     "
-       << "    TF lepTau   " 
-       << "    TF hadTau   " 
-       << "    TF lepTop   " 
-       << "    TF hadTop   " 
-       << "    Jacobian    "
-       << "   weighted ME  "
-       << "  function Eval " 
-       << "      Error     " 
-       << endl;
-
-  }
-
-
-
-  // Integral value file ttW
-  valuesOutFileName_ttW_ = "";
-  valuesOutRoot_ttW_ = 0; 
-  valuesOut_ttW_ = 0;
-  pVariable = PyObject_GetAttrString( pModule, "FileOfFunctionValues_ttW");
-  
-  if (pVariable != NULL ){
-
-  str = PyString_AsString( pVariable );
- 
-  //if (str.length() != 0) {
-    valuesOutFileName_ttW_ = str;
-    
-    // Root file
-    str = valuesOutFileName_ttW_ + mpiSuff + ".root";
-    valuesOutRoot_ttW_ = new FctValuesOutRoot_ttW( str.c_str() );
-    
-    // Text File     
-    valuesOut_ttW_ = new ofstream;
-    str = valuesOutFileName_ttW_ + mpiSuff + ".txt";
-    valuesOut_ttW_->open( str.c_str() ); 
-
-    (*valuesOut_ttW_) << " "
-       << "      Event     "
-       << "    Lep sign    "
-       << "cosTheta nu tlep"
-       << "   phi nu tlep  "
-       << "cosTheta nu ttau"
-       << "   phi nu ttau  "
-       << "    P Tau Had   "
-       << "  cosThetaNu_W  " 
-       << "     phiNu_W    "
-       << "     boost      "
-       << "     rho_Px     "
-       << "     rho_Py     "
-       << "     rho_Pz     "
-       << "     rho_E      "
-       << "    boost_Px    "
-       << "    boost_Py    "
-       << "    boost_Pz    "
-       << "    boost_E     "
-       << " TF BJet tautop " 
-       << " TF BJet leptop " 
-       << "     TF MET     "
-       << "    TF Had Tau  "
-       << "    TF lepTop   "
-       << "    TF tauTop   "
-       << "    Jacobian    "
-       << "   weighted ME  "
-       << "  function Eval " 
-       << "      Error     " 
-       << endl;
-
-  }
-
-
-
-
-  // Integral value file ttjets
-  valuesOutFileName_ttjets_ = "";
-  valuesOutRoot_ttjets_ = 0; 
-  valuesOut_ttjets_ = 0;
-  pVariable = PyObject_GetAttrString( pModule, "FileOfFunctionValues_ttjets");
- 
-  if (pVariable != NULL ){
-
-    str = PyString_AsString( pVariable );
- 
-    //if (str.length() != 0) {
-    valuesOutFileName_ttjets_ = str;
-    
-    // Root file
-    str = valuesOutFileName_ttjets_ + mpiSuff + ".root";
-    valuesOutRoot_ttjets_ = new FctValuesOutRoot_ttjets( str.c_str() );
-    
-    // Text File     
-    valuesOut_ttjets_ = new ofstream;
-    str = valuesOutFileName_ttjets_ + mpiSuff + ".txt";
-    valuesOut_ttjets_->open( str.c_str() ); 
-
-    (*valuesOut_ttjets_) << " "
-       << "      Event     "
-       << "  cosTheta miss "
-       << "    phi miss    "
-       << "    Lep sign    "
-       << "    P outFake   "       
-       << "   P outQuark1  "    
-       << "cosTheta nu tlep"
-       << "   phi nu tlep  "
-       << "       boost    "
-       << "     rho_Px     "
-       << "     rho_Py     "
-       << "     rho_Pz     "
-       << "     rho_E      "
-       << "    boost_Px    "
-       << "    boost_Py    "
-       << "    boost_Pz    "
-       << "    boost_E     "
-       << "     TF Jet1    " 
-       << "     TF Jet2    " 
-       << " TF BJet hadtop " 
-       << " TF BJet leptop " 
-       << "     TF MET     "
-       << "     TF Fake    "
-       << "    TF lepTop   "
-       << "    TF hadTop   "
-       << "    Jacobian    "
-       << "   weighted ME  "
-       << "  function Eval " 
-       << "      Error     " 
-       << endl;
-
-  }
-
-
-
-
-  // Integral value file ttbar_SL
-  valuesOutFileName_ttbar_SL_ = "";
-  valuesOutRoot_ttbar_SL_ = 0; 
-  valuesOut_ttbar_SL_ = 0;
-  pVariable = PyObject_GetAttrString( pModule, "FileOfFunctionValues_ttbar_SL");
- 
-  if (pVariable != NULL ){
-
-    str = PyString_AsString( pVariable );
- 
-    //if (str.length() != 0) {
-    valuesOutFileName_ttbar_SL_ = str;
-    
-    // Root file
-    str = valuesOutFileName_ttbar_SL_ + mpiSuff + ".root";
-    valuesOutRoot_ttbar_SL_ = new FctValuesOutRoot_ttbar_SL( str.c_str() );
-    
-    // Text File     
-    valuesOut_ttbar_SL_ = new ofstream;
-    str = valuesOutFileName_ttbar_SL_ + mpiSuff + ".txt";
-    valuesOut_ttbar_SL_->open( str.c_str() ); 
-
-    (*valuesOut_ttbar_SL_) << " "
-       << "      Event     "
-       << "  cosTheta miss "
-       << "    phi miss    "
-       << "    Lep sign    "
-       << "   P outQuark1  "    
-       << "cosTheta nu tlep"
-       << "   phi nu tlep  "
-       << "       boost    "
-       << "     rho_Px     "
-       << "     rho_Py     "
-       << "     rho_Pz     "
-       << "     rho_E      "
-       << "    boost_Px    "
-       << "    boost_Py    "
-       << "    boost_Pz    "
-       << "    boost_E     "
-       << "     TF Jet1    " 
-       << "     TF Jet2    " 
-       << " TF BJet hadtop " 
-       << " TF BJet leptop " 
-       << "     TF MET     "
-       << "    TF lepTop   "
-       << "    TF hadTop   "
-       << "    Jacobian    "
-       << "   weighted ME  "
-       << "  function Eval " 
-       << "      Error     " 
-       << endl;
-
-  }
-
-
-  // Integral value file ttbar_DL
-  valuesOutFileName_ttbar_DL_ = "";
-  valuesOutRoot_ttbar_DL_ = 0; 
-  valuesOut_ttbar_DL_ = 0;
-  pVariable = PyObject_GetAttrString( pModule, "FileOfFunctionValues_ttbar_DL");
- 
-  if (pVariable != NULL ){
-
-    str = PyString_AsString( pVariable );
- 
-    //if (str.length() != 0) {
-    valuesOutFileName_ttbar_DL_ = str;
-    
-    // Root file
-    str = valuesOutFileName_ttbar_DL_ + mpiSuff + ".root";
-    valuesOutRoot_ttbar_DL_ = new FctValuesOutRoot_ttbar_DL( str.c_str() );
-    
-    // Text File     
-    valuesOut_ttbar_DL_ = new ofstream;
-    str = valuesOutFileName_ttbar_DL_ + mpiSuff + ".txt";
-    valuesOut_ttbar_DL_->open( str.c_str() ); 
-
-    (*valuesOut_ttbar_DL_) << " "
-       << "      Event     "
-       << "    Lep sign    "
-       << "cosTheta nu tlep"
-       << "   phi nu tlep  "
-       << "cosTheta nu ttau"
-       << "   phi nu ttau  "
-       << "     PTauHad    "
-       << "       boost    "
-       << "     rho_Px     "
-       << "     rho_Py     "
-       << "     rho_Pz     "
-       << "     rho_E      "
-       << "    boost_Px    "
-       << "    boost_Py    "
-       << "    boost_Pz    "
-       << "    boost_E     "
-       << " TF BJet hadtop " 
-       << " TF BJet leptop " 
-       << "     TF MET     "
-       << "    TF hadTau   "
-       << "    TF lepTop   "
-       << "    TF hadTop   "
-       << "    Jacobian    "
-       << "   weighted ME  "
-       << "  function Eval " 
-       << "      Error     " 
-       << endl;
-
-  }
-
-
-  
-  // Jet values file
-  str = "";
-  pVariable = PyObject_GetAttrString( pModule, "FileOfJetValues");
-  if (pVariable != NULL )
-          str = PyString_AsString( pVariable );
-  //
-  if (str.length() != 0) {
-    outgoingJetsOut_ = new ofstream;
-    outgoingJetsOut_->open( str.c_str() );
-    (*outgoingJetsOut_) << " "
-       << "     evJet1_4P.Pt     "
-       << "    evJet1_4P.Eta     "
-       << "    evJet1_4P.Phi     "
-       << "     evJet1_4P.P      "
-       << "     evJet1_4P.E      "      
-       << "     Quark4P_1.Pt     "
-       << "    Quark4P_1.Eta     "
-       << "    Quark4P_1.Phi     "
-       << "     Quark4P_1.P      "
-       << "     Quark4P_1.E      "
-       << "       T_Jet1         "
-       << "     evJet2_4P.Pt     "
-       << "    evJet2_4P.Eta     "
-       << "    evJet2_4P.Phi     "
-       << "     evJet2_4P.P      "
-       << "     evJet2_4P.E      "     
-       << "     Quark4P_2.Pt     "
-       << "    Quark4P_2.Eta     "
-       << "    Quark4P_2.Phi     "
-       << "     Quark4P_2.P      "
-       << "     Quark4P_2.E      "
-       << "       T_Jet2         "
-       << " evBJet_leptop_4P.Pt  "
-       << " evBJet_leptop_4P.Eta "
-       << " evBJet_leptop_4P.Phi "
-       << " evBJet_leptop_4P.P   "
-       << " evBJet_leptop_4P.E   "      
-       << " BQuark_leptop_4P_.Pt "
-       << " BQuark_leptop_4P.Eta "
-       << " BQuark_leptop_4P.Phi "
-       << " BQuark_leptop_4P.P   "
-       << " BQuark_leptop_4P.E   "
-       << "    T_BJet_leptop     "
-       << " evBJet_hadtop_4P.Pt  "
-       << " evBJet_hadtop_4P.Eta "
-       << " evBJet_hadtop_4P.Phi "
-       << " evBJet_hadtop_4P.P   "
-       << " evBJet_hadtop_4P.E   "      
-       << " BQuark_hadtop_4P.Pt  "
-       << " BQuark_hadtop_4P.Eta "
-       << " BQuark_hadtop_4P.Phi "
-       << " BQuark_hadtop_4P.P   "
-       << " BQuark_hadtop_4P.E   "
-       << "    T_BJet_hadtop     "
-       << endl;
-
-  } else {
-    outgoingJetsOut_ = 0;
-  } 
-
-
-
-  str = "";
-  pVariable = PyObject_GetAttrString( pModule, "FileOfJetValues_ttW");
-  if (pVariable != NULL )
-          str = PyString_AsString( pVariable );
-  //
-  if (str.length() != 0) {
-    outgoingJetsOut_ttW_ = new ofstream;
-    outgoingJetsOut_ttW_->open( str.c_str() );
-    (*outgoingJetsOut_ttW_) << " "
-       << "     evJet1_4P.Pt     "
-       << "    evJet1_4P.Eta     "
-       << "    evJet1_4P.Phi     "
-       << "     evJet1_4P.P      "
-       << "     evJet1_4P.E      "      
-       << "     Quark4P_1.Pt     "
-       << "    Quark4P_1.Eta     "
-       << "    Quark4P_1.Phi     "
-       << "     Quark4P_1.P      "
-       << "     Quark4P_1.E      "
-       << "       T_Jet1         "
-       << "     evJet2_4P.Pt     "
-       << "    evJet2_4P.Eta     "
-       << "    evJet2_4P.Phi     "
-       << "     evJet2_4P.P      "
-       << "     evJet2_4P.E      "     
-       << "     Quark4P_2.Pt     "
-       << "    Quark4P_2.Eta     "
-       << "    Quark4P_2.Phi     "
-       << "     Quark4P_2.P      "
-       << "     Quark4P_2.E      "
-       << "       T_Jet2         "
-       << " evBJet_leptop_4P.Pt  "
-       << " evBJet_leptop_4P.Eta "
-       << " evBJet_leptop_4P.Phi "
-       << " evBJet_leptop_4P.P   "
-       << " evBJet_leptop_4P.E   "      
-       << " BQuark_leptop_4P_.Pt "
-       << " BQuark_leptop_4P.Eta "
-       << " BQuark_leptop_4P.Phi "
-       << " BQuark_leptop_4P.P   "
-       << " BQuark_leptop_4P.E   "
-       << "    T_BJet_leptop     "
-       << " evBJet_hadtop_4P.Pt  "
-       << " evBJet_hadtop_4P.Eta "
-       << " evBJet_hadtop_4P.Phi "
-       << " evBJet_hadtop_4P.P   "
-       << " evBJet_hadtop_4P.E   "      
-       << " BQuark_hadtop_4P.Pt  "
-       << " BQuark_hadtop_4P.Eta "
-       << " BQuark_hadtop_4P.Phi "
-       << " BQuark_hadtop_4P.P   "
-       << " BQuark_hadtop_4P.E   "
-       << "    T_BJet_hadtop     "
-       << endl;
-
-  } else {
-    outgoingJetsOut_ttW_ = 0;
-  } 
-  
-
-  str = "";
-  pVariable = PyObject_GetAttrString( pModule, "FileOfJetValues_ttjets");
-  if (pVariable != NULL )
-          str = PyString_AsString( pVariable );
-  //
-  if (str.length() != 0) {
-    outgoingJetsOut_ttjets_ = new ofstream;
-    outgoingJetsOut_ttjets_->open( str.c_str() );
-    (*outgoingJetsOut_ttjets_) << " "
-       << "     evJet1_4P.Pt     "
-       << "    evJet1_4P.Eta     "
-       << "    evJet1_4P.Phi     "
-       << "     evJet1_4P.P      "
-       << "     evJet1_4P.E      "      
-       << "     Quark4P_1.Pt     "
-       << "    Quark4P_1.Eta     "
-       << "    Quark4P_1.Phi     "
-       << "     Quark4P_1.P      "
-       << "     Quark4P_1.E      "
-       << "       T_Jet1         "
-       << "     evJet2_4P.Pt     "
-       << "    evJet2_4P.Eta     "
-       << "    evJet2_4P.Phi     "
-       << "     evJet2_4P.P      "
-       << "     evJet2_4P.E      "     
-       << "     Quark4P_2.Pt     "
-       << "    Quark4P_2.Eta     "
-       << "    Quark4P_2.Phi     "
-       << "     Quark4P_2.P      "
-       << "     Quark4P_2.E      "
-       << "       T_Jet2         "
-       << " evBJet_leptop_4P.Pt  "
-       << " evBJet_leptop_4P.Eta "
-       << " evBJet_leptop_4P.Phi "
-       << " evBJet_leptop_4P.P   "
-       << " evBJet_leptop_4P.E   "      
-       << " BQuark_leptop_4P_.Pt "
-       << " BQuark_leptop_4P.Eta "
-       << " BQuark_leptop_4P.Phi "
-       << " BQuark_leptop_4P.P   "
-       << " BQuark_leptop_4P.E   "
-       << "    T_BJet_leptop     "
-       << " evBJet_hadtop_4P.Pt  "
-       << " evBJet_hadtop_4P.Eta "
-       << " evBJet_hadtop_4P.Phi "
-       << " evBJet_hadtop_4P.P   "
-       << " evBJet_hadtop_4P.E   "      
-       << " BQuark_hadtop_4P.Pt  "
-       << " BQuark_hadtop_4P.Eta "
-       << " BQuark_hadtop_4P.Phi "
-       << " BQuark_hadtop_4P.P   "
-       << " BQuark_hadtop_4P.E   "
-       << "    T_BJet_hadtop     "
-       << endl;
-
-  } else {
-    outgoingJetsOut_ttjets_ = 0;
-  } 
-
-
-  str = "";
-  pVariable = PyObject_GetAttrString( pModule, "FileOfJetValues_ttbar_SL");
-  if (pVariable != NULL )
-          str = PyString_AsString( pVariable );
-  //
-  if (str.length() != 0) {
-    outgoingJetsOut_ttbar_SL_ = new ofstream;
-    outgoingJetsOut_ttbar_SL_->open( str.c_str() );
-    (*outgoingJetsOut_ttbar_SL_) << " "
-       << "     evJet1_4P.Pt     "
-       << "    evJet1_4P.Eta     "
-       << "    evJet1_4P.Phi     "
-       << "     evJet1_4P.P      "
-       << "     evJet1_4P.E      "      
-       << "     Quark4P_1.Pt     "
-       << "    Quark4P_1.Eta     "
-       << "    Quark4P_1.Phi     "
-       << "     Quark4P_1.P      "
-       << "     Quark4P_1.E      "
-       << "       T_Jet1         "
-       << "     evJet2_4P.Pt     "
-       << "    evJet2_4P.Eta     "
-       << "    evJet2_4P.Phi     "
-       << "     evJet2_4P.P      "
-       << "     evJet2_4P.E      "     
-       << "     Quark4P_2.Pt     "
-       << "    Quark4P_2.Eta     "
-       << "    Quark4P_2.Phi     "
-       << "     Quark4P_2.P      "
-       << "     Quark4P_2.E      "
-       << "       T_Jet2         "
-       << " evBJet_leptop_4P.Pt  "
-       << " evBJet_leptop_4P.Eta "
-       << " evBJet_leptop_4P.Phi "
-       << " evBJet_leptop_4P.P   "
-       << " evBJet_leptop_4P.E   "      
-       << " BQuark_leptop_4P_.Pt "
-       << " BQuark_leptop_4P.Eta "
-       << " BQuark_leptop_4P.Phi "
-       << " BQuark_leptop_4P.P   "
-       << " BQuark_leptop_4P.E   "
-       << "    T_BJet_leptop     "
-       << " evBJet_hadtop_4P.Pt  "
-       << " evBJet_hadtop_4P.Eta "
-       << " evBJet_hadtop_4P.Phi "
-       << " evBJet_hadtop_4P.P   "
-       << " evBJet_hadtop_4P.E   "      
-       << " BQuark_hadtop_4P.Pt  "
-       << " BQuark_hadtop_4P.Eta "
-       << " BQuark_hadtop_4P.Phi "
-       << " BQuark_hadtop_4P.P   "
-       << " BQuark_hadtop_4P.E   "
-       << "    T_BJet_hadtop     "
-       << endl;
-
-  } else {
-    outgoingJetsOut_ttbar_SL_ = 0;
-  } 
-
-
-  str = "";
-  pVariable = PyObject_GetAttrString( pModule, "FileOfJetValues_ttbar_DL");
-  if (pVariable != NULL )
-          str = PyString_AsString( pVariable );
-  //
-  if (str.length() != 0) {
-    outgoingJetsOut_ttbar_DL_ = new ofstream;
-    outgoingJetsOut_ttbar_DL_->open( str.c_str() );
-    (*outgoingJetsOut_ttbar_DL_) << " "
-       << " evBJet_leptop_4P.Pt  "
-       << " evBJet_leptop_4P.Eta "
-       << " evBJet_leptop_4P.Phi "
-       << " evBJet_leptop_4P.P   "
-       << " evBJet_leptop_4P.E   "      
-       << " BQuark_leptop_4P_.Pt "
-       << " BQuark_leptop_4P.Eta "
-       << " BQuark_leptop_4P.Phi "
-       << " BQuark_leptop_4P.P   "
-       << " BQuark_leptop_4P.E   "
-       << "    T_BJet_leptop     "
-       << " evBJet_tautop_4P.Pt  "
-       << " evBJet_tautop_4P.Eta "
-       << " evBJet_tautop_4P.Phi "
-       << " evBJet_tautop_4P.P   "
-       << " evBJet_tautop_4P.E   "      
-       << " BQuark_tautop_4P.Pt  "
-       << " BQuark_tautop_4P.Eta "
-       << " BQuark_tautop_4P.Phi "
-       << " BQuark_tautop_4P.P   "
-       << " BQuark_tautop_4P.E   "
-       << "    T_BJet_tautop     "
-       << endl;
-
-  } else {
-    outgoingJetsOut_ttbar_DL_ = 0;
-  } 
-*/
 
   // MC integration
   nbrOfDim_ttH_ = 0;
@@ -849,40 +172,6 @@ MGIntegration::MGIntegration( RunConfig runConfig, int processID ) {
   nbrOfDim_ttbar_SL_miss_ = 0;
   nbrOfDim_ttZ_Zll_miss_ = 0;
 
-
-/*  pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttH");
-  nbrOfDim_ttH_ = PyInt_AsLong( pVariable );   
-  if(runttZ_integration_){
-    pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttZ");
-    nbrOfDim_ttZ_ = PyInt_AsLong( pVariable );
-  }
-  if(runttW_integration_){
-    pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttW");
-    nbrOfDim_ttW_ = PyInt_AsLong( pVariable );
-  }
-  if(runttjets_integration_){
-    pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttjets");
-    nbrOfDim_ttjets_ = PyInt_AsLong( pVariable );
-  }
-  if(runttbar_SL_integration_){
-    pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttbar_SL");
-    nbrOfDim_ttbar_SL_ = PyInt_AsLong( pVariable );
-  }
-  if(runttbar_DL_integration_ || runttbar_DL_fakelep_integration_){
-    pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttbar_DL");
-    nbrOfDim_ttbar_DL_ = PyInt_AsLong( pVariable );
-  }
-  if(runttZ_Zll_integration_){
-    pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttZ_Zll");
-    nbrOfDim_ttZ_Zll_ = PyInt_AsLong( pVariable );
-  }*/
-  std::cout << "nbrOfDimttH : " << runConfig.nbrOfDimttH_ << std::endl;
-  std::cout << "nbrOfDimttZ : " << runConfig.nbrOfDimttZ_ << std::endl;
-  std::cout << "nbrOfDimttW : " << runConfig.nbrOfDimttW_ << std::endl;
-  std::cout << "nbrOfDimttjets : " << runConfig.nbrOfDimttjets_ << std::endl;
-  std::cout << "nbrOfDimttbar_SL : " << runConfig.nbrOfDimttbar_SL_ << std::endl;
-  std::cout << "nbrOfDimttbar_DL : " << runConfig.nbrOfDimttbar_DL_ << std::endl;
-  std::cout << "nbrOfDimttZ_Zll : " << runConfig.nbrOfDimttZ_Zll_ << std::endl;
   nbrOfDim_ttH_ = runConfig.nbrOfDimttH_ ;
   nbrOfDim_ttZ_ = runConfig.nbrOfDimttZ_ ;
   nbrOfDim_ttW_ = runConfig.nbrOfDimttW_ ;
@@ -891,35 +180,7 @@ MGIntegration::MGIntegration( RunConfig runConfig, int processID ) {
   nbrOfDim_ttbar_DL_ = runConfig.nbrOfDimttbar_DL_ ;
   nbrOfDim_ttZ_Zll_ = runConfig.nbrOfDimttZ_Zll_ ;
 
-/*  if(run_missing_jet_integration_){
-
-    pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttH_miss");
-    nbrOfDim_ttH_miss_ = PyInt_AsLong( pVariable );   
-    if(runttZ_integration_){
-      pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttZ_miss");
-      nbrOfDim_ttZ_miss_ = PyInt_AsLong( pVariable );
-    }
-    if(runttjets_integration_){
-      pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttjets_miss");
-      nbrOfDim_ttjets_miss_ = PyInt_AsLong( pVariable );
-    }
-    if(runttbar_SL_integration_){
-      pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttbar_SL_miss");
-      nbrOfDim_ttbar_SL_miss_ = PyInt_AsLong( pVariable );
-    }
-    if(runttZ_Zll_integration_){
-      pVariable = PyObject_GetAttrString( pModule, "nbrOfDimttZ_Zll_miss");
-      nbrOfDim_ttZ_Zll_miss_ = PyInt_AsLong( pVariable );
-    }
-
-  }*/
-  if(runConfig.run_missing_jet_integration_){
-      std::cout << "nbrOfDimttH_miss : " << runConfig.nbrOfDimttH_miss_ << std::endl;
-      std::cout << "nbrOfDimttZ_miss : " << runConfig.nbrOfDimttZ_miss_ << std::endl;
-      std::cout << "nbrOfDimttjets_miss : " << runConfig.nbrOfDimttjets_miss_ << std::endl;
-      std::cout << "nbrOfDimttbar_SL_miss : " << runConfig.nbrOfDimttbar_SL_miss_ << std::endl;
-      std::cout << "nbrOfDimttZ_Zll_miss : " << runConfig.nbrOfDimttZ_Zll_miss_ << std::endl;
-      
+  if(run_missing_jet_integration_){     
       nbrOfDim_ttH_miss_ = runConfig.nbrOfDimttH_miss_ ;
       nbrOfDim_ttZ_miss_ = runConfig.nbrOfDimttZ_miss_ ;
       nbrOfDim_ttjets_miss_ = runConfig.nbrOfDimttjets_miss_ ;
@@ -931,45 +192,6 @@ MGIntegration::MGIntegration( RunConfig runConfig, int processID ) {
   // method :
   // nbrOfDim_ = configAsLong("nbrOfDim" )
   
-/*  pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttH");
-  nbrOfPoints_ttH_ = PyLong_AsLong( pVariable );
-  //
-  if(runttZ_integration_){
-    pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttZ");
-    nbrOfPoints_ttZ_ = PyLong_AsLong( pVariable );
-  }
-  //
-  if(runttW_integration_){
-    pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttW");
-    nbrOfPoints_ttW_ = PyLong_AsLong( pVariable );
-  }
-  //
-  if(runttjets_integration_){
-    pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttjets");
-    nbrOfPoints_ttjets_ = PyLong_AsLong( pVariable );
-  }
-  //
-  if(runttbar_SL_integration_){
-    pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttbar_SL");
-    nbrOfPoints_ttbar_SL_ = PyLong_AsLong( pVariable );
-  }
-  //
-  if(runttbar_DL_integration_ || runttbar_DL_fakelep_integration_){    
-    pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttbar_DL");
-    nbrOfPoints_ttbar_DL_ = PyLong_AsLong( pVariable );
-  }
-  //
-  if(runttZ_Zll_integration_){
-    pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttZ_Zll");
-    nbrOfPoints_ttZ_Zll_ = PyLong_AsLong( pVariable );
-  }*/
-std::cout << "nbrOfPoints_ttH : " << runConfig.nbrOfPoints_ttH_ << std::endl;
-std::cout << "nbrOfPoints_ttZ : " << runConfig.nbrOfPoints_ttZ_ << std::endl;
-std::cout << "nbrOfPoints_ttW : " << runConfig.nbrOfPoints_ttW_ << std::endl;
-std::cout << "nbrOfPoints_ttjets : " << runConfig.nbrOfPoints_ttjets_ << std::endl;
-std::cout << "nbrOfPoints_ttbar_SL : " << runConfig.nbrOfPoints_ttbar_SL_ << std::endl;
-std::cout << "nbrOfPoints_ttbar_DL : " << runConfig.nbrOfPoints_ttbar_DL_ << std::endl;
-std::cout << "nbrOfPoints_ttZ_Zll : " << runConfig.nbrOfPoints_ttZ_Zll_ << std::endl;
 nbrOfPoints_ttH_ = runConfig.nbrOfPoints_ttH_ ;
 nbrOfPoints_ttZ_ = runConfig.nbrOfPoints_ttZ_ ;
 nbrOfPoints_ttW_ = runConfig.nbrOfPoints_ttW_ ;
@@ -978,218 +200,63 @@ nbrOfPoints_ttbar_SL_ = runConfig.nbrOfPoints_ttbar_SL_ ;
 nbrOfPoints_ttbar_DL_ = runConfig.nbrOfPoints_ttbar_DL_;
 nbrOfPoints_ttZ_Zll_ = runConfig.nbrOfPoints_ttZ_Zll_ ;
 
-/*  if(run_missing_jet_integration_){
-
-    pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttH_miss");
-    nbrOfPoints_ttH_miss_ = PyLong_AsLong( pVariable );
-    //
-    if(runttZ_integration_){
-      pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttZ_miss");
-      nbrOfPoints_ttZ_miss_ = PyLong_AsLong( pVariable );
-    }
-    //
-    if(runttjets_integration_){
-      pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttjets_miss");
-      nbrOfPoints_ttjets_miss_ = PyLong_AsLong( pVariable );
-    }
-    //
-    if(runttbar_SL_integration_){
-      pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttbar_SL_miss");
-      nbrOfPoints_ttbar_SL_miss_ = PyLong_AsLong( pVariable );
-    }
-    //
-    if(runttZ_Zll_integration_){
-      pVariable    = PyObject_GetAttrString( pModule, "nbrOfPoints_ttZ_Zll_miss");
-      nbrOfPoints_ttZ_Zll_miss_ = PyLong_AsLong( pVariable );
-    }
-  }*/
-  if(runConfig.run_missing_jet_integration_){
-    std::cout << "nbrOfPoints_ttH_miss : " << runConfig.nbrOfPoints_ttH_miss_ << std::endl;
-    std::cout << "nbrOfPoints_ttZ_miss : " << runConfig.nbrOfPoints_ttZ_miss_ << std::endl;
-    std::cout << "nbrOfPoints_ttjets_miss : " << runConfig.nbrOfPoints_ttjets_miss_ << std::endl;
-    std::cout << "nbrOfPoints_ttbar_SL_miss : " << runConfig.nbrOfPoints_ttbar_SL_miss_ << std::endl;
-    std::cout << "nbrOfPoints_ttZ_Zll_miss : " << runConfig.nbrOfPoints_ttZ_Zll_miss_ << std::endl;
-
+  if(run_missing_jet_integration_){
     nbrOfPoints_ttH_miss_ = runConfig.nbrOfPoints_ttH_miss_ ;
     nbrOfPoints_ttZ_miss_ = runConfig.nbrOfPoints_ttZ_miss_ ;
     nbrOfPoints_ttjets_miss_ = runConfig.nbrOfPoints_ttjets_miss_ ;
     nbrOfPoints_ttbar_SL_miss_ = runConfig.nbrOfPoints_ttbar_SL_miss_ ;
     nbrOfPoints_ttZ_Zll_miss_ = runConfig.nbrOfPoints_ttZ_Zll_miss_ ;
     }
-/*  pVariable    = PyObject_GetAttrString( pModule, "nbrOfPermut_per_jet");
-  nbrOfPermut_per_jet_ = PyLong_AsLong( pVariable );*/
-  //
-  std::cout << "nbrOfPermut_per_jet : " << runConfig.nbrOfPermut_per_jet_ << std::endl;
+
+    //
   nbrOfPermut_per_jet_ = runConfig.nbrOfPermut_per_jet_;
 
-/*  use_pT_TFJet_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "use_pT_TFJet");
-  use_pT_TFJet_ = (pVariable==Py_True);*/
-  std::cout << "use_pT_TFJet : " << runConfig.use_pT_TFJet_ << std::endl;
   use_pT_TFJet_ = runConfig.use_pT_TFJet_;
   
-/*  use_top_compatibility_check_ = false;
-  pVariable = PyObject_GetAttrString( pModule, "use_top_compatibility_check");
-  use_top_compatibility_check_ = (pVariable==Py_True);*/
-  std::cout << "use_top_compatibility_check : " << runConfig.use_top_compatibility_check_ << std::endl; 
   use_top_compatibility_check_ = runConfig.use_top_compatibility_check_;
 
   //Integration boundaries
-/*  pVariable = PyObject_GetAttrString( pModule, "CI_TFJet");
-  CI_TFJet_ = PyFloat_AsDouble( pVariable );*/
-  std::cout << "CI_TFJet : " << runConfig.CI_TFJet_ << std::endl;  
   CI_TFJet_ = runConfig.CI_TFJet_;
 
-/*  pVariable = PyObject_GetAttrString( pModule, "eta_acceptance");
-  if (pVariable != NULL )
-    eta_acceptance_ = PyFloat_AsDouble( pVariable );
-  pVariable = PyObject_GetAttrString( pModule, "jet_radius");
-  if (pVariable != NULL )
-    jet_radius_ = PyFloat_AsDouble( pVariable );
-  pVariable = PyObject_GetAttrString( pModule, "dR_veto_jet_lep");
-  if (pVariable != NULL )
-    dR_veto_jet_lep_ = PyFloat_AsDouble( pVariable );
-  pVariable = PyObject_GetAttrString( pModule, "rel_iso_lep");
-  if (pVariable != NULL )
-    rel_iso_lep_ = PyFloat_AsDouble( pVariable );
-  pVariable = PyObject_GetAttrString( pModule, "pT_cut");
-  if (pVariable != NULL )
-    pT_cut_ = PyFloat_AsDouble( pVariable );*/
-  std::cout << "eta_acceptance : " << runConfig.eta_acceptance_ << std::endl;  
-  std::cout << "jet_radius : " << runConfig.jet_radius_ << std::endl;  
-  std::cout << "dR_veto_jet_lep : " << runConfig.dR_veto_jet_lep_ << std::endl;  
-  std::cout << "rel_iso_lep : " << runConfig.rel_iso_lep_ << std::endl;  
-  std::cout << "pT_cut : " << runConfig.pT_cut_ << std::endl;  
   eta_acceptance_ = runConfig.eta_acceptance_ ;  
   jet_radius_ = runConfig.jet_radius_ ;  
   dR_veto_jet_lep_ = runConfig.dR_veto_jet_lep_ ;  
   rel_iso_lep_ = runConfig.rel_iso_lep_ ;  
   pT_cut_ = runConfig.pT_cut_ ;  
 
-/*  if(run_missing_jet_integration_){
-
-    pVariable    = PyObject_GetAttrString( pModule, "phi_missing_jet");
-    if (pVariable != NULL ){
-      pItem = PyList_GetItem(pVariable, 0);
-      phi_missing_jet_Boundaries_[0] =  PyFloat_AsDouble( pItem );
-      pItem = PyList_GetItem(pVariable, 1);
-      phi_missing_jet_Boundaries_[1] =  PyFloat_AsDouble( pItem );
-    }
-    
-    pVariable    = PyObject_GetAttrString( pModule, "cosTheta_missing_jet");
-    if (pVariable != NULL ){
-      pItem = PyList_GetItem(pVariable, 0);
-      cosTheta_missing_jet_Boundaries_[0] =  PyFloat_AsDouble( pItem );
-      pItem = PyList_GetItem(pVariable, 1);
-      cosTheta_missing_jet_Boundaries_[1] =  PyFloat_AsDouble( pItem );
-    }
-
-  }*/
- if(runConfig.run_missing_jet_integration_){
-    std::cout << "phi_missing_jet_Boundaries_[0] : " << runConfig.phi_missing_jet_Boundaries_[0] << std::endl;  
-    std::cout << "phi_missing_jet_Boundaries_[1] : " << runConfig.phi_missing_jet_Boundaries_[1] << std::endl;  
-    std::cout << "cosTheta_missing_jet_Boundaries_[0] : " << runConfig.cosTheta_missing_jet_Boundaries_[0] << std::endl;  
-    std::cout << "cosTheta_missing_jet_Boundaries_[1] : " << runConfig.cosTheta_missing_jet_Boundaries_[1] << std::endl;  
-    
+ if(run_missing_jet_integration_){
     phi_missing_jet_Boundaries_[0] = runConfig.phi_missing_jet_Boundaries_[0];  
     phi_missing_jet_Boundaries_[1] = runConfig.phi_missing_jet_Boundaries_[1];  
     cosTheta_missing_jet_Boundaries_[0] = runConfig.cosTheta_missing_jet_Boundaries_[0];  
     cosTheta_missing_jet_Boundaries_[1] = runConfig.cosTheta_missing_jet_Boundaries_[1];
  }
 
-/*  pVariable    = PyObject_GetAttrString( pModule, "phiNu_tlep");
-  pItem = PyList_GetItem(pVariable, 0);
-  phiNu_tlep_Boundaries_[0] =  PyFloat_AsDouble( pItem );
-  pItem = PyList_GetItem(pVariable, 1);
-  phiNu_tlep_Boundaries_[1] =  PyFloat_AsDouble( pItem );*/
-  std::cout << "phiNu_tlep_[0] : " << runConfig.phiNu_tlep_Boundaries_[0] << std::endl;  
-  std::cout << "phiNu_tlep_[1] : " << runConfig.phiNu_tlep_Boundaries_[1] << std::endl;  
   phiNu_tlep_Boundaries_[0] = runConfig.phiNu_tlep_Boundaries_[0];
   phiNu_tlep_Boundaries_[1] = runConfig.phiNu_tlep_Boundaries_[1];
 
-/*  pVariable    = PyObject_GetAttrString( pModule, "cosThetaNu_tlep");
-  pItem = PyList_GetItem(pVariable, 0);
-  cosThetaNu_tlep_Boundaries_[0] =  PyFloat_AsDouble( pItem );
-  pItem = PyList_GetItem(pVariable, 1);
-  cosThetaNu_tlep_Boundaries_[1] =  PyFloat_AsDouble( pItem );*/
-  std::cout << "cosThetaNu_tlep_Boundaries_[0] : " << runConfig.cosThetaNu_tlep_Boundaries_[0] << std::endl;  
-  std::cout << "cosThetaNu_tlep_Boundaries_[1] : " << runConfig.cosThetaNu_tlep_Boundaries_[1] << std::endl; 
   cosThetaNu_tlep_Boundaries_[0] = runConfig.cosThetaNu_tlep_Boundaries_[0];
   cosThetaNu_tlep_Boundaries_[1] = runConfig.cosThetaNu_tlep_Boundaries_[1];  
 
-/*  if(runttW_integration_){
-
-    pVariable    = PyObject_GetAttrString( pModule, "cosThetaNu_W_ttW");
-    pItem = PyList_GetItem(pVariable, 0);
-    cosThetaNu_W_ttW_Boundaries_[ 0 ] = PyFloat_AsDouble( pItem );
-    pItem = PyList_GetItem(pVariable, 1);
-    cosThetaNu_W_ttW_Boundaries_[ 1 ] = PyFloat_AsDouble( pItem );  
-
-    pVariable    = PyObject_GetAttrString( pModule, "phiNu_W_ttW");
-    pItem = PyList_GetItem(pVariable, 0);
-    phiNu_W_ttW_Boundaries_[ 0 ] = PyFloat_AsDouble( pItem );
-    pItem = PyList_GetItem(pVariable, 1);
-    phiNu_W_ttW_Boundaries_[ 1 ] = PyFloat_AsDouble( pItem );  
-  
-  }*/
-  if(runConfig.runttW_integration_){
-  std::cout << "cosThetaNu_W_ttW_Boundaries_[0] : " << runConfig.cosThetaNu_W_ttW_Boundaries_[0] << std::endl;  
-  std::cout << "cosThetaNu_W_ttW_Boundaries_[1] : " << runConfig.cosThetaNu_W_ttW_Boundaries_[1] << std::endl;  
-  std::cout << "phiNu_W_ttW_Boundaries_[0] : " << runConfig.phiNu_W_ttW_Boundaries_[0] << std::endl;  
-  std::cout << "phiNu_W_ttW_Boundaries_[1] : " << runConfig.phiNu_W_ttW_Boundaries_[1] << std::endl;  
-  
+  if(runttW_integration_){
   cosThetaNu_W_ttW_Boundaries_[0] = runConfig.cosThetaNu_W_ttW_Boundaries_[0] ;  
   cosThetaNu_W_ttW_Boundaries_[1] = runConfig.cosThetaNu_W_ttW_Boundaries_[1] ;  
   phiNu_W_ttW_Boundaries_[0] = runConfig.phiNu_W_ttW_Boundaries_[0] ;  
   phiNu_W_ttW_Boundaries_[1] = runConfig.phiNu_W_ttW_Boundaries_[1] ;  
   }
 
-
-/*  if(runttbar_DL_integration_ || runttbar_DL_fakelep_integration_ || runttW_integration_){
-    
-    pVariable    = PyObject_GetAttrString( pModule, "phiNu_ttau");
-    pItem = PyList_GetItem(pVariable, 0);
-    phiNu_ttau_ttbar_DL_ttW_Boundaries_[0] =  PyFloat_AsDouble( pItem );
-    pItem = PyList_GetItem(pVariable, 1);
-    phiNu_ttau_ttbar_DL_ttW_Boundaries_[1] =  PyFloat_AsDouble( pItem );
-    
-    pVariable    = PyObject_GetAttrString( pModule, "cosThetaNu_ttau");
-    pItem = PyList_GetItem(pVariable, 0);
-    cosThetaNu_ttau_ttbar_DL_ttW_Boundaries_[0] =  PyFloat_AsDouble( pItem );
-    pItem = PyList_GetItem(pVariable, 1);
-    cosThetaNu_ttau_ttbar_DL_ttW_Boundaries_[1] =  PyFloat_AsDouble( pItem );
- 
-  }*/
-  if(runConfig.runttbar_DL_integration_ || runConfig.runttbar_DL_fakelep_integration_ || runConfig.runttW_integration_){
-  std::cout << "cosThetaNu_W_ttW_Boundaries_[0] : " << runConfig.cosThetaNu_ttau_ttbar_DL_ttW_Boundaries_[0] << std::endl;  
-  std::cout << "cosThetaNu_W_ttW_Boundaries_[1] : " << runConfig.cosThetaNu_ttau_ttbar_DL_ttW_Boundaries_[1] << std::endl;  
-  std::cout << "phiNu_W_ttW_Boundaries_[0] : " << runConfig.phiNu_ttau_ttbar_DL_ttW_Boundaries_[0] << std::endl;  
-  std::cout << "phiNu_W_ttW_Boundaries_[1] : " << runConfig.phiNu_ttau_ttbar_DL_ttW_Boundaries_[1] << std::endl;  
-  
+  if(runttbar_DL_integration_ || runttbar_DL_fakelep_integration_ || runttW_integration_){
   cosThetaNu_W_ttW_Boundaries_[0] = runConfig.cosThetaNu_ttau_ttbar_DL_ttW_Boundaries_[0] ;  
   cosThetaNu_W_ttW_Boundaries_[1] = runConfig.cosThetaNu_ttau_ttbar_DL_ttW_Boundaries_[1] ;  
   phiNu_W_ttW_Boundaries_[0] = runConfig.phiNu_ttau_ttbar_DL_ttW_Boundaries_[0] ;  
   phiNu_W_ttW_Boundaries_[1] = runConfig.phiNu_ttau_ttbar_DL_ttW_Boundaries_[1] ;  
   }
 
-/*  force_nonzero_integral_ = true;
-  pVariable = PyObject_GetAttrString( pModule, "force_nonzero_integral");
-  force_nonzero_integral_ = (pVariable==Py_True);*/
-  std::cout << "force_nonzero_integral_ : " << runConfig.force_nonzero_integral_ << std::endl; 
   force_nonzero_integral_ = runConfig.force_nonzero_integral_;
 
   sqrtS_ = 13000;
-/*  pVariable = PyObject_GetAttrString( pModule, "sqrtS");
-  if (pVariable != NULL )
-    sqrtS_    = PyFloat_AsDouble( pVariable );   */
-  std::cout << "sqrtS_ : " << runConfig.sqrtS_ << std::endl; 
   sqrtS_ = runConfig.sqrtS_ ;
 
   Q_        = Physics::mtop + 0.5*Physics::mHiggs ;
-/*  pVariable = PyObject_GetAttrString( pModule, "Q");
-  if (pVariable != NULL )
-    Q_        = PyFloat_AsDouble( pVariable );   */
-  std::cout << "Q_ : " << runConfig.Q_ << std::endl; 
   Q_ = runConfig.Q_;
  
 //  Py_XDECREF(pVariable);
@@ -1199,23 +266,7 @@ nbrOfPoints_ttZ_Zll_ = runConfig.nbrOfPoints_ttZ_Zll_ ;
 }
 
 MGIntegration::~MGIntegration() {
-/*  
-  if( valuesOut_ ) valuesOut_->close();
-  if( outgoingJetsOut_ ) outgoingJetsOut_->close();
-  if( valuesOutRoot_ ) delete valuesOutRoot_;
-  if( valuesOut_ttW_ ) valuesOut_ttW_->close();
-  if( outgoingJetsOut_ttW_ ) outgoingJetsOut_ttW_->close();
-  if( valuesOutRoot_ttW_ ) delete valuesOutRoot_ttW_;
-  if( valuesOut_ttjets_ ) valuesOut_ttjets_->close();
-  if( outgoingJetsOut_ttjets_ ) outgoingJetsOut_ttjets_->close();
-  if( valuesOutRoot_ttjets_ ) delete valuesOutRoot_ttjets_;
-  if( valuesOut_ttbar_SL_ ) valuesOut_ttbar_SL_->close();
-  if( outgoingJetsOut_ttbar_SL_ ) outgoingJetsOut_ttbar_SL_->close();
-  if( valuesOutRoot_ttbar_SL_ ) delete valuesOutRoot_ttbar_SL_;
-  if( valuesOut_ttbar_DL_ ) valuesOut_ttbar_DL_->close();
-  if( outgoingJetsOut_ttbar_DL_ ) outgoingJetsOut_ttbar_DL_->close();
-  if( valuesOutRoot_ttbar_DL_ ) delete valuesOutRoot_ttbar_DL_;
-*/
+
 }
 
 const char* MGIntegration::getJacobianKindAsString( ) {
@@ -3822,105 +2873,9 @@ double MGIntegration::evalttH(const double* x ) {
   else 
     tot_DrawsttZ_++;
 
-/*
-  if (valuesOut_) {
-    writeFctValues(eventID_, signalME_,
-		   m_TauTau_2_,
-		   cosTheta_missing_jet, phi_missing_jet,
-		   P_TauLep, cosThetaTauLepTauHad, 
-		   EQuark1,
-		   cosThetaNu, phiNu,
-		   totPt,
-		   rho4P, tot4P,
-		   T_Jet1, T_Jet2,
-		   T_BJet_hadtop, T_BJet_leptop,
-		   T_MET, T_lepTau, T_hadTau,
-		   T_lepTop, T_hadTop,
-		   Jac,  wME, Eval, err_str);
-  }
-
-  if (valuesOutRoot_) {
-    valuesOutRoot_->fill(eventID_, signalME_,
-			 m_TauTau_2_,
-			 cosTheta_missing_jet, phi_missing_jet,
-			 P_TauLep, cosThetaTauLepTauHad, 
-			 EQuark1,
-			 cosThetaNu, phiNu,
-			 totPt,
-			 rho4P, tot4P,
-			 T_Jet1, T_Jet2,
-			 T_BJet_hadtop, T_BJet_leptop,
-			 T_MET, T_lepTau, T_hadTau,
-			 T_lepTop, T_hadTop,
-			 Jac,  wME, Eval, err_str);
-    
-  }
-*/
-
 //  std::cout << "Eval : " << Eval << std::endl;
   return Eval;
 }
-
-/*
-
-void MGIntegration::writeFctValues(
-                        int64_t   eventID, bool flagSignal, 
-                        double mTauTau2,
-			double cosTheta_miss_jet, double phi_miss_jet,
-			double PTauLep,  double cosTheta_diTau,
-                        double EQuark1,
-			double cosThetaNu, double phiNu,		
-                        double boost,
-			TLorentzVector rho4P, TLorentzVector boost4P,
-                        double TFJet1, double TFJet2,
-			double TFBjet_hadtop, double TFBjet_leptop,
-			double TFMET, 
-                        double TFLepTau, double TFHadTau,
-                        double TFLepTop, double TFHadTop,
-                        double Jac, double wME, 
-                        double eval,
-                        const char *errStr) const {
-  char signal = (flagSignal) ? 'V' : 'D';
-  if (valuesOut_) {
-    (*valuesOut_) << setiosflags(ios::fixed) << scientific;
-    (*valuesOut_) 
-       << " " << setw(9) << eventID
-       << " " << setw(1) << signal
-       << " " << setw(15) << mTauTau2
-       << " " << setw(15) << cosTheta_miss_jet
-       << " " << setw(15) << phi_miss_jet 
-       << " " << setw(15) << PTauLep
-       << " " << setw(15) << cosTheta_diTau
-       << " " << setw(15) << EQuark1
-       << " " << setw(15) << cosThetaNu
-       << " " << setw(15) << phiNu           
-       << " " << setw(15) << rho4P.Px()
-       << " " << setw(15) << rho4P.Py()
-       << " " << setw(15) << rho4P.Pz()
-       << " " << setw(15) << rho4P.E()
-       << " " << setw(15) << boost4P.Px()
-       << " " << setw(15) << boost4P.Py()
-       << " " << setw(15) << boost4P.Pz()
-       << " " << setw(15) << boost4P.E()
-       << " " << setw(15) << boost
-       << " " << setw(15) << TFJet1
-       << " " << setw(15) << TFJet2
-       << " " << setw(15) << TFBjet_hadtop
-       << " " << setw(15) << TFBjet_leptop
-       << " " << setw(15) << TFMET
-       << " " << setw(15) << TFLepTau
-       << " " << setw(15) << TFHadTau
-       << " " << setw(15) << TFLepTop
-       << " " << setw(15) << TFHadTop
-       << " " << setw(15) << Jac
-       << " " << setw(15) << wME 
-       << " " << setw(15) << eval
-       << " " << setw(15) << errStr
-       << endl;
-  }  
-}
-
-*/
 
 double MGIntegration::evalttW(const double* x ) {
 

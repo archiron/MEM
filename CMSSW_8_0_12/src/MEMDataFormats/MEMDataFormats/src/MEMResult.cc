@@ -62,7 +62,7 @@ MEMResult::MEMResult()
 {
    //now do what ever other initialization is needed
    
-  std::cout << "cout::MEMResult Constructor " << std::endl;
+  //std::cout << "cout::MEMResult Constructor " << std::endl;
   
 }
 
@@ -72,8 +72,7 @@ MEMResult::~MEMResult()
    // do anything here that needs to be done at destruction time
    // (e.g. close files, deallocate resources etc.)
 
-  std::cout 
-    << "MEMResult Destructor. " << std::endl;
+  //std::cout << "MEMResult Destructor. " << std::endl;
 
 }
 
