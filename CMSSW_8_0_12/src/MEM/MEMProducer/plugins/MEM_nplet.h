@@ -92,6 +92,7 @@ class MEM_nplet {
         ~MEM_nplet();
         double mee(const pat::Jet J1, const pat::Jet J2);
         bool diff_mass(const pat::Jet J1, const pat::Jet J2);
+        bool diff_mass_2(double m1, double m2);
         void fill_BJet1_4P(const pat::Jet J1); 
         void fill_BJet2_4P(const pat::Jet J2); 
         void fill_Jet1_4P(const pat::Jet J1); 

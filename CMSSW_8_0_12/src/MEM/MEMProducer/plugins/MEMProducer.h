@@ -144,13 +144,13 @@ class MEMProducer : public edm::stream::EDProducer<> {
             
             int nb_jets = cleanedJets.size();
             std::cout << "\t\t nb de jets cleanedJets in template = " << nb_jets << std::endl;
-            if ( nb_jets > 3 ) {
+            if ( nb_jets >= 3 ) {
                 int i_pos = 0;
                 int i = 0;
                 for ( pat::JetCollection::const_iterator i_jet_em = cleanedJets.begin() + 1; i_jet_em < cleanedJets.end(); ++i_jet_em ) {
                     i += 1;
-                    if ( i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > cleanedJets.begin()->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") ) { 
-                        i_pos = 1;
+                    if ( i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") ) { 
+                        i_pos = i;
                     }
                     std::cout << "\t\t Jet : " << i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << " - " << i_jet_em->pt() << " - " << i_jet_em->p4().px() << std::endl;
                 }
@@ -162,8 +162,8 @@ class MEMProducer : public edm::stream::EDProducer<> {
                 i = 0;
                 for ( pat::JetCollection::const_iterator i_jet_em = cleanedJets.begin() + 1; i_jet_em < cleanedJets.end(); ++i_jet_em ) {
                     i += 1;
-                    if ( i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > cleanedJets.begin()->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") ) { 
-                        i_pos = 1;
+                    if ( i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") ) { 
+                        i_pos = i;
                     }
                     std::cout << "\t\t Jet : " << i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << " - " << i_jet_em->pt() << " - " << i_jet_em->p4().px() << std::endl;
                 }
@@ -175,23 +175,19 @@ class MEMProducer : public edm::stream::EDProducer<> {
                 if ( cleanedJets.size() > 2 ) { // at least 3 Jets remaining
                     //std::cout << "\t\t\t cleanedJets size after BJets filling = " << cleanedJets.size() << std::endl;
                     // looking for the pair
-                    double massJets = nplet_template.mee(*cleanedJets.begin(), *(cleanedJets.begin() + 1));
+                    double massJets_ref = nplet_template.mee(*cleanedJets.begin(), *(cleanedJets.begin() + 1));
                     auto &jet1 = *(cleanedJets.begin());
                     auto &jet2 = *(cleanedJets.begin() + 1);
                     for ( pat::JetCollection::const_iterator j1 = cleanedJets.begin(); j1 != cleanedJets.end() - 1; ++j1) {
                         for ( pat::JetCollection::const_iterator j2 = j1 + 1; j2 < cleanedJets.end() ; ++j2) {
-                            /*std::cout << "\t\t\t Jets_4P (" << (j1-cleanedJets.begin()) << "," << (j2-cleanedJets.begin()) << ")" << std::endl;
-                            std::cout << "\t\t\t Jets_4P pT (" << j1->pt() << "," << j2->pt() << ")" << std::endl;
-                            std::cout << "\t\t\t Jets_4P mass : " << nplet_template.mee(*j1, *j2) << std::endl;
-                            std::cout << "\t\t\t Jets_4P diff mass : " << nplet_template.diff_mass(*j1, *j2) << std::endl;*/
-                            if ( nplet_template.diff_mass(*j1, *j2) ) {
-                                massJets = nplet_template.mee(*j1, *j2);
+                            if ( nplet_template.diff_mass(*j1, *j2) && nplet_template.diff_mass_2(massJets_ref, nplet_template.mee(*j1, *j2))) {
+                                massJets_ref = nplet_template.mee(*j1, *j2);
                                 jet1 = *j1;
                                 jet2 = *j2;
                             }
                         }
                     }
-                    std::cout << "min of Jets mass = " << massJets << std::endl;
+                    std::cout << "min of Jets mass = " << massJets_ref << std::endl;
                     if ( nplet_template.diff_mass(jet1, jet2)) {
                         nplet_template.integration_type = 0;
                     }

@@ -33,6 +33,8 @@ class ThreadScheduler: public NodeScheduler {
 //  gsl_monte_vegas_state *state;
   gsl_monte_function fctDescr_ttH;
   gsl_monte_vegas_state *state_ttH;
+  gsl_monte_function fctDescr_ttH_miss;
+  gsl_monte_vegas_state *state_ttH_miss;
   gsl_rng *rng;
   gsl_rng *saveRNGSeed;
   

@@ -150,6 +150,14 @@ MEM_nplet::diff_mass(const pat::Jet J1, const pat::Jet J2)
     return diff_m;
 }
 
+bool
+MEM_nplet::diff_mass_2(double m1, double m2)
+{
+    bool diff_m = false;
+    diff_m = ( (m1 - m2) > 0. ? true : false);
+    return diff_m;
+}
+
 void
 MEM_nplet::covarMET_display()
 {

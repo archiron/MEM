@@ -73,7 +73,10 @@ void ThreadScheduler::initNodeScheduler( RunConfig cfg, int mpi_rank ) {
   fctDescr_ttH = { 
     &wrapper_evalttH, (size_t) integration->nbrOfDim_ttH_, integration };
   state_ttH = gsl_monte_vegas_alloc ( integration->nbrOfDim_ttH_ ); 
-  std::cout << "retour state_ttH : " << state_ttH << std::endl; // TEMPORAIRE
+  fctDescr_ttH_miss = { 
+    &wrapper_evalttH, (size_t) integration->nbrOfDim_ttH_miss_, integration };
+  state_ttH_miss = gsl_monte_vegas_alloc ( integration->nbrOfDim_ttH_miss_ ); 
+//  std::cout << "retour state_ttH : " << state_ttH << std::endl; // TEMPORAIRE
     
   // LHAPDF
   // Fortran init 
@@ -188,7 +191,10 @@ void ThreadScheduler::runNodeScheduler (
     integration->lowerValues_[cosThetaTauLepTauHad_id] = integration->cosTauLepTauHadBoundariesVBF_[0];
     integration->upperValues_[cosThetaTauLepTauHad_id] = integration->cosTauLepTauHadBoundariesVBF_[1];
 */
-    std::cout <<"nbrOfPermut_ 2 : " << integration->nbrOfPermut_<<std::endl;
+    std::cout << "nbrOfPermut_ 2 : " << integration->nbrOfPermut_ << std::endl;
+
+    if(integration->integration_type_ == 0 && !integration->force_missing_jet_integration_){
+        
 	for(int perm=0; perm<integration->nbrOfPermut_; perm++){
         std::cout << "permut : " << perm + 1 << "/" << integration->nbrOfPermut_ << std::endl;
         integration->initVersors(perm);          
@@ -220,6 +226,7 @@ void ThreadScheduler::runNodeScheduler (
         std::cout << "&evList["<< k << "].integralttH_["  << perm <<"] : " << evList[k].integralttH_[perm]  << std::endl;
         std::cout << "&evList["<< k << "].stderrttH_["    << perm <<"] : " << evList[k].stderrttH_[perm]    << std::endl;
         std::cout << "&evList["<< k << "].chiSquarettH_[" << perm <<"] : " << evList[k].chiSquarettH_[perm] << std::endl;
+        
         gslIntegrate( &fctDescr_ttH, integration,  integration->nbrOfDim_ttH_, integration->nbrOfPoints_ttH_, rng, state_ttH, true,
 			      &evList[k].integralttH_[perm], 
 			      &evList[k].stderrttH_[perm],
@@ -234,9 +241,67 @@ void ThreadScheduler::runNodeScheduler (
         std::cout << "&evList["<< k << "].chiSquarettH_[" << perm <<"] : " << evList[k].chiSquarettH_[perm] << std::endl;
 
         /// GG XXX queueStatus[qcpu].tickEnd = getticks();
-    
+ 	  //evList[k].compTimettH_[perm] = ((float)t)/CLOCKS_PER_SEC;
+	  evList[k].totalDrawsttH_[perm] = integration->tot_DrawsttH_;
+	  evList[k].integrationEfficiencyttH_[perm] = integration->integr_EfficiencyttH_;
+	  //evList[k].weight_ttH_ += evList[k].integralttH_[perm];
+	  //var_ttH += pow(evList[k].stderrttH_[perm],2);
+   
     } // end perm loop 
-    
+    } // end if integration_type_ ..
+    else if((integration->integration_type_ == 1 && integration->run_missing_jet_integration_) || (integration->integration_type_ == 0 && integration->force_missing_jet_integration_)){
+      
+      //Loop over permutations
+      for(int perm=0; perm<integration->nbrOfPermut_; perm++){
+        std::cout << "permut miss : " << perm + 1 << "/" << integration->nbrOfPermut_ << std::endl;
+	
+        integration->initVersors_miss(perm);          
+	
+	//
+	// Integrate ttH
+	//
+
+	if( integration->include_perm_ttH_[perm] ){
+	  
+	  integration->signalME_ = true;
+	  integration->m_TauTau_2_ = pow(integration->mTauTau_ttH_[perm],2);
+	  integration->lowerValues_[PTauLep_id] = integration->PTauLep_ttH_Lower_[perm];
+	  integration->upperValues_[PTauLep_id] = integration->PTauLep_ttH_Upper_[perm];
+	  integration->lowerValues_[cosThetaTauLepTauHad_id] = integration->cosTheta_diTau_ttH_Lower_[perm];
+	  integration->upperValues_[cosThetaTauLepTauHad_id] = integration->cosTheta_diTau_ttH_Upper_[perm];
+	  integration->lowerValues_[EQuark1_id] = integration->EQuark1_Lower_[perm];
+	  integration->upperValues_[EQuark1_id] = integration->EQuark1_Upper_[perm];
+	  integration->lowerValues_[cosThetaNu_tlep_id] = integration->cosThetaNu_tlep_Boundaries_[0];
+	  integration->upperValues_[cosThetaNu_tlep_id] = integration->cosThetaNu_tlep_Boundaries_[1];
+	  integration->lowerValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[0];
+	  integration->upperValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[1];
+	  integration->lowerValues_[cosTheta_missing_jet_id] = integration->cosTheta_missing_jet_Boundaries_[0];
+	  integration->upperValues_[cosTheta_missing_jet_id] = integration->cosTheta_missing_jet_Boundaries_[1];
+	  integration->lowerValues_[phi_missing_jet_id] = integration->phi_missing_jet_Boundaries_[0];
+	  integration->upperValues_[phi_missing_jet_id] = integration->phi_missing_jet_Boundaries_[1];	 	 
+	  
+	  integration->tot_DrawsttH_ = 0;
+	  integration->integr_EfficiencyttH_ = 0;
+	  
+	  // Compute Integral          
+	  if ( integration->flagSameRNG_ )
+	  // Copy the initial state to the current RNG State
+	    gsl_rng_memcpy ( rng, saveRNGSeed );
+	  
+	  gslIntegrate( &fctDescr_ttH_miss, integration, integration->nbrOfDim_ttH_miss_, integration->nbrOfPoints_ttH_miss_, rng, state_ttH_miss, true,
+			&evList[k].integralttH_[perm], 
+			&evList[k].stderrttH_[perm],
+			&evList[k].chiSquarettH_[perm]);     
+	  
+	  //evList[k].compTimettH_[perm] =  ((float)t)/CLOCKS_PER_SEC;
+	  evList[k].totalDrawsttH_[perm] = integration->tot_DrawsttH_;
+	  evList[k].integrationEfficiencyttH_[perm] = integration->integr_EfficiencyttH_;
+	  //evList[k].weight_ttH_ += evList[k].integralttH_[perm]; 
+	  //var_ttH += pow(evList[k].stderrttH_[perm],2);
+
+	}
+    }
+    }
     endedTasks++;
   } // end nbrOfEvents loop 
 
