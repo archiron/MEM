@@ -48,6 +48,9 @@ extern "C" void gslIntegrate(
   bool boundariesOk = true;
   for (i=0; i< nbrOfDim; i++) {
     boundariesOk = boundariesOk && (lower[i] < upper[i]);
+    if ( !boundariesOk) {
+        std::cout << "lower[" << i << "] : " << lower[i] << " - upper[" << i << "] : " << upper[i] << std::endl;
+    }
   }
   
   if ( boundariesOk ) {
@@ -56,7 +59,7 @@ extern "C" void gslIntegrate(
             nbrOfDim, nbrOfPoints, rng, state,
             res, err); 
     *chisq = state->chisq;
-    std::cout << "apres gsl_monte_vegas_integrate, res = " << *res << std::endl; // TEMPORAIRE
+    //std::cout << "apres gsl_monte_vegas_integrate, res = " << *res << std::endl; // TEMPORAIRE
   } else {
     std::cout << "gslIntegrate, boundaries KO" << std::endl;
     *res   = 0.0;
@@ -886,10 +889,10 @@ void MGIntegration::checkCompatibility_TopHad_missing_jet(){
     
     initVersors_miss(perm);
 
-    std::cout << "evJet1_4P_ : " << std::endl; //TEMPORAIRE
+    /*std::cout << "evJet1_4P_ : " << std::endl; //TEMPORAIRE
     evJet1_4P_.Print(); //TEMPORAIRE
     std::cout << "evBJet_hadtop_4P_ : " << std::endl; //TEMPORAIRE
-    evBJet_hadtop_4P_.Print(); //TEMPORAIRE
+    evBJet_hadtop_4P_.Print(); //TEMPORAIRE */
     
     pair<double,double> boundsJet1 = getE_Quark_Boundaries(evJet1_4P_, "light");
 
@@ -902,7 +905,7 @@ void MGIntegration::checkCompatibility_TopHad_missing_jet(){
     BJetLow.SetPtEtaPhiE ( boundsBJet.first/cosh(evBJet_hadtop_4P_.Eta()), evBJet_hadtop_4P_.Eta(), evBJet_hadtop_4P_.Phi(), boundsBJet.first );
 
     double MbjLow=(BJetLow+jet1Low).M();
-    std::cout << "MbjLow : " << MbjLow << std::endl;  //TEMPORAIRE
+    //std::cout << "MbjLow : " << MbjLow << std::endl;  //TEMPORAIRE
     
     if(Mt<MbjLow){
       include_perm_ttH_[perm] = 0;
@@ -1898,6 +1901,8 @@ void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force
 
   setlightJet_4Ps( data.evJet1_4P_ , data.evJet2_4P_);
   setlightJets_list_4P( data.evJets_4P_, data.n_lightJets_ );
+    std::cout << "nbOfPermut_ setlightJets_list_4P : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
+    std::cout << "======" << std::endl; // TEMPORAIRE
 
   setBJet_4Ps( data.evBJet1_4P_ , data.evBJet2_4P_);
 
@@ -1967,11 +1972,12 @@ void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force
       integration_type_ = integration_type_w_miss;
       setEventParameters(data,true);
     }
-
+  
+  
   }
 
 
-    
+  std::cout << "call values initialization" << std::endl;
   // MPI process source
   MPIInfo_  = data.MPIInfo_;
   eventID_ = data.eventID_;
@@ -2044,6 +2050,8 @@ void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force
 
   }
   
+  std::cout << "end of setEventParameters" << std::endl;
+  
 }
 
 void MGIntegration::copyBoundaries( IntegrationMsg_t *data ) {
@@ -2052,7 +2060,7 @@ void MGIntegration::copyBoundaries( IntegrationMsg_t *data ) {
   data->integration_type_ = integration_type_;
   std::cout << "MGIntegration::copyBoundaries" << std::endl;
   std::cout << "event_type_       : " << event_type_ << std::endl;
-  std::cout << "integration_type_ : " << integration_type_ << std::endl;
+  //std::cout << "integration_type_ : " << integration_type_ << std::endl; // TEMPORAIRE
 
   if(integration_type_ == integration_type_wo_miss){
     data->nbrOfDim_ttH_ = nbrOfDim_ttH_;
@@ -2177,7 +2185,7 @@ double MGIntegration::evalttH(const double* x ) {
   const char* error = 0;
   // To remove ???
 //  char str[256];
-    std::cout << "Vegas point :" 
+/*    std::cout << "Vegas point :" 
 	       << " " << " cosTheta_missing_jet = "    << cosTheta_missing_jet
 	       << " " << " phi_missing_jet = "    << phi_missing_jet
 	       << " " << " P_TauLep = "       << P_TauLep
@@ -2185,7 +2193,7 @@ double MGIntegration::evalttH(const double* x ) {
 	       << " " << " EQuark1 = "    << EQuark1
 	       << " " << " cosThetaNu = "    << cosThetaNu
 	       << " " << " phiNu = "    << phiNu
-	       << " " << endl;
+	       << " " << endl;*/
 
   if (verbose_ >= IntegrandLevel){
     (*stream_) << "Vegas point :" 
@@ -2368,7 +2376,7 @@ double MGIntegration::evalttH(const double* x ) {
     double pt_q1=EQuark1/TMath::CosH(evJet1_4P_.Eta());
     q1_reco_4P.SetPtEtaPhiE(pt_q1,evJet1_4P_.Eta(),evJet1_4P_.Phi(),EQuark1);
     
-    std::cout << "integration_type_ : " << integration_type_ << std::endl;// TEMPORAIRE
+//    std::cout << "integration_type_ : " << integration_type_ << std::endl;// TEMPORAIRE
     
     if(integration_type_ == integration_type_wo_miss){
       double CosTheta_qq=TMath::Cos(evJet1_4P_.Angle(evJet2_4P_.Vect()));
@@ -2386,12 +2394,12 @@ double MGIntegration::evalttH(const double* x ) {
     }
 
     W_had_4P=q1_reco_4P+q2_reco_4P;
-    std::cout << "q1_reco_4P : "  << std::endl; //TEMPORAIRE
+    /*std::cout << "q1_reco_4P : "  ; //TEMPORAIRE
     q1_reco_4P.Print();
-    std::cout << "q2_reco_4P : "  << std::endl; //TEMPORAIRE
+    std::cout << "q2_reco_4P : "  ; //TEMPORAIRE
     q2_reco_4P.Print();
-    std::cout << "W_had_4P : "  << std::endl; //TEMPORAIRE
-    W_had_4P.Print();
+    std::cout << "W_had_4P : "  ; //TEMPORAIRE
+    W_had_4P.Print();*/
     
     double Eb_had=getEb(W_had_4P, evBJet_hadtop_4P_);
     double b_had_Pmag=TMath::Sqrt(Eb_had*Eb_had - mb*mb);
@@ -2403,10 +2411,10 @@ double MGIntegration::evalttH(const double* x ) {
     else{
       error = "hadtop";
     }
-    std::cout << "pT_bh : " << pT_bh << std::endl; //TEMPORAIRE
+    /*std::cout << "pT_bh : " << pT_bh << std::endl; //TEMPORAIRE
     std::cout << "evBJet_hadtop_4P_.Eta() : " << evBJet_hadtop_4P_.Eta() << std::endl; //TEMPORAIRE
     std::cout << "evBJet_hadtop_4P_.Phi() : " << evBJet_hadtop_4P_.Phi() << std::endl; //TEMPORAIRE
-    std::cout << "Eb_had : " << Eb_had << std::endl; //TEMPORAIRE
+    std::cout << "Eb_had : " << Eb_had << std::endl; //TEMPORAIRE */
     
     if (verbose_ >= IntegrandLevel){
       (*stream_) << "Build hadronic top :" << endl;
@@ -2534,10 +2542,10 @@ double MGIntegration::evalttH(const double* x ) {
                 T_BJet_hadtop = getJetTF( b_had_reco_4P, evBJet_hadtop_4P_,"b");
         }
     } 
-    std::cout << "b_had_reco_4P : " << std::endl; //TEMPORAIRE
+    /*std::cout << "b_had_reco_4P : " << std::endl; //TEMPORAIRE
     b_had_reco_4P.Print();                      //TEMPORAIRE
     std::cout << "evBJet_hadtop_4P_ : " << std::endl;  //TEMPORAIRE
-    evBJet_hadtop_4P_.Print();                        //TEMPORAIRE
+    evBJet_hadtop_4P_.Print();  */                      //TEMPORAIRE
 
 
     // Log
@@ -2620,10 +2628,10 @@ double MGIntegration::evalttH(const double* x ) {
 
       }
 
-      std::cout << "evV_[0] : " << evV_[0] << std::endl; //TEMPORAIRE
-      std::cout << "evV_[1] : " << evV_[1] << std::endl; //TEMPORAIRE
-      std::cout << "evV_[2] : " << evV_[2] << std::endl; //TEMPORAIRE
-      std::cout << "evV_[3] : " << evV_[3] << std::endl; //TEMPORAIRE
+      /*std::cout << "evV_[0] : " << evV_[0] << " - "; //TEMPORAIRE
+      std::cout << "evV_[1] : " << evV_[1] << " - "; //TEMPORAIRE
+      std::cout << "evV_[2] : " << evV_[2] << " - "; //TEMPORAIRE
+      std::cout << "evV_[3] : " << evV_[3] << std::endl; //TEMPORAIRE */
       
       TVector3 Rec = RhoT-PT;
       // Order : (0,0), (0,1), (1,0), (1,1) ???
@@ -2632,14 +2640,14 @@ double MGIntegration::evalttH(const double* x ) {
                + Rec.Y()*(evV_[2]*Rec.X() + evV_[3]*Rec.Y());
       T_MET =  TMath::Exp( -0.5*f ) * sqrtDetV / ( 2 * TMath::Pi() ) ;
     
-    std::cout << "Rec : " ;  //TEMPORAIRE
+    /*std::cout << "Rec : " ;  //TEMPORAIRE
     Rec.Print();                        //TEMPORAIRE
     std::cout << "RhoT : " ;  //TEMPORAIRE
     RhoT.Print();                        //TEMPORAIRE
     std::cout << "PT : " ;  //TEMPORAIRE
     PT.Print();                        //TEMPORAIRE
     std::cout << "f : " << f ;  //TEMPORAIRE
-    std::cout << " - T_MET : " << T_MET << std::endl;  //TEMPORAIRE
+    std::cout << " - T_MET : " << T_MET << std::endl;  //TEMPORAIRE */
     
 
     }
@@ -2862,7 +2870,7 @@ double MGIntegration::evalttH(const double* x ) {
   //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     double Eval =  T_Jet1 * T_Jet2 * T_BJet_hadtop * T_BJet_leptop * T_MET * T_lepTau * T_hadTau * T_lepTop* T_hadTop * Jac * wME;
-        std::cout << "Integrand value :" << std::endl;
+        /*std::cout << "Integrand value :" << std::endl;
         std::cout<< " T_Jet1 = " << T_Jet1 ;
         std::cout<< " T_Jet2 = " << T_Jet2 ;
         std::cout<< " T_BJet_hadtop = " << T_BJet_hadtop ;
@@ -2874,7 +2882,7 @@ double MGIntegration::evalttH(const double* x ) {
         std::cout<< " T_hadTop = " << T_hadTop ;
         std::cout<< " Jac = " << Jac ;
         std::cout<< " wME = " << wME  ;
-        std::cout<< " Eval = " << Eval << std::endl;/**/
+        std::cout<< " Eval = " << Eval << std::endl;*/
     if (error) {
         Eval = 0;
     }

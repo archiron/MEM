@@ -545,51 +545,67 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* muon-muon case */
         if ( pairs_mm ) { // 
-            std::cout << "you will have " << runConfig.nbOfMuons_ * (runConfig.nbOfMuons_ - 1) / 2 << " for muon-muon pairs" << std::endl;
+            std::cout << "you will have " << runConfig.nbOfMuons_ * (runConfig.nbOfMuons_ - 1) / 2 << " possibilities for muon-muon pairs" << std::endl;
             for ( pat::MuonCollection::const_iterator iter_3 = result_muon->begin(); iter_3 < result_muon->end() - 1 ; ++iter_3) {
                 for ( pat::MuonCollection::const_iterator iter_4 = iter_3 + 1; iter_4 != result_muon->end(); ++iter_4) {
-                    std::cout << "(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ")" << std::endl;
+                    //std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ")" << std::endl;
+                    int i_tau = 0;
                     for (const pat::Tau &tau2 : *result_tau ) {
+                        std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ":" << i_tau << ")" << std::endl;
                         runConfig.nbOfTriplets_ += 1;
                         MEM_nplet nplet(*iter_3, *iter_4, tau2); //
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, jets );
-                        JetFilling<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, cleanedJets, nplet, "mm" );
-                        runConfig.nbOfNplets_ += 1;
-                        //std::cout << "classical : nbOfNplets in mm : " << runConfig.nbOfNplets_ << std::endl;
-                        std::cout << "integration_type : " << nplet.integration_type   << std::endl;
-                        std::cout << "lep1 type        : " << nplet.lep1_type << std::endl;
-                        std::cout << "lep2 type        : " << nplet.lep2_type << std::endl;
-                        std::cout << "tau decayMode    : " << nplet.decayMode << std::endl;
+                        if ( cleanedJets.size() > 0) {
+                            JetFilling<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, cleanedJets, nplet, "mm" );
+                            runConfig.nbOfNplets_ += 1;
+                            //std::cout << "classical : nbOfNplets in mm : " << runConfig.nbOfNplets_ << std::endl;
+                            //std::cout << "integration_type : " << nplet.integration_type   << std::endl;
+                            std::cout << "lep1 type        : " << nplet.lep1_type << std::endl;
+                            std::cout << "lep2 type        : " << nplet.lep2_type << std::endl;
+                            std::cout << "tau decayMode    : " << nplet.decayMode << std::endl;
                         
-                        /* Mets */
-                        if ( mets->size() > 1 ) {
-                            std::cout << "!!!!! WARNING Met size : " << mets->size() << std::endl;
-                        }
-                        else {
-                            std::cout << "Met size : " << mets->size() << std::endl ;
-                        }
+                            /* Mets */
+                            if ( mets->size() > 1 ) {
+                                std::cout << "!!!!! WARNING Met size : " << mets->size() << std::endl;
+                            }
+                            else {
+                                std::cout << "Met size : " << mets->size() << std::endl ;
+                            }
                     
-                        const pat::MET& srcMET = (*mets)[0];
-                        Handle<math::Error<2>::type> covHandle;
-                        iEvent.getByToken (theCovTag, covHandle);/**/
-                        nplet.recoMETCov[0] = (*covHandle)(0,0);
+                            const pat::MET& srcMET = (*mets)[0];
+                            Handle<math::Error<2>::type> covHandle;
+                            iEvent.getByToken (theCovTag, covHandle);/**/
+                            /*nplet.recoMETCov[0] = (*covHandle)(0,0);
                         nplet.recoMETCov[1] = (*covHandle)(1,0);
                         nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
-                        nplet.recoMETCov[3] = (*covHandle)(1,1);/**/
-                        nplet.covarMET_display(); // to be removed
+                        nplet.recoMETCov[3] = (*covHandle)(1,1);
+                        nplet.covarMET_display(); // to be removed */
                     
-                        std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
-                        std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;/**/
-                        nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
-                        std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
-                        // Appel MEM 
-                        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
-
-                        //std::cout << "one process, doing job" << std::endl;
-                        oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
-                                    
-                        //std::cout << "one process, ending job" << std::endl;
-                        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                            // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
+                            //double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
+                            double det = (*covHandle)(0,0) * (*covHandle)(1,1) - (*covHandle)(1,0) * (*covHandle)(1,0); // cf EventReader_impl_PyRun2.cpp L218-...
+                            //std::cout << "det = " << det << std::endl;
+                                //
+                            nplet.recoMETCov[0] =  ((*covHandle)(1,1) / det );
+                            nplet.recoMETCov[1] = -((*covHandle)(0,1) / det );
+                            nplet.recoMETCov[2] = -((*covHandle)(1,0) / det );
+                            nplet.recoMETCov[3] =  ((*covHandle)(0,0) / det ); /**/
+                            //nplet.covarMET_display(); // to be removed
+                    
+                            /*std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
+                            std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;*/
+                            nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
+                            //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
+                        
+                            // Appel MEM 
+                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                            oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
+                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                        } // end test cleanJets size
+                        else {
+                            std::cout << "\t\t cleanedJets size = 0, no Jet for computation, must return nb_jets = 0" << std::endl;
+                        }
+                        i_tau +=1;        
                     }
                 }
             }
@@ -598,51 +614,68 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* electron-electron case */
         if ( pairs_ee ) { // 
-            std::cout << "you will have " << runConfig.nbOfElectrons_ * (runConfig.nbOfElectrons_ - 1) / 2 << " for electron-electron pairs" << std::endl;
+            std::cout << "you will have " << runConfig.nbOfElectrons_ * (runConfig.nbOfElectrons_ - 1) / 2 << " possibilities for electron-electron pairs" << std::endl;
             for ( pat::ElectronCollection::const_iterator iter_1 = result_elec->begin(); iter_1 < result_elec->end() - 1 ; ++iter_1) {
                 for ( pat::ElectronCollection::const_iterator iter_2 = iter_1 + 1; iter_2 != result_elec->end(); ++iter_2) {
-                    std::cout << "(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ")" << std::endl;
+                    //std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ")" << std::endl;
+                    int i_tau = 0;
                     for (const pat::Tau &tau2 : *result_tau ) {
+                        std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ":" << i_tau << ")" << std::endl;
                         runConfig.nbOfTriplets_ += 1;
                         MEM_nplet nplet(*iter_1, *iter_2, tau2); //
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Electron, pat::Electron>( *iter_1, *iter_2, tau2, jets );
-                        JetFilling<pat::Electron, pat::Electron>( *iter_1, *iter_2, tau2, cleanedJets, nplet, "ee" );
-                        runConfig.nbOfNplets_ += 1;
-                        std::cout << "classical : nbOfNplets in ee : " << runConfig.nbOfNplets_ << std::endl;
-                        std::cout << "integration_type : " << nplet.integration_type   << std::endl;
-                        std::cout << "lep1 type        : " << nplet.lep1_type << std::endl;
-                        std::cout << "lep2 type        : " << nplet.lep2_type << std::endl;
-                        std::cout << "tau decayMode    : " << nplet.decayMode << std::endl;
+                        std::cout << "cleanedJets size : " << cleanedJets.size() << std::endl;
+                        if ( cleanedJets.size() > 0) {
+                            JetFilling<pat::Electron, pat::Electron>( *iter_1, *iter_2, tau2, cleanedJets, nplet, "ee" );
+                            runConfig.nbOfNplets_ += 1;
+                            //std::cout << "classical : nbOfNplets in ee : " << runConfig.nbOfNplets_ << std::endl;
+                            std::cout << "integration_type : " << nplet.integration_type   << std::endl;
+                            std::cout << "lep1 type        : " << nplet.lep1_type << std::endl;
+                            std::cout << "lep2 type        : " << nplet.lep2_type << std::endl;
+                            std::cout << "tau decayMode    : " << nplet.decayMode << std::endl;
                         
-                        /* Mets */
-                        if ( mets->size() > 1 ) {
+                            /* Mets */
+                            /*if ( mets->size() > 1 ) {
                             std::cout << "!!!!! WARNING Met size : " << mets->size() << std::endl;
                         }
                         else {
                             std::cout << "Met size : " << mets->size() << std::endl ;
-                        }
+                        }*/
                     
-                        const pat::MET& srcMET = (*mets)[0];
-                        Handle<math::Error<2>::type> covHandle;
-                        iEvent.getByToken (theCovTag, covHandle);/**/
-                        nplet.recoMETCov[0] = (*covHandle)(0,0);
+                            const pat::MET& srcMET = (*mets)[0];
+                            Handle<math::Error<2>::type> covHandle;
+                            iEvent.getByToken (theCovTag, covHandle);/**/
+                            /*nplet.recoMETCov[0] = (*covHandle)(0,0);
                         nplet.recoMETCov[1] = (*covHandle)(1,0);
                         nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
-                        nplet.recoMETCov[3] = (*covHandle)(1,1);/**/
-                        nplet.covarMET_display(); // to be removed
+                        nplet.recoMETCov[3] = (*covHandle)(1,1);
+                        nplet.covarMET_display(); // to be removed */
                     
-                        std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
-                        std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;/**/
-                        nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
-                        std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
-                        // Appel MEM 
-                        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
-
-                        //std::cout << "one process, doing job" << std::endl;
-                        oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
-                                    
-                        //std::cout << "one process, ending job" << std::endl;
-                        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                            // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
+                            //double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
+                            double det = (*covHandle)(0,0) * (*covHandle)(1,1) - (*covHandle)(1,0) * (*covHandle)(1,0); // cf EventReader_impl_PyRun2.cpp L218-...
+                            //std::cout << "det = " << det << std::endl;
+                                //
+                            nplet.recoMETCov[0] =  ((*covHandle)(1,1) / det );
+                            nplet.recoMETCov[1] = -((*covHandle)(0,1) / det );
+                            nplet.recoMETCov[2] = -((*covHandle)(1,0) / det );
+                            nplet.recoMETCov[3] =  ((*covHandle)(0,0) / det ); /**/
+                            //nplet.covarMET_display(); // to be removed
+                    
+                            /*std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
+                        std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;*/
+                            nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
+                            //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
+                        
+                            // Appel MEM 
+                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                            oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput 
+                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                        } // end test cleanJets size
+                        else {
+                            std::cout << "\t\t cleanedJets size = 0, no Jet for computation, must return nb_jets = 0" << std::endl;
+                        }
+                        i_tau +=1;        
                     }
                 }
             }
@@ -651,11 +684,13 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* electron-muon case */
         if ( pairs_em ) { // 
-            std::cout << "you will have " << runConfig.nbOfElectrons_ * runConfig.nbOfMuons_ << " for electron-muon pairs" << std::endl;
+            std::cout << "you will have " << runConfig.nbOfElectrons_ * runConfig.nbOfMuons_ << " possibilities for electron-muon pairs" << std::endl;
             for ( pat::ElectronCollection::const_iterator iter_5 = result_elec->begin(); iter_5 != result_elec->end(); ++iter_5) {
                 for ( pat::MuonCollection::const_iterator iter_6 = result_muon->begin(); iter_6 < result_muon->end() ; ++iter_6) {
-                    std::cout << "(" << (iter_5-result_elec->begin())  << "," << (iter_6-result_muon->begin()) << ")" << std::endl;
+                    //std::cout << "\n\t(" << (iter_5-result_elec->begin())  << "," << (iter_6-result_muon->begin()) << ")" << std::endl;
+                    int i_tau = 0;
                     for (const pat::Tau &tau2 : *result_tau ) {
+                        std::cout << "\n\t(" << (iter_5-result_elec->begin())  << "," << (iter_6-result_muon->begin()) << ":" << i_tau << ")" << std::endl;
                         runConfig.nbOfTriplets_ += 1;
                                //  Mise en forme des valeurs pour calculer avec MEM 
                         MEM_nplet nplet(*iter_5, *iter_6, tau2); // 
@@ -665,77 +700,78 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                         std::cout << "Had1_4P (" << tau2.px()    << ", " << tau2.py()    << ", " << tau2.pz()    << ", " << tau2.energy() << ")" <<std::endl;
                         std::cout << "VVVVVVVVVVVVVVV - AVANT - VVVVVVVVVVVVVVV" << std::endl;*/
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Electron, pat::Muon>( *iter_5, *iter_6, tau2, jets );
-                        JetFilling<pat::Electron, pat::Muon>( *iter_5, *iter_6, tau2, cleanedJets, nplet, "em" );
-                        std::cout << "Jets_4P size = " << nplet.Jets_4P.size() << std::endl;
-/*                        std::cout << "VVVVVVVVVVVVVVV - APRES - VVVVVVVVVVVVVVV" << std::endl;
+                        if ( cleanedJets.size() > 0) {
+                            JetFilling<pat::Electron, pat::Muon>( *iter_5, *iter_6, tau2, cleanedJets, nplet, "em" );
+                            std::cout << "Jets_4P size = " << nplet.Jets_4P.size() << std::endl;
+/*                          std::cout << "VVVVVVVVVVVVVVV - APRES - VVVVVVVVVVVVVVV" << std::endl;
                         std::cout << "Lep1_4P (" << nplet.Lep1_4P.Px() << ", " << nplet.Lep1_4P.Py() << ", " << nplet.Lep1_4P.Pz() << ", " << nplet.Lep1_4P.E() << ") " << std::endl;
                         std::cout << "Lep1_4P (" << nplet.Lep2_4P.Px() << ", " << nplet.Lep2_4P.Py() << ", " << nplet.Lep2_4P.Pz() << ", " << nplet.Lep2_4P.E() << ") " << std::endl;
                         std::cout << "Had1_4P (" << nplet.HadSys_4P.Px() << ", " << nplet.HadSys_4P.Py() << ", " << nplet.HadSys_4P.Pz() << ", " << nplet.HadSys_4P.E() << ")" <<std::endl;
                         std::cout << "VVVVVVVVVVVVVVV - APRES - VVVVVVVVVVVVVVV" << std::endl;*/
-                        runConfig.nbOfNplets_ += 1;
-                        std::cout << "classical : nbOfNplets in em : " << runConfig.nbOfNplets_ << std::endl;
-                        std::cout << "integration_type : " << nplet.integration_type   << std::endl;
-                        std::cout << "lep1 type        : " << nplet.lep1_type << std::endl;
-                        std::cout << "lep2 type        : " << nplet.lep2_type << std::endl;
-                        std::cout << "tau decayMode    : " << nplet.decayMode << std::endl;
+                            runConfig.nbOfNplets_ += 1;
+                            //std::cout << "classical : nbOfNplets in em : " << runConfig.nbOfNplets_ << std::endl;
+                            std::cout << "integration_type : " << nplet.integration_type   << std::endl;
+                            std::cout << "lep1 type        : " << nplet.lep1_type << std::endl;
+                            std::cout << "lep2 type        : " << nplet.lep2_type << std::endl;
+                            std::cout << "tau decayMode    : " << nplet.decayMode << std::endl;
                         
-                        /* Mets */
-                        if ( mets->size() > 1 ) {
-                            std::cout << "!!!!! WARNING Met size : " << mets->size() << std::endl;
-                        }
-                        else {
-                            std::cout << "Met size : " << mets->size() << std::endl ;
-                        }
+                            /* Mets */
+                            if ( mets->size() > 1 ) {
+                                std::cout << "!!!!! WARNING Met size : " << mets->size() << std::endl;
+                            }
+                            else {
+                                std::cout << "Met size : " << mets->size() << std::endl ;
+                            }
                                 
                                 // initialize MET 
-                        /*np.EventID = iEvent.id().event();
+                            /*np.EventID = iEvent.id().event();
                         np.LumiID = iEvent.id().luminosityBlock();
                         np.RunID = iEvent.id().run();
 
                         TMatrixD covMET(2, 2); // ne peut pas etre initialise dans le .h
                         Handle<double> significanceHandle;
                         iEvent.getByToken (theSigTag, significanceHandle);*/
-                        const pat::MET& srcMET = (*mets)[0];
-                        Handle<math::Error<2>::type> covHandle;
-                        iEvent.getByToken (theCovTag, covHandle);/**/
-                        nplet.recoMETCov[0] = (*covHandle)(0,0);
+                            const pat::MET& srcMET = (*mets)[0];
+                            Handle<math::Error<2>::type> covHandle;
+                            iEvent.getByToken (theCovTag, covHandle);/**/
+                            /*nplet.recoMETCov[0] = (*covHandle)(0,0);
                         nplet.recoMETCov[1] = (*covHandle)(1,0);
                         nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
-                        nplet.recoMETCov[3] = (*covHandle)(1,1);/**/
-                        nplet.covarMET_display(); // to be removed
+                        nplet.recoMETCov[3] = (*covHandle)(1,1);
+                        nplet.covarMET_display(); // to be removed */
                         
-                        // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
-                        //double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
-                        double det = (*covHandle)(0,0) * (*covHandle)(1,1) - (*covHandle)(0,1) * (*covHandle)(1,0); // cf EventReader_impl_PyRun2.cpp L218-...
-                        std::cout << "det = " << det << std::endl;
+                            // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
+                            //double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
+                            double det = (*covHandle)(0,0) * (*covHandle)(1,1) - (*covHandle)(1,0) * (*covHandle)(1,0); // cf EventReader_impl_PyRun2.cpp L218-...
+                            //std::cout << "det = " << det << std::endl; // to be removed
                                 //
-                        nplet.recoMETCov[0] = ((*covHandle)(1,1) / det );
-                        nplet.recoMETCov[1] = -((*covHandle)(0,1) / det );
-                        nplet.recoMETCov[2] = -((*covHandle)(1,0) / det );
-                        nplet.recoMETCov[3] =  ((*covHandle)(0,0) / det ); /**/
+                            nplet.recoMETCov[0] =  ((*covHandle)(1,1) / det );
+                            nplet.recoMETCov[1] = -((*covHandle)(0,1) / det );
+                            nplet.recoMETCov[2] = -((*covHandle)(1,0) / det );
+                            nplet.recoMETCov[3] =  ((*covHandle)(0,0) / det ); /**/
                                     
-/*                    std::cout << "Met cov matrix : " << srcMET.getSignificanceMatrix() << std::endl;
-                    std::cout << "Met cov matrix : " << (*covHandle) << std::endl;
-                    std::cout << "Met cov matrix : " << nplet.recoMETCov[0] << std::endl;*/
-                        nplet.covarMET_display(); // to be removed
+/*                           std::cout << "Met cov matrix : " << srcMET.getSignificanceMatrix() << std::endl;
+                        std::cout << "Met cov matrix : " << (*covHandle) << std::endl;
+                        std::cout << "Met cov matrix : " << nplet.recoMETCov[0] << std::endl;*/
+                            //nplet.covarMET_display(); // to be removed
                     
-                        std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
-                        std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;/**/
-                        nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
-                        std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
+                            /*std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
+                        std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;*/
+                            nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
+                            //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
-                        // Appel MEM 
-                        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
-
-                        //std::cout << "one process, doing job" << std::endl;
-                        oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
-                                    
-                        //std::cout << "one process, ending job" << std::endl;
-                        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                            // Appel MEM 
+                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                            oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
+                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
                                 
                                 // Mise en forme des valeurs avec IntegralResult 
                                 // Mise en forme des valeurs avec MEMResult                               
-                                
+                        } // end test cleanJets size
+                        else {
+                            std::cout << "\t\t cleanedJets size = 0, no Jet for computation, must return nb_jets = 0" << std::endl;
+                        }
+                        i_tau +=1;        
                     }
                 }
             }
@@ -901,12 +937,13 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     scheduler->runNodeScheduler ( np.eventList, 1 ); // (eventList, 1)
     std::cout << "======" << std::endl;
     //std::cout << "nbrOfPermut_ : "<< np.integration.nbrOfPermut_ << std::endl;
-    std::cout << "nbrOfPermut_ : "<< np.eventList[0].nbrOfPermut_<< std::endl;
+    std::cout << "nbrOfPermut_ : "<< np.eventList[0].nbrOfPermut_ << std::endl;
     for( int perm = 0; perm < np.eventList[0].nbrOfPermut_; perm++ ){
-        std::cout << "integralttH_[" << perm << "] : " << np.eventList[0].integralttH_[perm] << std::endl;
-        if (np.eventList[0].integralttH_[perm] != 0.) {
+        std::cout << "integralttH_[" << perm << "] : " << np.eventList[0].integralttH_[perm] ; // << std::endl
+        /*if (np.eventList[0].integralttH_[perm] != 0.) {
             std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx" << std::endl;
-        }
+        }*/
+        std::cout << " - include_perm_ttH_[" << perm << "] : " << np.eventList[0].include_perm_ttH_[perm] << std::endl;
     }
     std::cout << "======" << std::endl;
 

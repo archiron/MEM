@@ -103,9 +103,12 @@ class MEMProducer : public edm::stream::EDProducer<> {
         vector<pat::Jet> npletFilter(const T& lep1, const U& lep2, const pat::Tau& tau, edm::Handle<pat::JetCollection> jets) {
             vector<pat::Jet> cleaned_jets;
   
-/*            std::cout << "\t inside template npletFilter" << std::endl;
+            /*std::cout << "\t inside template npletFilter" << std::endl;
             std::cout << "type id T = " << typeid(T).name() << std::endl;
             std::cout << "type id U = " << typeid(U).name() << std::endl;*/
+            /*for (const pat::Jet &jet : *jets ) {
+                std::cout << "npletFilter : " << jet.pt() << std::endl;;
+            }*/
 
             math::XYZTLorentzVector lep1_P4 = lep1.p4();
             math::XYZTLorentzVector lep2_P4 = lep2.p4();
@@ -115,6 +118,7 @@ class MEMProducer : public edm::stream::EDProducer<> {
                 return cleaned_jets ; // null cleaned_jets_ordered
 
             for (const pat::Jet &jet : *jets ) {
+                //std::cout << "npletFilter : " << jet.pt() << std::endl;;
                 math::XYZTLorentzVector jet_P4 = jet.p4();
                 if(jetFilter(jet) && deltaR(lep1_P4,jet_P4)>0.4 && deltaR(lep2_P4,jet_P4)>0.4 && deltaR(tau_P4,jet_P4)>0.4)
                     cleaned_jets.push_back(jet);
@@ -152,7 +156,7 @@ class MEMProducer : public edm::stream::EDProducer<> {
                     if ( i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") ) { 
                         i_pos = i;
                     }
-                    std::cout << "\t\t Jet : " << i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << " - " << i_jet_em->pt() << " - " << i_jet_em->p4().px() << std::endl;
+                    //std::cout << "\t\t Jet : " << i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << " - " << i_jet_em->pt() << " - " << i_jet_em->p4().px() << std::endl;
                 }
                 std::cout << "\t\t Jet max : " << cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << std::endl;
                 nplet_template.fill_BJet1_4P( cleanedJets[i_pos] ); // filling BJet1_4P
@@ -165,12 +169,12 @@ class MEMProducer : public edm::stream::EDProducer<> {
                     if ( i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") ) { 
                         i_pos = i;
                     }
-                    std::cout << "\t\t Jet : " << i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << " - " << i_jet_em->pt() << " - " << i_jet_em->p4().px() << std::endl;
+                    //std::cout << "\t\t Jet : " << i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << " - " << i_jet_em->pt() << " - " << i_jet_em->p4().px() << std::endl;
                 }
                 //std::cout << "\t\t Jet max : " << cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << std::endl;
                 nplet_template.fill_BJet2_4P( cleanedJets[i_pos] ); // filling BJet2_4P
                 cleanedJets.erase(cleanedJets.begin() + i_pos); // removing BJet2_4P
-                std::cout << "\t\t BJet2_4P (" << nplet_template.BJet2_4P.Px() << ", " << nplet_template.BJet2_4P.Py() << ", " << nplet_template.BJet2_4P.Pz() << ", " << nplet_template.BJet2_4P.E() << ")" << std::endl;
+                //std::cout << "\t\t BJet2_4P (" << nplet_template.BJet2_4P.Px() << ", " << nplet_template.BJet2_4P.Py() << ", " << nplet_template.BJet2_4P.Pz() << ", " << nplet_template.BJet2_4P.E() << ")" << std::endl;
                 
                 if ( cleanedJets.size() > 2 ) { // at least 3 Jets remaining
                     //std::cout << "\t\t\t cleanedJets size after BJets filling = " << cleanedJets.size() << std::endl;

@@ -154,7 +154,7 @@ bool
 MEM_nplet::diff_mass_2(double m1, double m2)
 {
     bool diff_m = false;
-    diff_m = ( (m1 - m2) > 0. ? true : false);
+    diff_m = ( fabs(m1 - Physics::mW) > fabs(m2 - Physics::mW) ? true : false);
     return diff_m;
 }
 

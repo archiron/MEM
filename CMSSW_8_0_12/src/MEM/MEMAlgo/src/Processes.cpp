@@ -78,7 +78,7 @@ void init_ttH_HTauTauMEProcesses( RunConfig runConfig ) {
 //  std::cout << "Q_ : " << runConfig.Q_ << std::endl;
 
   //init_ttH_HTauTauMEProcesses( paramFileName.c_str(), _Q );
-  std::cout << "init_ttH_HTauTauMEProcesses( RunConfig runConfig ) : appel init_ttH_HTauTauMEProcesses" << std::endl; // TEMPORAIRE
+  //std::cout << "init_ttH_HTauTauMEProcesses( RunConfig runConfig ) : appel init_ttH_HTauTauMEProcesses" << std::endl; // TEMPORAIRE
   init_ttH_HTauTauMEProcesses( runConfig.MGParamCardFileName_, runConfig.Q_); 
   
 /*  Py_XDECREF( pVariable );
@@ -87,7 +87,7 @@ void init_ttH_HTauTauMEProcesses( RunConfig runConfig ) {
 
 //void init_ttH_HTauTauMEProcesses( const char *_fileName, double pdfQ ) {
 void init_ttH_HTauTauMEProcesses( string fileName, double pdfQ ) {
-    std::cout << "init_ttH_HTauTauMEProcesses" << std::endl; // TEMPORAIRE
+    //std::cout << "init_ttH_HTauTauMEProcesses" << std::endl; // TEMPORAIRE
   
 /*  std::cout << "_fileName : "  << _fileName << std::endl;
   pdfQ_ = pdfQ;

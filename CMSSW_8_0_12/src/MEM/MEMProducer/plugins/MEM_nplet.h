@@ -124,7 +124,6 @@ class MEM_nplet {
         TLorentzVector recoMET_4P;
         double recoMETCov[4]; // same as covarMET[2][2] ?
         eventList_t eventList;
-        //IntegrationMsg_t integration;
 
     private:
 

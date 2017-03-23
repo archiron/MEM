@@ -33,7 +33,7 @@ process.MessageLogger = cms.Service("MessageLogger",
 )                                                                       
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(max_number) )
-max_skipped = 9
+max_skipped = 4
 print "max number of evts to skip : ", max_skipped
 
 process.source = cms.Source("PoolSource", 
