@@ -68,9 +68,6 @@
 
 class MEM_nplet {
     public:
-        //explicit MEM_nplet(const pat::Electron, const pat::Electron, const pat::Tau); //, const pat::Jet);
-        //explicit MEM_nplet(const pat::Muon, const pat::Muon, const pat::Tau); //, const pat::Jet); // 
-        //explicit MEM_nplet(const pat::Electron, const pat::Muon, const pat::Tau); //, const pat::Jet); //
         template <typename T, typename U>
         MEM_nplet(const T& lep1, const U& lep2, const pat::Tau& tau) {
             //std::cout << "fonction template MEM_nplet" << std::endl;
@@ -90,6 +87,7 @@ class MEM_nplet {
             
         }
         ~MEM_nplet();
+        
         double mee(const pat::Jet J1, const pat::Jet J2);
         bool diff_mass(const pat::Jet J1, const pat::Jet J2);
         bool diff_mass_2(double m1, double m2);
@@ -102,11 +100,9 @@ class MEM_nplet {
         TLorentzVector fill_temp(const pat::Jet J1); 
 
         void covarMET_display();
-        
         void nplet_display();
+        void eventList_display();
       
-        //double covarMET[2][2] = {{0.,0.}, {0.,0.}};
-        
         /* source : https://cmssdt.cern.ch/SDT/doxygen/CMSSW_7_5_0/doc/html/d1/df0/MultiEventFilter_8cc_source.html */
         unsigned long long EventID; // from iEvent.id().event()
         unsigned int RunID; // from iEvent.id().run()
@@ -122,7 +118,7 @@ class MEM_nplet {
         TLorentzVector Jet1_4P, Jet2_4P;
         std::vector<TLorentzVector> Jets_4P;        
         TLorentzVector recoMET_4P;
-        double recoMETCov[4]; // same as covarMET[2][2] ?
+        double recoMETCov[4];
         eventList_t eventList;
 
     private:

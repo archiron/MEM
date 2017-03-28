@@ -290,7 +290,7 @@ typedef struct MGIntegration_s {
   bool force_nonzero_integral_;
 
   // Results  
-  double integralttH_[nbrOfPermutMax];
+  double integralttH_[nbrOfPermutMax] = {0.}; // Chichi
   double stderrttH_[nbrOfPermutMax];
   double chiSquarettH_[nbrOfPermutMax];
   int64_t  integrationEfficiencyttH_[nbrOfPermutMax];

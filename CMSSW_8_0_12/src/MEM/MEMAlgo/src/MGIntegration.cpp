@@ -1902,7 +1902,7 @@ void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force
   setlightJet_4Ps( data.evJet1_4P_ , data.evJet2_4P_);
   setlightJets_list_4P( data.evJets_4P_, data.n_lightJets_ );
     std::cout << "nbOfPermut_ setlightJets_list_4P : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
-    std::cout << "======" << std::endl; // TEMPORAIRE
+    std::cout << "*-*-*-" << std::endl; // TEMPORAIRE
 
   setBJet_4Ps( data.evBJet1_4P_ , data.evBJet2_4P_);
 

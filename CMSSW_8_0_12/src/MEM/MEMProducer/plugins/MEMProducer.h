@@ -63,6 +63,7 @@
 #include "MEM/MEMProducer/plugins/MEM_nplet.h"
 #include "MEMDataFormats/MEMDataFormats/interface/RunConfig.h"
 //#include "MEMDataFormats/MEMDataFormats/interface/PyRun2EventData_t.h"
+#include "MEM/MEMAlgo/interface/ThreadScheduler.h"
 
 //
 // structures needed to retrieve particles characteristics
@@ -95,9 +96,6 @@ class MEMProducer : public edm::stream::EDProducer<> {
         bool muonFilter(const pat::Muon& muonFiltre);
         bool electronFilter(const pat::Electron& electronFiltre);
         bool jetFilter(const pat::Jet& jetFiltre);
-//        vector<pat::Jet> npletFilter_ee(const pat::Electron& ele1, const pat::Electron& ele2, const pat::Tau& tau, edm::Handle<pat::JetCollection> jets);
-//        vector<pat::Jet> npletFilter_mm(const pat::Muon& ele1, const pat::Muon& ele2, const pat::Tau& tau, edm::Handle<pat::JetCollection> jets);
-//        vector<pat::Jet> npletFilter_em(const pat::Electron& ele1, const pat::Muon& ele2, const pat::Tau& tau, edm::Handle<pat::JetCollection> jets);
 
         template <typename T, typename U>
         vector<pat::Jet> npletFilter(const T& lep1, const U& lep2, const pat::Tau& tau, edm::Handle<pat::JetCollection> jets) {
@@ -256,20 +254,6 @@ class MEMProducer : public edm::stream::EDProducer<> {
             }
         }
       
-/*        void testFunction_1(MEM_nplet nplet_1) {
-            std::cout << "\t\t fonction testFunction_1 " << std::endl;
-            std::cout << "\t\t fonction nplet_1 " << nplet_1.lep1_type << std::endl;
-            nplet_1.lep1_type = -24;
-            std::cout << "\t\t fonction nplet_1 " << nplet_1.lep1_type << std::endl;
-        }*/
-
-/*        void testFunction_2(MEM_nplet &nplet_2) {
-            std::cout << "\t\t fonction testFunction_2 " << std::endl;
-            std::cout << "\t\t fonction nplet_2 " << nplet_2.lep1_type << std::endl;
-            nplet_2.lep1_type = +34;
-            std::cout << "\t\t fonction nplet_2 " << nplet_2.lep1_type << std::endl;
-        }*/
-
         // ----------member data ---------------------------
         
         edm::EDGetTokenT<pat::ElectronCollection> electronToken_; 

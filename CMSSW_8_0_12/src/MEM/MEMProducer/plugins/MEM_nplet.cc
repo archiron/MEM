@@ -46,19 +46,6 @@
 using namespace reco;
 using namespace std;
 
-//
-// constants, enums and typedefs
-//
-
-
-//
-// static data member definitions
-//
-
-//
-// constructors and destructor
-//
-
 MEM_nplet::~MEM_nplet()
 {
  
@@ -183,3 +170,21 @@ MEM_nplet::nplet_display()
     
 }
 
+void
+MEM_nplet::eventList_display()
+{
+    if ( eventList[0].nbrOfPermut_ > 0 ) {
+        std::cout << "======" << std::endl;
+        std::cout << "nbrOfPermut_ : "<< eventList[0].nbrOfPermut_ << std::endl;
+        for( int perm = 0; perm < eventList[0].nbrOfPermut_; perm++ ){
+            std::cout << "eventList[0].integralttH_[" << perm << "] : " << eventList[0].integralttH_[perm] ; // << std::endl
+            std::cout << " - include_perm_ttH_[" << perm << "] : " << eventList[0].include_perm_ttH_[perm] << std::endl;
+        }
+        std::cout << "======" << std::endl;
+    }
+    else {
+        std::cout << "======" << std::endl;
+        std::cout << "Pnm with nbrOfPermut_ : "<< eventList[0].nbrOfPermut_ << std::endl;
+        std::cout << "======" << std::endl;
+    }
+}

@@ -551,11 +551,14 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                     //std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ")" << std::endl;
                     int i_tau = 0;
                     for (const pat::Tau &tau2 : *result_tau ) {
-                        std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ":" << i_tau << ")" << std::endl;
+                        std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ":" << i_tau << ")" ; // << std::endl
                         runConfig.nbOfTriplets_ += 1;
                         MEM_nplet nplet(*iter_3, *iter_4, tau2); //
+                        std::cout << "VVVVVVVVVVVVVVV - nplet created - VVVVVVVVVVVVVVV" << std::endl; // TEMPORAIRE
+                        nplet.eventList_display(); // TEMPORAIRE
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, jets );
-                        if ( cleanedJets.size() > 0) {
+                        std::cout << " cleanedJets size : " << cleanedJets.size() << std::endl;
+                        if ( cleanedJets.size() >= 3) {
                             JetFilling<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, cleanedJets, nplet, "mm" );
                             runConfig.nbOfNplets_ += 1;
                             //std::cout << "classical : nbOfNplets in mm : " << runConfig.nbOfNplets_ << std::endl;
@@ -598,9 +601,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                             //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
                             // Appel MEM 
-                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
                             oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
-                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
                         } // end test cleanJets size
                         else {
                             std::cout << "\t\t cleanedJets size = 0, no Jet for computation, must return nb_jets = 0" << std::endl;
@@ -620,12 +621,14 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                     //std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ")" << std::endl;
                     int i_tau = 0;
                     for (const pat::Tau &tau2 : *result_tau ) {
-                        std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ":" << i_tau << ")" << std::endl;
+                        std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ":" << i_tau << ")" ; // << std::endl
                         runConfig.nbOfTriplets_ += 1;
                         MEM_nplet nplet(*iter_1, *iter_2, tau2); //
+                        std::cout << "VVVVVVVVVVVVVVV - nplet created - VVVVVVVVVVVVVVV" << std::endl; // TEMPORAIRE
+                        nplet.eventList_display(); // TEMPORAIRE
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Electron, pat::Electron>( *iter_1, *iter_2, tau2, jets );
-                        std::cout << "cleanedJets size : " << cleanedJets.size() << std::endl;
-                        if ( cleanedJets.size() > 0) {
+                        std::cout << " cleanedJets size : " << cleanedJets.size() << std::endl;
+                        if ( cleanedJets.size() >= 3) {
                             JetFilling<pat::Electron, pat::Electron>( *iter_1, *iter_2, tau2, cleanedJets, nplet, "ee" );
                             runConfig.nbOfNplets_ += 1;
                             //std::cout << "classical : nbOfNplets in ee : " << runConfig.nbOfNplets_ << std::endl;
@@ -668,9 +671,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                             //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
                             // Appel MEM 
-                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
                             oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput 
-                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
                         } // end test cleanJets size
                         else {
                             std::cout << "\t\t cleanedJets size = 0, no Jet for computation, must return nb_jets = 0" << std::endl;
@@ -690,17 +691,20 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                     //std::cout << "\n\t(" << (iter_5-result_elec->begin())  << "," << (iter_6-result_muon->begin()) << ")" << std::endl;
                     int i_tau = 0;
                     for (const pat::Tau &tau2 : *result_tau ) {
-                        std::cout << "\n\t(" << (iter_5-result_elec->begin())  << "," << (iter_6-result_muon->begin()) << ":" << i_tau << ")" << std::endl;
+                        std::cout << "\n\t(" << (iter_5-result_elec->begin())  << "," << (iter_6-result_muon->begin()) << ":" << i_tau << ")" ; // << std::endl
                         runConfig.nbOfTriplets_ += 1;
                                //  Mise en forme des valeurs pour calculer avec MEM 
                         MEM_nplet nplet(*iter_5, *iter_6, tau2); // 
+                        std::cout << "VVVVVVVVVVVVVVV - nplet created - VVVVVVVVVVVVVVV" << std::endl; // TEMPORAIRE
+                        nplet.eventList_display(); // TEMPORAIRE
 /*                        std::cout << "VVVVVVVVVVVVVVV - AVANT - VVVVVVVVVVVVVVV" << std::endl;
                         std::cout << "Lep1_4P (" << iter_5->px() << ", " << iter_5->py() << ", " << iter_5->pz() << ", " << iter_5->energy() << ") " << std::endl;
                         std::cout << "Lep1_4P (" << iter_6->px() << ", " << iter_6->py() << ", " << iter_6->pz() << ", " << iter_6->energy() << ") " << std::endl;
                         std::cout << "Had1_4P (" << tau2.px()    << ", " << tau2.py()    << ", " << tau2.pz()    << ", " << tau2.energy() << ")" <<std::endl;
                         std::cout << "VVVVVVVVVVVVVVV - AVANT - VVVVVVVVVVVVVVV" << std::endl;*/
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Electron, pat::Muon>( *iter_5, *iter_6, tau2, jets );
-                        if ( cleanedJets.size() > 0) {
+                        std::cout << " cleanedJets size : " << cleanedJets.size() << std::endl;
+                        if ( cleanedJets.size() >= 3) {
                             JetFilling<pat::Electron, pat::Muon>( *iter_5, *iter_6, tau2, cleanedJets, nplet, "em" );
                             std::cout << "Jets_4P size = " << nplet.Jets_4P.size() << std::endl;
 /*                          std::cout << "VVVVVVVVVVVVVVV - APRES - VVVVVVVVVVVVVVV" << std::endl;
@@ -761,9 +765,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                             //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
                             // Appel MEM 
-                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
-                            oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
-                            // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+                            oneMPIProcess( nplet ); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
                                 
                                 // Mise en forme des valeurs avec IntegralResult 
                                 // Mise en forme des valeurs avec MEMResult                               
@@ -935,18 +937,7 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     scheduler->initNodeScheduler( runConfig, 0 );
 
     scheduler->runNodeScheduler ( np.eventList, 1 ); // (eventList, 1)
-    std::cout << "======" << std::endl;
-    //std::cout << "nbrOfPermut_ : "<< np.integration.nbrOfPermut_ << std::endl;
-    std::cout << "nbrOfPermut_ : "<< np.eventList[0].nbrOfPermut_ << std::endl;
-    for( int perm = 0; perm < np.eventList[0].nbrOfPermut_; perm++ ){
-        std::cout << "integralttH_[" << perm << "] : " << np.eventList[0].integralttH_[perm] ; // << std::endl
-        /*if (np.eventList[0].integralttH_[perm] != 0.) {
-            std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx" << std::endl;
-        }*/
-        std::cout << " - include_perm_ttH_[" << perm << "] : " << np.eventList[0].include_perm_ttH_[perm] << std::endl;
-    }
-    std::cout << "======" << std::endl;
-
+    np.eventList_display();
 }
 
 // ------------ method called once each stream before processing any runs, lumis or events  ------------
