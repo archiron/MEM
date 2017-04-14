@@ -37,7 +37,11 @@ class ThreadScheduler: public NodeScheduler {
   gsl_monte_vegas_state *state_ttH_miss;
   gsl_rng *rng;
   gsl_rng *saveRNGSeed;
-  
+  gsl_monte_function fctDescr_ttZ;
+  gsl_monte_vegas_state *state_ttZ;
+  gsl_monte_function fctDescr_ttZ_miss;
+  gsl_monte_vegas_state *state_ttZ_miss;
+ 
   ThreadScheduler();
   ~ThreadScheduler();
  

@@ -128,8 +128,8 @@ void MEM_nplet::fillEvent()
     eventList[0].evBJet2_4P_[2] = BJet2_4P.Pz(); eventList[0].evBJet2_4P_[3] = BJet2_4P.E();
     
     eventList[0].n_lightJets_ = min(10,int(Jets_4P.size()));
-    std::cout << "Jets_4P.size() : " << Jets_4P.size()            << std::endl;
-    std::cout << "n_lightJets_      : " << eventList[0].n_lightJets_ << std::endl;
+    //std::cout << "Jets_4P.size() : " << Jets_4P.size()            << std::endl;
+    //std::cout << "n_lightJets_      : " << eventList[0].n_lightJets_ << std::endl;
 
     for( int i=0; i<eventList[0].n_lightJets_; i++){
         eventList[0].evJets_4P_[i][0] = Jets_4P[i].Px(); eventList[0].evJets_4P_[i][1] = Jets_4P[i].Py();
@@ -184,8 +184,8 @@ void MEM_nplet::fillEvent_num()
     eventList[0].evBJet2_4P_[2] = -167.28; eventList[0].evBJet2_4P_[3] = 179.449;
     
     eventList[0].n_lightJets_ = min(10,int(Jets_4P.size()));
-    std::cout << "Jets_4P.size() : " << Jets_4P.size()            << std::endl;
-    std::cout << "n_lightJets_      : " << eventList[0].n_lightJets_ << std::endl;
+    //std::cout << "Jets_4P.size() : " << Jets_4P.size()            << std::endl;
+    //std::cout << "n_lightJets_      : " << eventList[0].n_lightJets_ << std::endl;
 
     for( int i=0; i<eventList[0].n_lightJets_; i++){
         eventList[0].evJets_4P_[i][0] = Jets_4P[i].Px(); eventList[0].evJets_4P_[i][1] = Jets_4P[i].Py();
