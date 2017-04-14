@@ -806,33 +806,9 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
 {
 
     std::cout << "Je suis dans MEMProducer::oneMPIProcess" << std::endl;
-/*    std::cout << "np recoMET_4P.Pt()   : " << np.recoMET_4P.Pt() << std::endl;
-    std::cout << "np recoMET_4P.Eta()  : " << np.recoMET_4P.Eta() << std::endl;
-    std::cout << "np recoMET_4P.Phi()  : " << np.recoMET_4P.Phi() << std::endl;
-    std::cout << "np recoMET_4P.M()    : " << np.recoMET_4P.M() << std::endl;
-    std::cout << "np recoMET_4P.Pt()   : " << np.eventList[0].evRecoMET4P_[0] << std::endl;
-    std::cout << "np recoMET_4P.Eta()  : " << np.eventList[0].evRecoMET4P_[1] << std::endl;
-    std::cout << "np recoMET_4P.Phi()  : " << np.eventList[0].evRecoMET4P_[2] << std::endl;
-    std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;*/
      
-/*    np.integration.MPIInfo_ = 0;
-    np.integration.integration_type_ = np.integration_type;
-    np.integration.evLep1_4P_[0] = np.Lep1_4P.Px(); np.integration.evLep1_4P_[1] = np.Lep1_4P.Py(); 
-    np.integration.evLep1_4P_[2] = np.Lep1_4P.Pz(); np.integration.evLep1_4P_[3] = np.Lep1_4P.E();
-    np.integration.lepton1_Type_ = np.lep1_type;
-    np.integration.evLep2_4P_[0] = np.Lep2_4P.Px(); np.integration.evLep2_4P_[1] = np.Lep2_4P.Py(); 
-    np.integration.evLep2_4P_[2] = np.Lep2_4P.Pz(); np.integration.evLep2_4P_[3] = np.Lep2_4P.E();
-    np.integration.lepton2_Type_ = np.lep1_type;
-    np.integration.evHadSys_Tau_4P_[0] = np.HadSys_4P.Px(); np.integration.evHadSys_Tau_4P_[1] = np.HadSys_4P.Py();
-    np.integration.evHadSys_Tau_4P_[2] = np.HadSys_4P.Pz(); np.integration.evHadSys_Tau_4P_[3] = np.HadSys_4P.E();
-    np.integration.HadtauDecayMode_ =  np.decayMode;
-    
-    np.integration.evBJet1_4P_[0] = np.BJet1_4P.Px(); np.integration.evBJet1_4P_[1] = np.BJet1_4P.Py();
-    np.integration.evBJet1_4P_[2] = np.BJet1_4P.Pz(); np.integration.evBJet1_4P_[3] = np.BJet1_4P.E();
-    np.integration.evBJet2_4P_[0] = np.BJet2_4P.Px(); np.integration.evBJet2_4P_[1] = np.BJet2_4P.Py();
-    np.integration.evBJet2_4P_[2] = np.BJet2_4P.Pz(); np.integration.evBJet2_4P_[3] = np.BJet2_4P.E();*/
       //
-    np.eventList[0].MPIInfo_ = 0;
+    /*np.eventList[0].MPIInfo_ = 0;
     np.eventList[0].integration_type_ = np.integration_type;
     np.eventList[0].evLep1_4P_[0] = np.Lep1_4P.Px(); np.eventList[0].evLep1_4P_[1] = np.Lep1_4P.Py(); 
     np.eventList[0].evLep1_4P_[2] = np.Lep1_4P.Pz(); np.eventList[0].evLep1_4P_[3] = np.Lep1_4P.E();
@@ -847,61 +823,37 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     np.eventList[0].evBJet1_4P_[0] = np.BJet1_4P.Px(); np.eventList[0].evBJet1_4P_[1] = np.BJet1_4P.Py();
     np.eventList[0].evBJet1_4P_[2] = np.BJet1_4P.Pz(); np.eventList[0].evBJet1_4P_[3] = np.BJet1_4P.E();
     np.eventList[0].evBJet2_4P_[0] = np.BJet2_4P.Px(); np.eventList[0].evBJet2_4P_[1] = np.BJet2_4P.Py();
-    np.eventList[0].evBJet2_4P_[2] = np.BJet2_4P.Pz(); np.eventList[0].evBJet2_4P_[3] = np.BJet2_4P.E();
-/*    np.eventList[0].integration_type_ = np.integration_type;
-    np.eventList[0].evLep1_4P_[0] = -4.61837; np.eventList[0].evLep1_4P_[1] = -68.0647; //TEMPORAIRE
-    np.eventList[0].evLep1_4P_[2] = -30.2518; np.eventList[0].evLep1_4P_[3] = 74.6279;
-    np.eventList[0].lepton1_Type_ = -13;
-    np.eventList[0].evLep2_4P_[0] = 33.7741; np.eventList[0].evLep2_4P_[1] = 34.1932; 
-    np.eventList[0].evLep2_4P_[2] = 33.7678; np.eventList[0].evLep2_4P_[3] = 58.7379;
-    np.eventList[0].lepton2_Type_ = -13;
-    np.eventList[0].evHadSys_Tau_4P_[0] = -28.1687; np.eventList[0].evHadSys_Tau_4P_[1] = -17.799;
-    np.eventList[0].evHadSys_Tau_4P_[2] = -81.1725; np.eventList[0].evHadSys_Tau_4P_[3] = 87.7606;
-    np.eventList[0].HadtauDecayMode_ = 1;
+    np.eventList[0].evBJet2_4P_[2] = np.BJet2_4P.Pz(); np.eventList[0].evBJet2_4P_[3] = np.BJet2_4P.E();*/
     
-    np.eventList[0].evBJet1_4P_[0] = -10.7871; np.eventList[0].evBJet1_4P_[1] = -29.1924;
-    np.eventList[0].evBJet1_4P_[2] = 31.5088; np.eventList[0].evBJet1_4P_[3] = 44.6711;
-    np.eventList[0].evBJet2_4P_[0] = -58.8208; np.eventList[0].evBJet2_4P_[1] = 26.2084;
-    np.eventList[0].evBJet2_4P_[2] = -167.28; np.eventList[0].evBJet2_4P_[3] = 179.449;*/
      //
-    np.eventList[0].n_lightJets_ = min(10,int(np.Jets_4P.size()));
+    /*np.eventList[0].n_lightJets_ = min(10,int(np.Jets_4P.size()));
     std::cout << "np.Jets_4P.size() : " << np.Jets_4P.size()            << std::endl;
-    std::cout << "n_lightJets_      : " << np.eventList[0].n_lightJets_ << std::endl;
-//    for( int i=0; i<np.integration.n_lightJets_; i++){
-    for( int i=0; i<np.eventList[0].n_lightJets_; i++){
+    std::cout << "n_lightJets_      : " << np.eventList[0].n_lightJets_ << std::endl;*/
+    
+    /*for( int i=0; i<np.eventList[0].n_lightJets_; i++){
         np.eventList[0].evJets_4P_[i][0] = np.Jets_4P[i].Px(); np.eventList[0].evJets_4P_[i][1] = np.Jets_4P[i].Py();
         np.eventList[0].evJets_4P_[i][2] = np.Jets_4P[i].Pz(); np.eventList[0].evJets_4P_[i][3] = np.Jets_4P[i].E();
-    }
-    if(np.Jets_4P.size()<10){	
+    }*/
+
+    /*if(np.Jets_4P.size()<10){	
         for(unsigned int i=np.Jets_4P.size(); i<10; i++){
             np.eventList[0].evJets_4P_[i][0] = 0; np.eventList[0].evJets_4P_[i][1] = 0;
             np.eventList[0].evJets_4P_[i][2] = 0; np.eventList[0].evJets_4P_[i][3] = 0;
         }
-        /*np.eventList[0].evJets_4P_[0][0] = 25.6494; np.eventList[0].evJets_4P_[0][1] = 37.7786; // TEMPORAIRE
-        np.eventList[0].evJets_4P_[0][2] = -54.7096; np.eventList[0].evJets_4P_[0][3] = 71.7591;
-        np.eventList[0].evJets_4P_[1][0] = 41.7213; np.eventList[0].evJets_4P_[1][1] = 0.0626074;
-        np.eventList[0].evJets_4P_[1][2] = -98.0699; np.eventList[0].evJets_4P_[1][3] = 106.95;
-        np.eventList[0].evJets_4P_[2][0] = -37.962; np.eventList[0].evJets_4P_[2][1] = 11.7409;
-        np.eventList[0].evJets_4P_[2][2] = -22.0981; np.eventList[0].evJets_4P_[2][3] = 46.1146;*/
-    }
+    }*/
       
-    if(np.integration_type == 0){
+    /*if(np.integration_type == 0){
         np.eventList[0].evJet1_4P_[0] = np.Jet1_4P.Px(); np.eventList[0].evJet1_4P_[1] = np.Jet1_4P.Py();
         np.eventList[0].evJet1_4P_[2] = np.Jet1_4P.Pz(); np.eventList[0].evJet1_4P_[3] = np.Jet1_4P.E();
         np.eventList[0].evJet2_4P_[0] = np.Jet2_4P.Px(); np.eventList[0].evJet2_4P_[1] = np.Jet2_4P.Py();
-        np.eventList[0].evJet2_4P_[2] = np.Jet2_4P.Pz(); np.eventList[0].evJet2_4P_[3] = np.Jet2_4P.E();
-/*        np.eventList[0].evJet1_4P_[0] = 25.6494; np.eventList[0].evJet1_4P_[1] = 37.7786;
-        np.eventList[0].evJet1_4P_[2] = -54.7096; np.eventList[0].evJet1_4P_[3] = 71.7591;
-        np.eventList[0].evJet2_4P_[0] = -37.962; np.eventList[0].evJet2_4P_[1] = 11.7409;
-        np.eventList[0].evJet2_4P_[2] = -22.0981; np.eventList[0].evJet2_4P_[3] = 46.1146;*/
-        
+        np.eventList[0].evJet2_4P_[2] = np.Jet2_4P.Pz(); np.eventList[0].evJet2_4P_[3] = np.Jet2_4P.E();        
     }
     else if(np.integration_type == 1){
         np.eventList[0].evJet1_4P_[0] = 0; np.eventList[0].evJet1_4P_[1] = 0;
         np.eventList[0].evJet1_4P_[2] = 0; np.eventList[0].evJet1_4P_[3] = 0;
         np.eventList[0].evJet2_4P_[0] = 0; np.eventList[0].evJet2_4P_[1] = 0;
         np.eventList[0].evJet2_4P_[2] = 0; np.eventList[0].evJet2_4P_[3] = 0;	
-    }/**/
+    }*/
       //
     
     // TEMPORARY OUTPUT
@@ -910,8 +862,9 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     std::cout << "np recoMET_4P.Phi()  : " << np.recoMET_4P.Phi() << std::endl;
     std::cout << "np recoMET_4P.M()    : " << np.recoMET_4P.M() << std::endl;*/
     // TEMPORARY OUTPUT
-    np.eventList[0].evRecoMET4P_[0] = np.recoMET_4P.Px(); np.eventList[0].evRecoMET4P_[1] = np.recoMET_4P.Py(); 
-    np.eventList[0].evRecoMET4P_[2] = np.recoMET_4P.Pz(); np.eventList[0].evRecoMET4P_[3] = np.recoMET_4P.E();
+    /*np.eventList[0].evRecoMET4P_[0] = np.recoMET_4P.Px(); np.eventList[0].evRecoMET4P_[1] = np.recoMET_4P.Py(); 
+    np.eventList[0].evRecoMET4P_[2] = np.recoMET_4P.Pz(); np.eventList[0].evRecoMET4P_[3] = np.recoMET_4P.E();*/
+    
     // TEMPORARY OUTPUT
 /*    std::cout << "np recoMET_4P.Pt()   : " << np.eventList[0].evRecoMET4P_[0] << std::endl;
     std::cout << "np recoMET_4P.Eta()  : " << np.eventList[0].evRecoMET4P_[1] << std::endl;
@@ -919,8 +872,8 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     std::cout << "np recoMET_4P.M()    : " << np.eventList[0].evRecoMET4P_[3] << std::endl;*/
     // TEMPORARY OUTPUT
     //
-    np.eventList[0].evV_[0] = np.recoMETCov[0]; np.eventList[0].evV_[1] = np.recoMETCov[1]; 
-    np.eventList[0].evV_[2] = np.recoMETCov[2]; np.eventList[0].evV_[3] = np.recoMETCov[3];     /**/
+    /*np.eventList[0].evV_[0] = np.recoMETCov[0]; np.eventList[0].evV_[1] = np.recoMETCov[1]; 
+    np.eventList[0].evV_[2] = np.recoMETCov[2]; np.eventList[0].evV_[3] = np.recoMETCov[3];     */
     
 /*    std::cout << "VVVVVVVVVVVVVVV - classical nplet - VVVVVVVVVVVVVVV" << std::endl;
     std::cout << "Lep1_4P (" << np.Lep1_4P.Px()   << ", " << np.Lep1_4P.Py()   << ", " << np.Lep1_4P.Pz()   << ", " << np.Lep1_4P.E()   << ") " << std::endl;
@@ -931,6 +884,9 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     std::cout << "Lep2_4P (" << np.eventList[0].evLep2_4P_[0]   << ", " << np.eventList[0].evLep2_4P_[1]   << ", " << np.eventList[0].evLep2_4P_[2]   << ", " << np.eventList[0].evLep2_4P_[3]   << ") " << std::endl;
     std::cout << "Had1_4P (" << np.eventList[0].evHadSys_Tau_4P_[0] << ", " << np.eventList[0].evHadSys_Tau_4P_[1] << ", " << np.eventList[0].evHadSys_Tau_4P_[2] << ", " << np.eventList[0].evHadSys_Tau_4P_[3] << ") " << std::endl;*/
 
+    np.fillEvent();
+    //np.fillEvent_num();
+    
       // MPI process source
 
     /* scheduler initialization */

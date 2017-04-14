@@ -97,6 +97,8 @@ class MEM_nplet {
         void fill_Jet2_4P(const pat::Jet J2); 
         void fill_Jet2_4P_0(); 
         void fill_recoMET_4P(float met, float phi);
+        void fillEvent();
+        void fillEvent_num();
         TLorentzVector fill_temp(const pat::Jet J1); 
 
         void covarMET_display();

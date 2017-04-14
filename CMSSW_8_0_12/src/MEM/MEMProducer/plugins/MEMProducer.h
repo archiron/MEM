@@ -201,8 +201,8 @@ class MEMProducer : public edm::stream::EDProducer<> {
                         nplet_template.fill_Jet1_4P( jet2 ); // filling Jet4_4P
                         nplet_template.fill_Jet2_4P( jet1 ); // filling Jet2_4P
                     }
-                    cleanedJets.erase(cleanedJets.begin() + 1); // removing Jet2_4P
-                    cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P
+                    //cleanedJets.erase(cleanedJets.begin() + 1); // removing Jet2_4P // remove the removing, A.C. 2017/04/14
+                    //cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P // remove the removing, A.C. 2017/04/14
                     //std::cout << "filling Jets_4P" << std::endl;
                     for ( const pat::Jet &j1 : cleanedJets) {
                         //std::cout << "j1 pt= " << j1.pt() << " - j1.px() = " << j1.px() << std::endl;
