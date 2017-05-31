@@ -87,6 +87,8 @@ bool MEMProducer::tauFilter(const pat::Tau& tauFiltre)
 
     int tauid1 = (f_tau.isTauIDAvailable("decayModeFinding") ? f_tau.tauID("decayModeFinding") : -999);
     int tauid2 = (f_tau.isTauIDAvailable("byLooseIsolationMVArun2v1DBdR03oldDMwLT") ? f_tau.tauID("byLooseIsolationMVArun2v1DBdR03oldDMwLT") : -999);
+    //std::cout << "tauid1 =" << tauid1 << " - tauid2 =" << tauid2 << " - byLooseIsolationMVArun2v1DBdR03oldDMwLT=" << f_tau.tauID("byLooseIsolationMVArun2v1DBdR03oldDMwLT") << std::endl;
+    
     if (tauid1 != 1 || tauid1 == -999) { 
       b = false;
     }/**/
@@ -491,7 +493,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         for (const pat::Muon &muon : *muons ) {
             if ( muonFilter(muon) ){
                 pat::Muon l_muon(muon);
-                //std::cout << "1st loop : Muon ID : " << &muon - &(*muons->begin()) << " - eta : " << muon.eta() << std::endl ;
+                std::cout << "1st loop : Muon ID : " << &muon - &(*muons->begin())<< " - pt : " << muon.pt() << " - eta : " << muon.eta() << " - phi : " << muon.phi() << std::endl ;
                 edm::LogInfo("MEMProducer::produce") << "2nd loop : Muon ID : " << &muon - &(*muons->begin()) ;
                 result_muon->push_back(l_muon);
                 runConfig.nbOfMuons_ += 1;
@@ -503,7 +505,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         for (const pat::Electron &elec : *electrons ) {
             if ( electronFilter(elec) ){
                 pat::Electron l_elec(elec);
-                //std::cout << "2nd loop : Electron ID : " << &elec - &(*electrons->begin()) << " - eta : " << l_elec.eta() << std::endl ;
+                std::cout << "2nd loop : Electron ID : " << &elec - &(*electrons->begin()) << " - pt : " << l_elec.pt() << " - eta : " << l_elec.eta() << " - phi : " << l_elec.phi() << std::endl ;
                 edm::LogInfo("MEMProducer::produce") << "2nd loop : Electron ID : " << &elec - &(*electrons->begin()) ;
                 l_elec.setCharge(-7);
                 result_elec->push_back(l_elec);
@@ -516,7 +518,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         for (const pat::Tau &tau : *taus ) {
             if ( tauFilter(tau) ){
                 pat::Tau l_tau(tau);
-                //std::cout << "3rd loop : Tau ID : " << &tau - &(*taus->begin()) << " - eta : " << l_tau.eta() << std::endl ;
+                std::cout << "3rd loop : Tau ID : " << &tau - &(*taus->begin()) << " - pt : " << l_tau.pt() << " - eta : " << l_tau.eta() << " - phi : " << l_tau.phi() << std::endl ;
                 edm::LogInfo("MEMProducer::produce") << "2nd loop : Tau ID : " << &tau - &(*taus->begin()) ;
                 result_tau->push_back(l_tau);
                 runConfig.nbOfTaus_ += 1;
@@ -540,12 +542,12 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* searching for pairs */
         if (runConfig.nbOfTaus_ > 1) { // if = 1, only one tau, no pair
-            std::cout << "you will have " << runConfig.nbOfTaus_  << " possibilities for taus" << std::endl;
+            std::cout << "\nyou will have " << runConfig.nbOfTaus_  << " possibilities for taus" << std::endl;
         }
         
         /* muon-muon case */
         if ( pairs_mm ) { // 
-            std::cout << "you will have " << runConfig.nbOfMuons_ * (runConfig.nbOfMuons_ - 1) / 2 << " possibilities for muon-muon pairs" << std::endl;
+            std::cout << "\nyou will have " << runConfig.nbOfMuons_ * (runConfig.nbOfMuons_ - 1) / 2 << " possibilities for muon-muon pairs" << std::endl;
             for ( pat::MuonCollection::const_iterator iter_3 = result_muon->begin(); iter_3 < result_muon->end() - 1 ; ++iter_3) {
                 for ( pat::MuonCollection::const_iterator iter_4 = iter_3 + 1; iter_4 != result_muon->end(); ++iter_4) {
                     //std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ")" << std::endl;
@@ -554,8 +556,16 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                         std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ":" << i_tau << ")" ; // << std::endl
                         runConfig.nbOfTriplets_ += 1;
                         MEM_nplet nplet(*iter_3, *iter_4, tau2); //
-                        std::cout << "VVVVVVVVVVVVVVV - nplet created - VVVVVVVVVVVVVVV" << std::endl; // TEMPORAIRE
+                        std::cout << " VVVVVVVVVV - nplet created - VVVVVVVVVV" << std::endl; // TEMPORAIRE
                         nplet.eventList_display(); // TEMPORAIRE
+                        std::cout << " VVVVVVVVVV - AVANT - VVVVVVVVVV" << std::endl;
+                        /*std::cout << "Lep1_4P (" << iter_3->px() << ", " << iter_3->py() << ", " << iter_3->pz() << ", " << iter_3->energy() << ") " << std::endl;
+                        std::cout << "Lep1_4P (" << iter_4->px() << ", " << iter_4->py() << ", " << iter_4->pz() << ", " << iter_4->energy() << ") " << std::endl;
+                        std::cout << "Had1_4P (" << tau2.px()    << ", " << tau2.py()    << ", " << tau2.pz()    << ", " << tau2.energy() << ")" <<std::endl;*/
+                        std::cout << "Lep1_4P (" << iter_3->pt() << ", " << iter_3->eta() << ", " << iter_3->phi() << ") " << std::endl; 
+                        std::cout << "Lep1_4P (" << iter_4->pt() << ", " << iter_4->eta() << ", " << iter_4->phi() << ") " << std::endl;/**/
+                        std::cout << "Had1_4P (" << tau2.pt()    << ", " << tau2.eta()    << ", " << tau2.phi() << ")" <<std::endl;
+                        std::cout << " VVVVVVVVVV - AVANT - VVVVVVVVVV" << std::endl;/**/
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Muon, pat::Muon>( *iter_3, *iter_4, tau2, jets );
                         std::cout << " cleanedJets size : " << cleanedJets.size() << std::endl;
                         if ( cleanedJets.size() >= 3) {
@@ -615,7 +625,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* electron-electron case */
         if ( pairs_ee ) { // 
-            std::cout << "you will have " << runConfig.nbOfElectrons_ * (runConfig.nbOfElectrons_ - 1) / 2 << " possibilities for electron-electron pairs" << std::endl;
+            std::cout << "\nyou will have " << runConfig.nbOfElectrons_ * (runConfig.nbOfElectrons_ - 1) / 2 << " possibilities for electron-electron pairs" << std::endl;
             for ( pat::ElectronCollection::const_iterator iter_1 = result_elec->begin(); iter_1 < result_elec->end() - 1 ; ++iter_1) {
                 for ( pat::ElectronCollection::const_iterator iter_2 = iter_1 + 1; iter_2 != result_elec->end(); ++iter_2) {
                     //std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ")" << std::endl;
@@ -624,8 +634,16 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                         std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ":" << i_tau << ")" ; // << std::endl
                         runConfig.nbOfTriplets_ += 1;
                         MEM_nplet nplet(*iter_1, *iter_2, tau2); //
-                        std::cout << "VVVVVVVVVVVVVVV - nplet created - VVVVVVVVVVVVVVV" << std::endl; // TEMPORAIRE
+                        std::cout << " VVVVVVVVVV - nplet created - VVVVVVVVVV" << std::endl; // TEMPORAIRE
                         nplet.eventList_display(); // TEMPORAIRE
+                        std::cout << " VVVVVVVVVV - AVANT - VVVVVVVVVV" << std::endl;
+                        /*std::cout << "Lep1_4P (" << iter_1->px() << ", " << iter_1->py() << ", " << iter_1->pz() << ", " << iter_1->energy() << ") " << std::endl;
+                        std::cout << "Lep1_4P (" << iter_2->px() << ", " << iter_2->py() << ", " << iter_2->pz() << ", " << iter_2->energy() << ") " << std::endl;
+                        std::cout << "Had1_4P (" << tau2.px()    << ", " << tau2.py()    << ", " << tau2.pz()    << ", " << tau2.energy() << ")" <<std::endl;*/
+                        std::cout << "Lep1_4P (" << iter_1->pt() << ", " << iter_1->eta() << ", " << iter_1->phi() << ") " << std::endl; 
+                        std::cout << "Lep1_4P (" << iter_2->pt() << ", " << iter_2->eta() << ", " << iter_2->phi() << ") " << std::endl;/**/
+                        std::cout << "Had1_4P (" << tau2.pt()    << ", " << tau2.eta()    << ", " << tau2.phi() << ")" <<std::endl;
+                        std::cout << " VVVVVVVVVV - AVANT - VVVVVVVVVV" << std::endl;/**/
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Electron, pat::Electron>( *iter_1, *iter_2, tau2, jets );
                         std::cout << " cleanedJets size : " << cleanedJets.size() << std::endl;
                         if ( cleanedJets.size() >= 3) {
@@ -685,7 +703,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* electron-muon case */
         if ( pairs_em ) { // 
-            std::cout << "you will have " << runConfig.nbOfElectrons_ * runConfig.nbOfMuons_ << " possibilities for electron-muon pairs" << std::endl;
+            std::cout << "\nYOU WILL HAVE " << runConfig.nbOfElectrons_ * runConfig.nbOfMuons_ << " POSSIBILITIES FOR ELECTRON-MUON PAIRS" << std::endl;
             for ( pat::ElectronCollection::const_iterator iter_5 = result_elec->begin(); iter_5 != result_elec->end(); ++iter_5) {
                 for ( pat::MuonCollection::const_iterator iter_6 = result_muon->begin(); iter_6 < result_muon->end() ; ++iter_6) {
                     //std::cout << "\n\t(" << (iter_5-result_elec->begin())  << "," << (iter_6-result_muon->begin()) << ")" << std::endl;
@@ -695,23 +713,26 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                         runConfig.nbOfTriplets_ += 1;
                                //  Mise en forme des valeurs pour calculer avec MEM 
                         MEM_nplet nplet(*iter_5, *iter_6, tau2); // 
-                        std::cout << "VVVVVVVVVVVVVVV - nplet created - VVVVVVVVVVVVVVV" << std::endl; // TEMPORAIRE
+                        std::cout << " VVVVVVVVVV - nplet created - VVVVVVVVVV" << std::endl; // TEMPORAIRE
                         nplet.eventList_display(); // TEMPORAIRE
-/*                        std::cout << "VVVVVVVVVVVVVVV - AVANT - VVVVVVVVVVVVVVV" << std::endl;
-                        std::cout << "Lep1_4P (" << iter_5->px() << ", " << iter_5->py() << ", " << iter_5->pz() << ", " << iter_5->energy() << ") " << std::endl;
+                        std::cout << " VVVVVVVVVV - AVANT - VVVVVVVVVV" << std::endl;
+                        /*std::cout << "Lep1_4P (" << iter_5->px() << ", " << iter_5->py() << ", " << iter_5->pz() << ", " << iter_5->energy() << ") " << std::endl;
                         std::cout << "Lep1_4P (" << iter_6->px() << ", " << iter_6->py() << ", " << iter_6->pz() << ", " << iter_6->energy() << ") " << std::endl;
-                        std::cout << "Had1_4P (" << tau2.px()    << ", " << tau2.py()    << ", " << tau2.pz()    << ", " << tau2.energy() << ")" <<std::endl;
-                        std::cout << "VVVVVVVVVVVVVVV - AVANT - VVVVVVVVVVVVVVV" << std::endl;*/
+                        std::cout << "Had1_4P (" << tau2.px()    << ", " << tau2.py()    << ", " << tau2.pz()    << ", " << tau2.energy() << ")" <<std::endl;*/
+                        std::cout << "Lep1_4P (" << iter_5->pt() << ", " << iter_5->eta() << ", " << iter_5->phi() << ") " << std::endl; 
+                        std::cout << "Lep1_4P (" << iter_6->pt() << ", " << iter_6->eta() << ", " << iter_6->phi() << ") " << std::endl;/**/
+                        std::cout << "Had1_4P (" << tau2.pt()    << ", " << tau2.eta()    << ", " << tau2.phi() << ")" <<std::endl;
+                        std::cout << " VVVVVVVVVV - AVANT - VVVVVVVVVV" << std::endl;
                         vector<pat::Jet> cleanedJets = npletFilter<pat::Electron, pat::Muon>( *iter_5, *iter_6, tau2, jets );
                         std::cout << " cleanedJets size : " << cleanedJets.size() << std::endl;
                         if ( cleanedJets.size() >= 3) {
                             JetFilling<pat::Electron, pat::Muon>( *iter_5, *iter_6, tau2, cleanedJets, nplet, "em" );
                             std::cout << "Jets_4P size = " << nplet.Jets_4P.size() << std::endl;
-/*                          std::cout << "VVVVVVVVVVVVVVV - APRES - VVVVVVVVVVVVVVV" << std::endl;
+/*                          std::cout << " VVVVVVVVVV - APRES - VVVVVVVVVV" << std::endl;
                         std::cout << "Lep1_4P (" << nplet.Lep1_4P.Px() << ", " << nplet.Lep1_4P.Py() << ", " << nplet.Lep1_4P.Pz() << ", " << nplet.Lep1_4P.E() << ") " << std::endl;
                         std::cout << "Lep1_4P (" << nplet.Lep2_4P.Px() << ", " << nplet.Lep2_4P.Py() << ", " << nplet.Lep2_4P.Pz() << ", " << nplet.Lep2_4P.E() << ") " << std::endl;
                         std::cout << "Had1_4P (" << nplet.HadSys_4P.Px() << ", " << nplet.HadSys_4P.Py() << ", " << nplet.HadSys_4P.Pz() << ", " << nplet.HadSys_4P.E() << ")" <<std::endl;
-                        std::cout << "VVVVVVVVVVVVVVV - APRES - VVVVVVVVVVVVVVV" << std::endl;*/
+                        std::cout << " VVVVVVVVVV - APRES - VVVVVVVVVV" << std::endl;*/
                             runConfig.nbOfNplets_ += 1;
                             //std::cout << "classical : nbOfNplets in em : " << runConfig.nbOfNplets_ << std::endl;
                             std::cout << "integration_type : " << nplet.integration_type   << std::endl;
@@ -875,11 +896,11 @@ void MEMProducer::oneMPIProcess(MEM_nplet &np) // EventReader<Run1EventData_t> &
     /*np.eventList[0].evV_[0] = np.recoMETCov[0]; np.eventList[0].evV_[1] = np.recoMETCov[1]; 
     np.eventList[0].evV_[2] = np.recoMETCov[2]; np.eventList[0].evV_[3] = np.recoMETCov[3];     */
     
-/*    std::cout << "VVVVVVVVVVVVVVV - classical nplet - VVVVVVVVVVVVVVV" << std::endl;
+/*    std::cout << " VVVVVVVVVVVVVVV - classical nplet - VVVVVVVVVVVVVVV" << std::endl;
     std::cout << "Lep1_4P (" << np.Lep1_4P.Px()   << ", " << np.Lep1_4P.Py()   << ", " << np.Lep1_4P.Pz()   << ", " << np.Lep1_4P.E()   << ") " << std::endl;
     std::cout << "Lep2_4P (" << np.Lep2_4P.Px()   << ", " << np.Lep2_4P.Py()   << ", " << np.Lep2_4P.Pz()   << ", " << np.Lep2_4P.E()   << ") " << std::endl;
     std::cout << "Had1_4P (" << np.HadSys_4P.Px() << ", " << np.HadSys_4P.Py() << ", " << np.HadSys_4P.Pz() << ", " << np.HadSys_4P.E() << ") " << std::endl;*/
-/*    std::cout << "VVVVVVVVVVVVVVV - eventList - VVVVVVVVVVVVVVV" << std::endl;
+/*    std::cout << " VVVVVVVVVVVVVVV - eventList - VVVVVVVVVVVVVVV" << std::endl;
     std::cout << "Lep1_4P (" << np.eventList[0].evLep1_4P_[0]   << ", " << np.eventList[0].evLep1_4P_[1]   << ", " << np.eventList[0].evLep1_4P_[2]   << ", " << np.eventList[0].evLep1_4P_[3]   << ") " << std::endl;
     std::cout << "Lep2_4P (" << np.eventList[0].evLep2_4P_[0]   << ", " << np.eventList[0].evLep2_4P_[1]   << ", " << np.eventList[0].evLep2_4P_[2]   << ", " << np.eventList[0].evLep2_4P_[3]   << ") " << std::endl;
     std::cout << "Had1_4P (" << np.eventList[0].evHadSys_Tau_4P_[0] << ", " << np.eventList[0].evHadSys_Tau_4P_[1] << ", " << np.eventList[0].evHadSys_Tau_4P_[2] << ", " << np.eventList[0].evHadSys_Tau_4P_[3] << ") " << std::endl;*/

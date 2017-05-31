@@ -33,7 +33,8 @@ process.MessageLogger = cms.Service("MessageLogger",
 )                                                                       
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(max_number) )
-max_skipped = 4
+max_skipped = 4 # 4 for ttH/00CD6E0F-003B-E611-9817-002590DE6E8A.root
+max_skipped = 0
 print "max number of evts to skip : ", max_skipped
 
 process.source = cms.Source("PoolSource", 
@@ -61,7 +62,9 @@ skipEvents = cms.untracked.uint32(max_skipped),
 #        'file:/grid_mnt/vol__vol_U__u/llr/info/chiron_u/ANALYZE/RunIISpring16MiniAODv2/VBF/00E98807-AE54-E611-9D79-3417EBE47C5E.root',
 #        'file:/grid_mnt/vol__vol_U__u/llr/info/chiron_u/ANALYZE/RunIISpring16MiniAODv2/VBF/1AC87B8F-8BB8-E511-92F5-FA163E84A67A.root',
 #        'file:/grid_mnt/vol__vol_U__u/llr/info/chiron_u/ANALYZE/RunIISpring16MiniAODv2/VBF_M130/6E856ED9-F6BD-E511-8361-AC853D9DACD3.root',
-        'file:/grid_mnt/vol__vol_U__u/llr/info/chiron_u/ANALYZE/RunIISpring16MiniAODv2/ttH/00CD6E0F-003B-E611-9817-002590DE6E8A.root',
+#        'file:/grid_mnt/vol__vol_U__u/llr/info/chiron_u/ANALYZE/RunIISpring16MiniAODv2/ttH/00CD6E0F-003B-E611-9817-002590DE6E8A.root',
+#        'file:/grid_mnt/vol__vol_U__u/llr/info/chiron_u/ANALYZE/ThomasRootFiles/D41D878F-69BE-E611-8B73-0CC47A4C8E98.root',
+        'file:/grid_mnt/vol__vol_U__u/llr/info/chiron_u/ANALYZE/ThomasRootFiles/pickevents.root',
 
     ])
 )

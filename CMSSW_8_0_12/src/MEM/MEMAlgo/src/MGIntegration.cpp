@@ -1900,9 +1900,12 @@ void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force
     integration_type_ = data.integration_type_;
 
   setlightJet_4Ps( data.evJet1_4P_ , data.evJet2_4P_);
+/*    std::cout << "nbrOfPermut_per_jet_ setlightJet_4Ps : " << nbrOfPermut_per_jet_ << std::endl; // TEMPORAIRE
+    std::cout << "nbrOfPermut_         setlightJet_4Ps : " << nbrOfPermut_ << std::endl; // TEMPORAIRE */
   setlightJets_list_4P( data.evJets_4P_, data.n_lightJets_ );
-    std::cout << "nbOfPermut_ setlightJets_list_4P : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
-    std::cout << "*-*-*-" << std::endl; // TEMPORAIRE
+/*    std::cout << "nbrOfPermut_per_jet_ setlightJets_list_4P : " << nbrOfPermut_per_jet_ << std::endl; // TEMPORAIRE
+    std::cout << "nbrOfPermut_         setlightJets_list_4P : " << nbrOfPermut_ << std::endl; // TEMPORAIRE //
+    std::cout << "*-*-*-" << std::endl; // TEMPORAIRE */
 
   setBJet_4Ps( data.evBJet1_4P_ , data.evBJet2_4P_);
 
@@ -2050,6 +2053,7 @@ void MGIntegration::setEventParameters( const IntegrationMsg_t &data, bool force
 
   }
   
+    std::cout << "nbrOfPermut_         sortie : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
   std::cout << "end of setEventParameters" << std::endl;
   
 }
@@ -2100,7 +2104,7 @@ void MGIntegration::copyBoundaries( IntegrationMsg_t *data ) {
   std::cout << "\tnbrOfPoints_ttbar_DL_ : " << nbrOfPoints_ttbar_DL_ << std::endl;
 
   data->nbrOfPermut_ = nbrOfPermut_;
-  std::cout << "\tnbrOfPermut_ : " << nbrOfPermut_ << std::endl;
+  std::cout << "\tcopyBoundaries nbrOfPermut_ : " << nbrOfPermut_ << std::endl;
 
   // Boundaries
   for( int i=0; i< DimensionMax; i++) {

@@ -613,6 +613,8 @@ public :
     }
     n_lightJets_ = 2;
     nbrOfPermut_ = nbrOfPermut_per_jet_;
+    //std::cout << "----- nbrOfPermut_per_jet_ inside setlightJet_4Ps : " << nbrOfPermut_per_jet_ << std::endl; // TEMPORAIRE //
+    //std::cout << "----- nbrOfPermut_         inside setlightJet_4Ps : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
 
   }
 
@@ -620,8 +622,10 @@ public :
     
     n_lightJets_ = min(10,nJets);
     nbrOfPermut_ = nbrOfPermut_per_jet_;
+    //std::cout << "----- nbrOfPermut_         inside setlightJets_list_4P : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
     if(integration_type_ == integration_type_w_miss || force_missing_jet_integration_)
       nbrOfPermut_ *= nJets;    
+    //std::cout << "----- nbrOfPermut_         inside setlightJets_list_4P : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
 
     for(int i=0; i<nJets; i++){
       for(int j=0; j<4; j++)
@@ -633,6 +637,8 @@ public :
 	  evJets_4P_[i][j] = 0;
       }
     }
+    //std::cout << "----- nbrOfPermut_per_jet_ inside setlightJets_list_4P : " << nbrOfPermut_per_jet_ << std::endl; // TEMPORAIRE
+    //std::cout << "----- nbrOfPermut_         inside setlightJets_list_4P : " << nbrOfPermut_ << std::endl; // TEMPORAIRE
       
   }
   

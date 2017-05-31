@@ -149,17 +149,20 @@ class MEMProducer : public edm::stream::EDProducer<> {
             if ( nb_jets >= 3 ) {
                 int i_pos = 0;
                 int i = 0;
+                std::cout << "\t\t Jet : " << cleanedJets.begin()->pt() << " - " << cleanedJets.begin()->eta() << " - " << cleanedJets.begin()->phi() << std::endl;
                 for ( pat::JetCollection::const_iterator i_jet_em = cleanedJets.begin() + 1; i_jet_em < cleanedJets.end(); ++i_jet_em ) {
                     i += 1;
                     if ( i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") ) { 
                         i_pos = i;
                     }
                     //std::cout << "\t\t Jet : " << i_jet_em->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << " - " << i_jet_em->pt() << " - " << i_jet_em->p4().px() << std::endl;
+                    std::cout << "\t\t Jet : " << i_jet_em->pt() << " - " << i_jet_em->eta() << " - " << i_jet_em->phi() << std::endl;
                 }
                 std::cout << "\t\t Jet max : " << cleanedJets[i_pos].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") << std::endl;
                 nplet_template.fill_BJet1_4P( cleanedJets[i_pos] ); // filling BJet1_4P
                 cleanedJets.erase(cleanedJets.begin() + i_pos); // removing BJet1_4P
                 //std::cout << "\t\t BJet1_4P (" << nplet_template.BJet1_4P.Px() << ", " << nplet_template.BJet1_4P.Py() << ", " << nplet_template.BJet1_4P.Pz() << ", " << nplet_template.BJet1_4P.E() << ")" << std::endl;
+                std::cout << "\t\t BJet1_4P (" << nplet_template.BJet1_4P.Pt() << ", " << nplet_template.BJet1_4P.Eta() << ", " << nplet_template.BJet1_4P.Phi() << ")" << std::endl;
                 i_pos = 0;
                 i = 0;
                 for ( pat::JetCollection::const_iterator i_jet_em = cleanedJets.begin() + 1; i_jet_em < cleanedJets.end(); ++i_jet_em ) {
@@ -173,9 +176,10 @@ class MEMProducer : public edm::stream::EDProducer<> {
                 nplet_template.fill_BJet2_4P( cleanedJets[i_pos] ); // filling BJet2_4P
                 cleanedJets.erase(cleanedJets.begin() + i_pos); // removing BJet2_4P
                 //std::cout << "\t\t BJet2_4P (" << nplet_template.BJet2_4P.Px() << ", " << nplet_template.BJet2_4P.Py() << ", " << nplet_template.BJet2_4P.Pz() << ", " << nplet_template.BJet2_4P.E() << ")" << std::endl;
+                std::cout << "\t\t BJet2_4P (" << nplet_template.BJet2_4P.Pt() << ", " << nplet_template.BJet2_4P.Eta() << ", " << nplet_template.BJet2_4P.Phi() << ")" << std::endl;
                 
                 if ( cleanedJets.size() > 2 ) { // at least 3 Jets remaining
-                    //std::cout << "\t\t\t cleanedJets size after BJets filling = " << cleanedJets.size() << std::endl;
+                    std::cout << "\t\t\t cleanedJets size after BJets filling = " << cleanedJets.size() << std::endl;
                     // looking for the pair
                     double massJets_ref = nplet_template.mee(*cleanedJets.begin(), *(cleanedJets.begin() + 1));
                     auto &jet1 = *(cleanedJets.begin());
@@ -203,21 +207,23 @@ class MEMProducer : public edm::stream::EDProducer<> {
                     }
                     //cleanedJets.erase(cleanedJets.begin() + 1); // removing Jet2_4P // remove the removing, A.C. 2017/04/14
                     //cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P // remove the removing, A.C. 2017/04/14
+                    
                     //std::cout << "filling Jets_4P" << std::endl;
-                    for ( const pat::Jet &j1 : cleanedJets) {
+                    /*for ( const pat::Jet &j1 : cleanedJets) {
                         //std::cout << "j1 pt= " << j1.pt() << " - j1.px() = " << j1.px() << std::endl;
                         nplet_template.Jets_4P.push_back(nplet_template.fill_temp(j1));
                         //std::cout << "fill_temp.Px() = " << nplet_template.fill_temp(j1).Px() << std::endl;
-                    }
+                    }*/
                     //std::cout << "Jets_4P size = " << nplet_template.Jets_4P.size() << std::endl;
                     //std::cout << "end filling Jets_4P" << std::endl;
+                    
                     //std::cout << "inside integration_type : " << nplet_template.integration_type << std::endl;
                     
                 }
                 else if ( cleanedJets.size() == 2 ) { // only 2 Jets remaining
-                    std::cout << "\t\t\t cleanedJets size after BJets filling = " << cleanedJets.size() << " - no Jets array remaining" << std::endl;
-                    /*std::cout << "\t\t\t pt for first Jet  : " << cleanedJets[0].pt() << std::endl;
-                    std::cout << "\t\t\t pt for second Jet : " << cleanedJets[1].pt() << std::endl;*/
+                    std::cout << "\t\t\t cleanedJets size after BJets filling = " << cleanedJets.size() << " Jets array remaining" << std::endl;
+                    std::cout << "\t\t\t pt for first Jet  : " << cleanedJets[0].pt() << std::endl;
+                    std::cout << "\t\t\t pt for second Jet : " << cleanedJets[1].pt() << std::endl;/**/
                     if ( cleanedJets[0].pt() > cleanedJets[1].pt() ) {
                         nplet_template.fill_Jet1_4P( cleanedJets[0] ); // filling Jet1_4P
                         nplet_template.fill_Jet2_4P( cleanedJets[1] ); // filling Jet2_4P
@@ -226,20 +232,29 @@ class MEMProducer : public edm::stream::EDProducer<> {
                         nplet_template.fill_Jet1_4P( cleanedJets[1] ); // filling Jet4_4P
                         nplet_template.fill_Jet2_4P( cleanedJets[0] ); // filling Jet2_4P
                     }
-                    cleanedJets.erase(cleanedJets.begin() + 1); // removing Jet2_4P
-                    cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P
+                    //cleanedJets.erase(cleanedJets.begin() + 1); // removing Jet2_4P
+                    //cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P
                 }
                 else if ( cleanedJets.size() == 1 ) { // only 1 Jet remaining
                     std::cout << "\t\t cleanedJets size after BJets filling = " << cleanedJets.size() << " - keeping Jet2_4P == 0" << std::endl;
                     nplet_template.fill_Jet1_4P( cleanedJets[0] ); // filling Jet1_4P
                     nplet_template.fill_Jet2_4P_0(); // filling Jet2_4P == 0
-                    cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P
+                    //cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P
                 }
                 else { // size = 0 ! if this, there is a BIG pbm !!
                     std::cout << "\t\t Houston, we have a pbm !!! = " << std::endl;
                 }
                 
-                /*std::cout << "\t\t Jet1_4P (" << nplet_template.Jet1_4P.Px() << ", " << nplet_template.Jet1_4P.Py() << ", " << nplet_template.Jet1_4P.Pz() << ", " << nplet_template.Jet1_4P.E() << ")" << std::endl;
+                std::cout << "filling Jets_4P" << std::endl;
+                for ( const pat::Jet &j1 : cleanedJets) {
+                    std::cout << "j1 pt= " << j1.pt() << " - j1.px() = " << j1.px() << std::endl;
+                    nplet_template.Jets_4P.push_back(nplet_template.fill_temp(j1));
+                    std::cout << "fill_temp.Px() = " << nplet_template.fill_temp(j1).Px() << " - fill_temp.Pt() = " << nplet_template.fill_temp(j1).Pt() << std::endl;
+                }
+                std::cout << "Jets_4P size = " << nplet_template.Jets_4P.size() << std::endl;
+                std::cout << "end filling Jets_4P" << std::endl;
+
+                    /*std::cout << "\t\t Jet1_4P (" << nplet_template.Jet1_4P.Px() << ", " << nplet_template.Jet1_4P.Py() << ", " << nplet_template.Jet1_4P.Pz() << ", " << nplet_template.Jet1_4P.E() << ")" << std::endl;
                 std::cout << "\t\t Jet2_4P (" << nplet_template.Jet2_4P.Px() << ", " << nplet_template.Jet2_4P.Py() << ", " << nplet_template.Jet2_4P.Pz() << ", " << nplet_template.Jet2_4P.E() << ")" << std::endl;*/
                 // print the size of the cleanedJets array resulting
                 /*std::cout << "\t\t cleanedJets size after Jets filling = " << cleanedJets.size() << std::endl;

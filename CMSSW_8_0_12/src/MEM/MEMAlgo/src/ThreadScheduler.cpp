@@ -162,19 +162,19 @@ void ThreadScheduler::runNodeScheduler (
     
     integration->setEventParameters( evList[k], integration->force_missing_jet_integration_ ); // seems to be OK (get all datas)
     
-    std::cout << "nbrOfPermut_ runNodeScheduler_1 " << evList[0].nbrOfPermut_ << std::endl; // TEMPORAIRE
+/*    std::cout << "nbrOfPermut_ runNodeScheduler_1 " << evList[0].nbrOfPermut_ << std::endl; // TEMPORAIRE
     for( int perm = 0; perm < evList[k].nbrOfPermut_; perm++ ){  // TEMPORAIRE
         std::cout << "integralttH_[" << perm << "] : " << evList[k].integralttH_[perm] ; // TEMPORAIRE
         std::cout << " - include_perm_ttH_[" << perm << "] : " << evList[k].include_perm_ttH_[perm] << std::endl; // TEMPORAIRE
-    }/**/ // TEMPORAIRE
+    }*/ // TEMPORAIRE
     
     integration->copyBoundaries( &evList[k]);                                                  // seems to be OK (get all datas)
     
-    std::cout << "nbrOfPermut_ runNodeScheduler_2 " << evList[k].nbrOfPermut_ << std::endl; // TEMPORAIRE
+/*    std::cout << "nbrOfPermut_ runNodeScheduler_2 " << evList[k].nbrOfPermut_ << std::endl; // TEMPORAIRE
     for( int perm = 0; perm < evList[k].nbrOfPermut_; perm++ ){  // TEMPORAIRE
         std::cout << "integralttH_[" << perm << "] : " << evList[k].integralttH_[perm] ; // TEMPORAIRE
         std::cout << " - include_perm_ttH_[" << perm << "] : " << evList[k].include_perm_ttH_[perm] << std::endl; // TEMPORAIRE
-    }/**/ // TEMPORAIRE
+    }*/ // TEMPORAIRE
 
 /*  
 # if 0  
@@ -241,10 +241,10 @@ void ThreadScheduler::runNodeScheduler (
                 if ( integration->flagSameRNG_ )
                     gsl_rng_memcpy ( rng, saveRNGSeed);
 
-                std::cout << "AVANT GSL TTH" << std::endl;
                 /*std::cout << "integration->nbrOfDim_ttH_ : "    << integration->nbrOfDim_ttH_    << std::endl;
                 std::cout << "integration->nbrOfPoints_ttH_ : " << integration->nbrOfPoints_ttH_ << std::endl;
                 std::cout << "state_ttH : " << state_ttH << std::endl;*/ // TEMPORAIRE
+                std::cout << "AVANT GSL TTH" ;
                 std::cout << "&evList["<< k << "].integralttH_["  << perm <<"] : " << evList[k].integralttH_[perm]  << std::endl;
                 /*std::cout << "&evList["<< k << "].stderrttH_["    << perm <<"] : " << evList[k].stderrttH_[perm]    << std::endl;
                 std::cout << "&evList["<< k << "].chiSquarettH_[" << perm <<"] : " << evList[k].chiSquarettH_[perm] << std::endl;*/
@@ -254,10 +254,10 @@ void ThreadScheduler::runNodeScheduler (
                     &evList[k].stderrttH_[perm],
                     &evList[k].chiSquarettH_[perm]);     
 
-                std::cout << "APRES GSL TTH" << std::endl;
                 /*std::cout << "integration->nbrOfDim_ttH_ : "    << integration->nbrOfDim_ttH_    << std::endl;
                 std::cout << "integration->nbrOfPoints_ttH_ : " << integration->nbrOfPoints_ttH_ << std::endl;
                 std::cout << "state_ttH : " << state_ttH << std::endl;*/
+                std::cout << "APRES GSL TTH" ;
                 std::cout << "&evList["<< k << "].integralttH_["  << perm <<"] : " << evList[k].integralttH_[perm]  << std::endl;
                 /*std::cout << "&evList["<< k << "].stderrttH_["    << perm <<"] : " << evList[k].stderrttH_[perm]    << std::endl;
                 std::cout << "&evList["<< k << "].chiSquarettH_[" << perm <<"] : " << evList[k].chiSquarettH_[perm] << std::endl;*/
