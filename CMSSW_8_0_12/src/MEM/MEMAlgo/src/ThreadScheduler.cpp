@@ -232,6 +232,13 @@ void ThreadScheduler::runNodeScheduler (
                 integration->upperValues_[cosThetaNu_tlep_id] = integration->cosThetaNu_tlep_Boundaries_[1];
                 integration->lowerValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[0];
                 integration->upperValues_[phiNu_tlep_id] = integration->phiNu_tlep_Boundaries_[1];
+                /*std::cout << "Lower-Upper:" << std::endl;
+                std::cout << "m_TauTau_2_              : " << integration->m_TauTau_2_ << std::endl;
+                std::cout << "PTauLep_id              : " << integration->lowerValues_[PTauLep_id] << " - " << integration->upperValues_[PTauLep_id] << std::endl;
+                std::cout << "cosThetaTauLepTauHad_id : " << integration->lowerValues_[cosThetaTauLepTauHad_id] << " - " << integration->upperValues_[cosThetaTauLepTauHad_id] << std::endl;
+                std::cout << "EQuark1_id              : " << integration->lowerValues_[EQuark1_id] << " - " << integration->upperValues_[EQuark1_id] << std::endl;
+                std::cout << "cosThetaNu_tlep_id      : " << integration->lowerValues_[cosThetaNu_tlep_id] << " - " << integration->upperValues_[cosThetaNu_tlep_id] << std::endl;
+                std::cout << "phiNu_tlep_id           : " << integration->lowerValues_[phiNu_tlep_id] << " - " << integration->upperValues_[phiNu_tlep_id] << std::endl;*/
 		
                 integration->integr_EfficiencyttH_ = 0;
                 integration->tot_DrawsttH_ = 0;
@@ -344,6 +351,15 @@ void ThreadScheduler::runNodeScheduler (
                 integration->upperValues_[cosTheta_missing_jet_id] = integration->cosTheta_missing_jet_Boundaries_[1];
                 integration->lowerValues_[phi_missing_jet_id] = integration->phi_missing_jet_Boundaries_[0];
                 integration->upperValues_[phi_missing_jet_id] = integration->phi_missing_jet_Boundaries_[1];	 	 
+                std::cout << "Lower-Upper:" << std::endl;
+                std::cout << "m_TauTau_2_              : " << integration->m_TauTau_2_ << std::endl;
+                std::cout << "PTauLep_id              : " << integration->lowerValues_[PTauLep_id] << " - " << integration->upperValues_[PTauLep_id] << std::endl;
+                std::cout << "cosThetaTauLepTauHad_id : " << integration->lowerValues_[cosThetaTauLepTauHad_id] << " - " << integration->upperValues_[cosThetaTauLepTauHad_id] << std::endl;
+                std::cout << "EQuark1_id              : " << integration->lowerValues_[EQuark1_id] << " - " << integration->upperValues_[EQuark1_id] << std::endl;
+                std::cout << "cosThetaNu_tlep_id      : " << integration->lowerValues_[cosThetaNu_tlep_id] << " - " << integration->upperValues_[cosThetaNu_tlep_id] << std::endl;
+                std::cout << "phiNu_tlep_id           : " << integration->lowerValues_[phiNu_tlep_id] << " - " << integration->upperValues_[phiNu_tlep_id] << std::endl;
+                std::cout << "cosTheta_missing_jet_id : " << integration->lowerValues_[cosTheta_missing_jet_id] << " - " << integration->upperValues_[cosTheta_missing_jet_id] << std::endl;
+                std::cout << "phi_missing_jet_id      : " << integration->lowerValues_[phi_missing_jet_id] << " - " << integration->upperValues_[phi_missing_jet_id] << std::endl;
 	  
                 integration->tot_DrawsttH_ = 0;
                 integration->integr_EfficiencyttH_ = 0;

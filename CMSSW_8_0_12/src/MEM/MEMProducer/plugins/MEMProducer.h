@@ -207,16 +207,7 @@ class MEMProducer : public edm::stream::EDProducer<> {
                     }
                     //cleanedJets.erase(cleanedJets.begin() + 1); // removing Jet2_4P // remove the removing, A.C. 2017/04/14
                     //cleanedJets.erase(cleanedJets.begin() + 0); // removing Jet1_4P // remove the removing, A.C. 2017/04/14
-                    
-                    //std::cout << "filling Jets_4P" << std::endl;
-                    /*for ( const pat::Jet &j1 : cleanedJets) {
-                        //std::cout << "j1 pt= " << j1.pt() << " - j1.px() = " << j1.px() << std::endl;
-                        nplet_template.Jets_4P.push_back(nplet_template.fill_temp(j1));
-                        //std::cout << "fill_temp.Px() = " << nplet_template.fill_temp(j1).Px() << std::endl;
-                    }*/
-                    //std::cout << "Jets_4P size = " << nplet_template.Jets_4P.size() << std::endl;
-                    //std::cout << "end filling Jets_4P" << std::endl;
-                    
+                                        
                     //std::cout << "inside integration_type : " << nplet_template.integration_type << std::endl;
                     
                 }
@@ -247,18 +238,15 @@ class MEMProducer : public edm::stream::EDProducer<> {
                 
                 std::cout << "filling Jets_4P" << std::endl;
                 for ( const pat::Jet &j1 : cleanedJets) {
-                    std::cout << "j1 pt= " << j1.pt() << " - j1.px() = " << j1.px() << std::endl;
+                    std::cout << "j1 px= " << j1.px() << " - j1.pt() = " << j1.pt() << std::endl;
                     nplet_template.Jets_4P.push_back(nplet_template.fill_temp(j1));
                     std::cout << "fill_temp.Px() = " << nplet_template.fill_temp(j1).Px() << " - fill_temp.Pt() = " << nplet_template.fill_temp(j1).Pt() << std::endl;
                 }
-                std::cout << "Jets_4P size = " << nplet_template.Jets_4P.size() << std::endl;
+                // print the size of the cleanedJets array resulting
+                //std::cout << "\t\t cleanedJets size after Jets filling = " << cleanedJets.size() << std::endl;
+                std::cout << "\t\t Jets_4P size after Jets filling = " << nplet_template.Jets_4P.size() << std::endl;/**/
                 std::cout << "end filling Jets_4P" << std::endl;
 
-                    /*std::cout << "\t\t Jet1_4P (" << nplet_template.Jet1_4P.Px() << ", " << nplet_template.Jet1_4P.Py() << ", " << nplet_template.Jet1_4P.Pz() << ", " << nplet_template.Jet1_4P.E() << ")" << std::endl;
-                std::cout << "\t\t Jet2_4P (" << nplet_template.Jet2_4P.Px() << ", " << nplet_template.Jet2_4P.Py() << ", " << nplet_template.Jet2_4P.Pz() << ", " << nplet_template.Jet2_4P.E() << ")" << std::endl;*/
-                // print the size of the cleanedJets array resulting
-                /*std::cout << "\t\t cleanedJets size after Jets filling = " << cleanedJets.size() << std::endl;
-                std::cout << "\t\t Jets_4P     size after Jets filling = " << nplet_template.Jets_4P.size() << std::endl;*/
                 
             }
             else if ( nb_jets > 0 ) {
@@ -276,7 +264,8 @@ class MEMProducer : public edm::stream::EDProducer<> {
         edm::EDGetTokenT<pat::TauCollection> tauToken_;
         edm::EDGetTokenT<pat::METCollection> metToken_;
         edm::EDGetTokenT<pat::JetCollection> jetToken_;/**/
-      
+        edm::EDGetTokenT<pat::METCollection> metTokenOne_;
+        
         edm::EDGetTokenT<double> theSigTag;
         edm::EDGetTokenT<math::Error<2>::type> theCovTag;
       

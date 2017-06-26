@@ -2189,7 +2189,7 @@ double MGIntegration::evalttH(const double* x ) {
   const char* error = 0;
   // To remove ???
 //  char str[256];
-/*    std::cout << "Vegas point :" 
+    std::cout << "Vegas point :" 
 	       << " " << " cosTheta_missing_jet = "    << cosTheta_missing_jet
 	       << " " << " phi_missing_jet = "    << phi_missing_jet
 	       << " " << " P_TauLep = "       << P_TauLep
@@ -2197,7 +2197,7 @@ double MGIntegration::evalttH(const double* x ) {
 	       << " " << " EQuark1 = "    << EQuark1
 	       << " " << " cosThetaNu = "    << cosThetaNu
 	       << " " << " phiNu = "    << phiNu
-	       << " " << endl;*/
+	       << " " << endl;/**/
 
   if (verbose_ >= IntegrandLevel){
     (*stream_) << "Vegas point :" 
@@ -2874,7 +2874,7 @@ double MGIntegration::evalttH(const double* x ) {
   //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     double Eval =  T_Jet1 * T_Jet2 * T_BJet_hadtop * T_BJet_leptop * T_MET * T_lepTau * T_hadTau * T_lepTop* T_hadTop * Jac * wME;
-        /*std::cout << "Integrand value :" << std::endl;
+        std::cout << "Integrand value :" ;
         std::cout<< " T_Jet1 = " << T_Jet1 ;
         std::cout<< " T_Jet2 = " << T_Jet2 ;
         std::cout<< " T_BJet_hadtop = " << T_BJet_hadtop ;
@@ -2886,7 +2886,8 @@ double MGIntegration::evalttH(const double* x ) {
         std::cout<< " T_hadTop = " << T_hadTop ;
         std::cout<< " Jac = " << Jac ;
         std::cout<< " wME = " << wME  ;
-        std::cout<< " Eval = " << Eval << std::endl;*/
+        std::cout<< " Eval = " << Eval << std::endl;/**/
+        //std::cout<< " error = " << error << std::endl;/**/
     if (error) {
         Eval = 0;
     }

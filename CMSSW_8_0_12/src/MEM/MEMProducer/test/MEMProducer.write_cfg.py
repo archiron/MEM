@@ -12,20 +12,37 @@ print "max number of evts to treat : ", max_number
 
 process = cms.Process("OWNPARTICLES")
 
+# MET TESTS TOOLS
+try: IsMC
+except NameError:
+    IsMC=True
+#try: USE_NOHFMET
+#except NameError:
+#    USE_NOHFMET=False
+#PFMetName = "slimmedMETs"
+#if USE_NOHFMET: PFMetName = "slimmedMETsNoHF"
+#try: APPLYMETCORR
+#except NameError:
+#    APPLYMETCORR=True
+#METfiltersProcess = "PAT" if IsMC else "RECO"
+# END MET TESTS TOOLS
+
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+process.load("Configuration.Geometry.GeometryIdeal_cff") # new
+process.load("Configuration.StandardSequences.MagneticField_cff") # new
 
 process.MessageLogger = cms.Service("MessageLogger",
         destinations = cms.untracked.vstring(                           
-                                             'detailedInfo_ID_0'
-                                               ,'critical_ID_0'
-                                               ,'warni_ID_0'
+                                               'critical_ID_0',
+                                             'detailedInfo_ID_0',
+                                               'warni_ID_0'
         ),
        critical_ID_0       = cms.untracked.PSet(
-                        threshold = cms.untracked.string('ERROR') 
+                       threshold = cms.untracked.string('ERROR') 
         ),
        detailedInfo_ID_0   = cms.untracked.PSet(
-                      threshold  = cms.untracked.string('INFO') 
+                       threshold  = cms.untracked.string('INFO') 
        ),
        warni_ID_0           = cms.untracked.PSet(
                        threshold  = cms.untracked.string('WARNING') 
@@ -69,16 +86,38 @@ skipEvents = cms.untracked.uint32(max_skipped),
     ])
 )
 
-process.load("RecoMET.METProducers.METSignificance_cfi") 
-process.load("RecoMET.METProducers.METSignificanceParams_cfi") 
-
-process.METSequence = cms.Sequence (process.METSignificance) 
+process.load("MEM.MEMProducer.MEMParams_cfi")
+process.load("MEM.MEMProducer.METCorr_cfi")
 
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
+# MET TESTS TOOLS
+process.METSequence = cms.Sequence()
+
+from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+runMetCorAndUncFromMiniAOD(
+	process,
+	isData = (not IsMC),
+)
+# MET new version
+#process.METSignificance2 = cms.EDProducer ("ExtractMETSignificance",
+#    mets2=cms.InputTag("slimmedMETs","","OWNPARTICLES"),
+
+#    srcSig = cms.InputTag("METSignificance", "METSignificance"),
+#    srcCov = cms.InputTag("METSignificance", "METCovariance"),
+#)
+process.METSequence += process.fullPatMetSequence
+process.METSequence += process.METSignificance2 
+
+# MET old version
+#process.load("RecoMET.METProducers.METSignificance_cfi") 
+#process.load("RecoMET.METProducers.METSignificanceParams_cfi") 
+
+#process.METSequence += process.METSignificance 
+# END MET TESTS TOOLS
+
 process.load("MEM.MEMProducer.MEMProducer_cfi")
-process.load("MEM.MEMProducer.MEMParams_cfi")
 
 process.out = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('myOutputFile.ID_0.root'),
@@ -98,6 +137,10 @@ process.out = cms.OutputModule("PoolOutputModule",
 
 )
   
-process.p = cms.Path(process.METSequence + process.MEMProducer) 
+process.p = cms.Path(
+#    process.METSignificance2 +
+    process.METSequence #+ 
+#    process.MEMProducer
+    ) 
 
 process.e = cms.EndPath(process.out)

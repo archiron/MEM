@@ -11,6 +11,8 @@ MEMProducer = cms.EDProducer('MEMProducer',
     mets = cms.InputTag('slimmedMETs'),
     jets = cms.InputTag('slimmedJets'),
     
+    mets2 = cms.InputTag('slimmedMETs'),
+
     srcSig = cms.InputTag("METSignificance", "METSignificance"),
     srcCov = cms.InputTag("METSignificance", "METCovariance"),
     

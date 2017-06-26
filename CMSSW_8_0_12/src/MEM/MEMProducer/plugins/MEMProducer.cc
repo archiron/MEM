@@ -267,6 +267,8 @@ MEMProducer::MEMProducer(const edm::ParameterSet& iConfig)
     metToken_      = consumes<pat::METCollection>     (iConfig.getParameter<edm::InputTag>("mets"));
     jetToken_      = consumes<pat::JetCollection>     (iConfig.getParameter<edm::InputTag>("jets"));/**/
     
+    metTokenOne_   = consumes<pat::METCollection>     (iConfig.getParameter<edm::InputTag>("mets2"));
+    
     theSigTag      = consumes<double>                 (iConfig.getParameter<edm::InputTag>("srcSig"));
     theCovTag      = consumes<math::Error<2>::type>   (iConfig.getParameter<edm::InputTag>("srcCov"));
       
@@ -447,6 +449,12 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<pat::JetCollection> jets;
     iEvent.getByToken(jetToken_, jets);/**/
 
+    edm::Handle<pat::METCollection> metsOne;
+    iEvent.getByToken(metTokenOne_, metsOne);
+
+    Handle<math::Error<2>::type> covHandle; // MET
+    iEvent.getByToken (theCovTag, covHandle);/**/
+
     std::auto_ptr<reco::MEMResultCollection> MEMResultColl( new reco::MEMResultCollection );
 
 //    sprintf(greeting, "Hello world: processor %d of %d\n", processID_, nbrOfProcess_);
@@ -547,7 +555,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* muon-muon case */
         if ( pairs_mm ) { // 
-            std::cout << "\nyou will have " << runConfig.nbOfMuons_ * (runConfig.nbOfMuons_ - 1) / 2 << " possibilities for muon-muon pairs" << std::endl;
+            std::cout << "\nYOU WILL HAVE " << runConfig.nbOfMuons_ * (runConfig.nbOfMuons_ - 1) / 2 << " POSSIBILITIES FOR MUON-MUON PAIRS" << std::endl;
             for ( pat::MuonCollection::const_iterator iter_3 = result_muon->begin(); iter_3 < result_muon->end() - 1 ; ++iter_3) {
                 for ( pat::MuonCollection::const_iterator iter_4 = iter_3 + 1; iter_4 != result_muon->end(); ++iter_4) {
                     //std::cout << "\n\t(" << (iter_3-result_muon->begin())  << "," << (iter_4-result_muon->begin()) << ")" << std::endl;
@@ -585,14 +593,34 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                                 std::cout << "Met size : " << mets->size() << std::endl ;
                             }
                     
+                            std::cout << "nouveau" << std::endl;
+                            const pat::MET& srcMETOne = (*metsOne)[0];
+                            const reco::METCovMatrix cov = srcMETOne.getSignificanceMatrix(); // TEMPORAIRE
+                            std::auto_ptr<math::Error<2>::type> covPtr(new math::Error<2>::type());
+                            (*covPtr)(0,0) = cov(0,0);
+                            (*covPtr)(1,0) = cov(1,0);
+                            (*covPtr)(1,1) = cov(1,1);
+                            std::cout << "(*covPtr)(0,0) = " << (*covPtr)(0,0) << std::endl;
+                            std::cout << "(*covPtr)(1,0) = " << (*covPtr)(1,0) << std::endl;
+                            std::cout << "(*covPtr)(1,1) = " << (*covPtr)(1,1) << std::endl;
+                            double det1 = (*covPtr)(0,0) * (*covPtr)(1,1) - (*covPtr)(1,0) * (*covPtr)(1,0);
+                            std::cout << "(*covPtr)(0,0) = " << ((*covPtr)(1,1) / det1 ) << std::endl;
+                            std::cout << "(*covPtr)(1,0) = " << -((*covPtr)(0,1) / det1 ) << std::endl;
+                            std::cout << "(*covPtr)(1,1) = " << ((*covPtr)(0,0) / det1 ) << std::endl;
+                            //std::cout << "significance = " << srcMETOne.significance() << std::endl;
+                            TLorentzVector recoMET_4P_bis;
+                            recoMET_4P_bis.SetPtEtaPhiM( srcMETOne.et(), 0.,  srcMETOne.phi() , 0. );
+                            std::cout << "recoMET_4P_bis loop (" << recoMET_4P_bis.Pt() << ", " << recoMET_4P_bis.Eta() << ", " << recoMET_4P_bis.Phi() << ", " << recoMET_4P_bis.M() << ") " << std::endl;
+                            
+                            std::cout << "classique" << std::endl;
                             const pat::MET& srcMET = (*mets)[0];
-                            Handle<math::Error<2>::type> covHandle;
-                            iEvent.getByToken (theCovTag, covHandle);/**/
-                            /*nplet.recoMETCov[0] = (*covHandle)(0,0);
-                        nplet.recoMETCov[1] = (*covHandle)(1,0);
-                        nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
-                        nplet.recoMETCov[3] = (*covHandle)(1,1);
-                        nplet.covarMET_display(); // to be removed */
+                            /*Handle<math::Error<2>::type> covHandle;
+                            iEvent.getByToken (theCovTag, covHandle);*/
+                            nplet.recoMETCov[0] = (*covHandle)(0,0);
+                            nplet.recoMETCov[1] = (*covHandle)(1,0);
+                            nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
+                            nplet.recoMETCov[3] = (*covHandle)(1,1);
+                            nplet.covarMET_display(); // to be removed /**/
                     
                             // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
                             //double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
@@ -603,12 +631,12 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                             nplet.recoMETCov[1] = -((*covHandle)(0,1) / det );
                             nplet.recoMETCov[2] = -((*covHandle)(1,0) / det );
                             nplet.recoMETCov[3] =  ((*covHandle)(0,0) / det ); /**/
-                            //nplet.covarMET_display(); // to be removed
+                            nplet.covarMET_display(); // to be removed
                     
                             /*std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
                             std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;*/
                             nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
-                            //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
+                            std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
                             // Appel MEM 
                             oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
@@ -625,7 +653,7 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         /* electron-electron case */
         if ( pairs_ee ) { // 
-            std::cout << "\nyou will have " << runConfig.nbOfElectrons_ * (runConfig.nbOfElectrons_ - 1) / 2 << " possibilities for electron-electron pairs" << std::endl;
+            std::cout << "\nYOU WILL HAVE " << runConfig.nbOfElectrons_ * (runConfig.nbOfElectrons_ - 1) / 2 << " POSSIBILITIES FOR ELECTRON-ELECTRON PAIRS" << std::endl;
             for ( pat::ElectronCollection::const_iterator iter_1 = result_elec->begin(); iter_1 < result_elec->end() - 1 ; ++iter_1) {
                 for ( pat::ElectronCollection::const_iterator iter_2 = iter_1 + 1; iter_2 != result_elec->end(); ++iter_2) {
                     //std::cout << "\n\t(" << (iter_1-result_elec->begin())  << "," << (iter_2-result_elec->begin()) << ")" << std::endl;
@@ -664,13 +692,13 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                         }*/
                     
                             const pat::MET& srcMET = (*mets)[0];
-                            Handle<math::Error<2>::type> covHandle;
-                            iEvent.getByToken (theCovTag, covHandle);/**/
-                            /*nplet.recoMETCov[0] = (*covHandle)(0,0);
-                        nplet.recoMETCov[1] = (*covHandle)(1,0);
-                        nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
-                        nplet.recoMETCov[3] = (*covHandle)(1,1);
-                        nplet.covarMET_display(); // to be removed */
+                            /*Handle<math::Error<2>::type> covHandle;
+                            iEvent.getByToken (theCovTag, covHandle);*/
+                            nplet.recoMETCov[0] = (*covHandle)(0,0);
+                            nplet.recoMETCov[1] = (*covHandle)(1,0);
+                            nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
+                            nplet.recoMETCov[3] = (*covHandle)(1,1); /**/
+                            nplet.covarMET_display(); // to be removed
                     
                             // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
                             //double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
@@ -681,12 +709,12 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                             nplet.recoMETCov[1] = -((*covHandle)(0,1) / det );
                             nplet.recoMETCov[2] = -((*covHandle)(1,0) / det );
                             nplet.recoMETCov[3] =  ((*covHandle)(0,0) / det ); /**/
-                            //nplet.covarMET_display(); // to be removed
+                            nplet.covarMET_display(); // to be removed
                     
                             /*std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
                         std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;*/
                             nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
-                            //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
+                            std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
                             // Appel MEM 
                             oneMPIProcess(nplet); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput 
@@ -757,13 +785,13 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
                         Handle<double> significanceHandle;
                         iEvent.getByToken (theSigTag, significanceHandle);*/
                             const pat::MET& srcMET = (*mets)[0];
-                            Handle<math::Error<2>::type> covHandle;
-                            iEvent.getByToken (theCovTag, covHandle);/**/
-                            /*nplet.recoMETCov[0] = (*covHandle)(0,0);
-                        nplet.recoMETCov[1] = (*covHandle)(1,0);
-                        nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
-                        nplet.recoMETCov[3] = (*covHandle)(1,1);
-                        nplet.covarMET_display(); // to be removed */
+                            /*Handle<math::Error<2>::type> covHandle;
+                            iEvent.getByToken (theCovTag, covHandle);*/
+                            nplet.recoMETCov[0] = (*covHandle)(0,0);
+                            nplet.recoMETCov[1] = (*covHandle)(1,0);
+                            nplet.recoMETCov[2] = nplet.recoMETCov[1]; // (1,0) is the only one saved
+                            nplet.recoMETCov[3] = (*covHandle)(1,1); /**/
+                            nplet.covarMET_display(); // to be removed
                         
                             // Set MET covariance Matrix component (index order 00, 01, 10, 00 )
                             //double det = _PFMETCov00 * _PFMETCov11 - _PFMETCov01 * _PFMETCov10;
@@ -778,12 +806,12 @@ MEMProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 /*                           std::cout << "Met cov matrix : " << srcMET.getSignificanceMatrix() << std::endl;
                         std::cout << "Met cov matrix : " << (*covHandle) << std::endl;
                         std::cout << "Met cov matrix : " << nplet.recoMETCov[0] << std::endl;*/
-                            //nplet.covarMET_display(); // to be removed
+                            nplet.covarMET_display(); // to be removed
                     
                             /*std::cout << "Met pfMET     : " << srcMET.et() << std::endl;
                         std::cout << "Met pfMET phi : " << srcMET.phi() << std::endl;*/
                             nplet.fill_recoMET_4P(srcMET.et(), srcMET.phi());
-                            //std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
+                            std::cout << "recoMET_4P loop (" << nplet.recoMET_4P.Pt() << ", " << nplet.recoMET_4P.Eta() << ", " << nplet.recoMET_4P.Phi() << ", " << nplet.recoMET_4P.M() << ") " << std::endl;
                         
                             // Appel MEM 
                             oneMPIProcess( nplet ); // EventReader<Run1EventData_t> &eventReader, IntegralsOutputs<T> *integralsOutput
@@ -926,7 +954,7 @@ MEMProducer::beginStream(edm::StreamID)
 //    << "cout:STREAM nbrOfProcess = " << nbrOfProcess_ 
 //    << "  processID = " << processID_ 
 //    << "  processor_name = " << processor_name 
-    << std::endl;
+    << "begin MEMProducer" << std::endl;
 }
 /**/
 
@@ -943,7 +971,7 @@ MEMProducer::endStream() {
 
   std::cout 
 //    << "cout:END STREAM .... processID=" << processID_
-    << "\nJe sors" 
+    << "\nJe sors de MEMProducer" 
     << std::endl;
 }
 /**/
